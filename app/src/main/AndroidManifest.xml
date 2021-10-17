@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.V1TCC">
         <activity
+            android:name=".Procedimentos"
+            android:exported="true" />
+        <activity
+            android:name=".MenuMain"
+            android:exported="true" />
+        <activity
+            android:name=".AdicionarProcedimento"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

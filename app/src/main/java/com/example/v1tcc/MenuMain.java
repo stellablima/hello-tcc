@@ -6,16 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MenuMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_menu_main);
     }
 
-    public void btnMenuMainOnClick(View view){
-        Intent intent = new Intent(this, MenuMain.class);
+    public void btnProcedimentosOnClick(View view){
+        Intent intent = new Intent(this, Procedimentos.class);
         startActivity(intent);
     }
 }

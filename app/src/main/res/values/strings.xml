@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">V1 TCC</string>
+    <string name="btnAdicionarProcedimento">Adicionar Procedimento</string>
+    <string name="lblCadastroProcedimento">Cadrastro Procedimento</string>
+    <string name="lblProcedimentos">Procedimentos</string>
+    <string name="btnSalvar">Salvar</string>
 </resources>

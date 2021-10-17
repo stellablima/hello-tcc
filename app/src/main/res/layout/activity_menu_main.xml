@@ -5,16 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".MainActivity">
+    tools:context=".MenuMain">
 
-    <ImageButton
-        android:id="@+id/btnMenuMain"
+    <android.widget.Button
+        android:id="@+id/btnProcedimentos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_main"
-        android:onClick="btnMenuMainOnClick"
-        app:srcCompat="@drawable/btn_icon_menu_main"
-        tools:layout_editor_absoluteX="331dp"
-        tools:layout_editor_absoluteY="28dp" />
-
+        android:layout_marginTop="233dp"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblProcedimentos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
