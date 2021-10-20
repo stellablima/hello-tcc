@@ -7,14 +7,92 @@
     android:background="@color/bg_main"
     tools:context=".MainActivity">
 
-    <ImageButton
-        android:id="@+id/btnMenuMain"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gdlTopMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_main"
-        android:onClick="btnMenuMainOnClick"
-        app:srcCompat="@drawable/btn_icon_menu_main"
-        tools:layout_editor_absoluteX="331dp"
-        tools:layout_editor_absoluteY="28dp" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="10dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gdlStartMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="10dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/gdlBottomMain"
+        app:layout_constraintEnd_toStartOf="@+id/gdlEndMain"
+        app:layout_constraintStart_toStartOf="@+id/gdlStartMain"
+        app:layout_constraintTop_toTopOf="@+id/gdlTopMain">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="200dp"
+                android:layout_height="300dp"
+                tools:srcCompat="@drawable/avatar" />
+
+            <ImageButton
+                android:id="@+id/btnMenuMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_bg_main"
+                android:onClick="btnMenuMainOnClick"
+                app:srcCompat="@drawable/btn_icon_menu_main" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/lblLvRotinaMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tarefas" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ListView
+                android:id="@+id/lvRotinaMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gdlEndMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="10dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gdlBottomMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
