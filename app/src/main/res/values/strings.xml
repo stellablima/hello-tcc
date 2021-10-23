@@ -3,5 +3,13 @@
     <string name="btnAdicionarProcedimento">Adicionar Procedimento</string>
     <string name="lblCadastroProcedimento">Cadrastro Procedimento</string>
     <string name="lblProcedimentos">Procedimentos</string>
+    <string name="lblTarefas">Tarefas</string>
+    <string name="lblTerapias">Terapias</string>
+    <string name="lblEventos">Eventos</string>
+    <string name="lblRelatorios">Relatórios</string>
+    <string name="lblPerfil">Perfil</string>
+    <string name="lblConfiguracoes">Configurações</string>
     <string name="btnSalvar">Salvar</string>
+    <string name="lblEstoque">Estoque</string>
+
 </resources>

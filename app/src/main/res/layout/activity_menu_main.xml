@@ -5,17 +5,124 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".MenuMain">
+    tools:context=".MenuMain"
+    tools:layout_editor_absoluteX="15dp"
+    tools:layout_editor_absoluteY="-95dp">
+
+    <android.widget.Button
+        android:id="@+id/btnTarefa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblTarefas"
+        app:layout_constraintBottom_toTopOf="@+id/btnTerapias"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnProcedimentos" />
+
+    <android.widget.Button
+        android:id="@+id/btnRelatorios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblRelatorios"
+        app:layout_constraintBottom_toTopOf="@+id/btnPerfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEstoque" />
+
+    <android.widget.Button
+        android:id="@+id/btnConfiguracoes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblConfiguracoes"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPerfil" />
+
+    <android.widget.Button
+        android:id="@+id/btnEventos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblEventos"
+        app:layout_constraintBottom_toTopOf="@+id/btnEstoque"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTerapias" />
+
+    <android.widget.Button
+        android:id="@+id/btnPerfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblPerfil"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfiguracoes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRelatorios" />
+
+    <android.widget.Button
+        android:id="@+id/btnEstoque"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblEstoque"
+        app:layout_constraintBottom_toTopOf="@+id/btnRelatorios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEventos" />
+
+    <android.widget.Button
+        android:id="@+id/btnTerapias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblTerapias"
+        app:layout_constraintBottom_toTopOf="@+id/btnEventos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTarefa" />
 
     <android.widget.Button
         android:id="@+id/btnProcedimentos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="233dp"
         android:background="@drawable/btn_bg_menu_main"
         android:onClick="btnProcedimentosOnClick"
         android:text="@string/lblProcedimentos"
+        app:layout_constraintBottom_toTopOf="@+id/btnTarefa"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblMenu" />
+
+    <TextView
+        android:id="@+id/lblMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/btnProcedimentos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
