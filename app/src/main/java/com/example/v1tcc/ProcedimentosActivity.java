@@ -2,16 +2,24 @@ package com.example.v1tcc;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ProcedimentosActivity extends AppCompatActivity {
 
-    public static final String EXTRA_ID = "idestoque";
+    public static final String EXTRA_ID = "idprocedimento";
     //public static final String EXTRA_TIPO = "tipoevento";
 
     private TextView txtNomeProcedimento;
     private TextView txtHoraProcedimento;
+    private Long idProcedimento;
+    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteDatabase bd;
+    private Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,30 +42,27 @@ public class ProcedimentosActivity extends AppCompatActivity {
         TextView txt;
         String s;
         int valor; //txtHoraProcedimento
-//        try {
-//            idEstq = getIntent().getExtras().getLong(EXTRA_ID);
-//
-//            Toast.makeText(this, "id: "+ idEstq, Toast.LENGTH_SHORT).show();
-//
-//            bdEstoqueHelper = new BDEstoqueHelper(this);
-//            bd = bdEstoqueHelper.getReadableDatabase();
-//            // Podemos criar o cursor com rawQuery()
+        try {
+            idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
+            bdRotinaHelper = new BDRotinaHelper(this);
+            bd = bdRotinaHelper.getReadableDatabase();
+            // Podemos criar o cursor com rawQuery()
 //            //cursor = bd.rawQuery("select _id, CODIGO, NOME, UNID, QTDE, PCUNIT from ESTOQUE where _id = ?",
 //            // new String[] {Long.toString(idEstq)} );
 //            // ou com query(). O rawQuery foi usado na app anterior (Biblioteca) e aqui usamos query()
-//            cursor = bd.query("PROCEDIMENTO",
-//                    new String[] {"_id", "CODIGO", "NOME", "UNID", "QTDE", "PCUNIT"},
-//                    "_id = ?",
-//                    new String[] {Long.toString(idEstq)},
-//                    null,
-//                    null,
-//                    null
-//            );
-//            if (cursor.moveToFirst()) {
-//                txt = findViewById(R.id.txtCodigo);
-//                txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("CODIGO")));
-//                txt = findViewById(R.id.txtNome);
-//                txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("NOME")));
+            cursor = bd.query("PROCEDIMENTO",
+                    new String[] {"_id", "NOME", "DATA_PREVISAO"},
+                    "_id = ?",
+                    new String[] {Long.toString(idProcedimento)},
+                    null,
+                    null,
+                    null
+            );
+            if (cursor.moveToFirst()) {
+                txt = findViewById(R.id.txtNomeProcedimento);
+                txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("NOME")));
+                txt = findViewById(R.id.txtHoraProcedimento);
+                txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO")));
 //                txt = findViewById(R.id.txtUnid);
 //                String unid = cursor.getString(cursor.getColumnIndexOrThrow("UNID"));
 //                txt.setText(unid);
@@ -71,12 +76,12 @@ public class ProcedimentosActivity extends AppCompatActivity {
 //                valor = cursor.getInt(cursor.getColumnIndexOrThrow("PCUNIT"));
 //                txt = findViewById(R.id.txtPcUnit);
 //                txt.setText("Valor: R$ " + String.format(Locale.getDefault(), "%,.2f", valor/100.0));
-//            }
-//            else
-//                Toast.makeText(this, "Produto não encontrado", Toast.LENGTH_SHORT).show();
-//        }
-//        catch (SQLiteException e){
-//            Toast.makeText(this, "Falha no acesso ao Banco de Dados", Toast.LENGTH_LONG).show();
-//        }
+            }
+            else
+                Toast.makeText(this, "Produto não encontrado", Toast.LENGTH_SHORT).show();
+        }
+        catch (SQLiteException e){
+            Toast.makeText(this, "Falha no acesso ao Banco de Dados", Toast.LENGTH_LONG).show();
+        }
     }
 }

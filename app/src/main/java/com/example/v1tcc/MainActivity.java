@@ -32,10 +32,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, ProcedimentosActivity.class);
 
-                Cursor cursor = (Cursor) cursorAdapter.getItem(position); // :D EBAAAAA
+                Cursor cursor = (Cursor) cursorAdapter.getItem(position); // :D EBAAAAA, nao pera se o id é sequencial id é pode ser var mesmo https://www.rlsystem.com.br/forum/android/649-filtrar-dados-da-listview-com-uso-de-sqlite-e-simplecursoradapter-
                 intent.putExtra(ProcedimentosActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
 
-                //intent.putExtra(ProcedimentosActivity.EXTRA_ID, "_id");//passar o id aqui <-
                 //intent.putExtra(ProcedimentosActivity.EXTRA_TIPO, "procedimento");
                 startActivity(intent);
             }
