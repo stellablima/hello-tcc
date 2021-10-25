@@ -8,7 +8,7 @@
     tools:context=".AdicionarProcedimento">
 
     <TextView
-        android:id="@+id/lblCadastroProcedimento"
+        android:id="@+id/procedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lblCadastroProcedimento"
@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblCadastroProcedimento" />
+        app:layout_constraintTop_toBottomOf="@+id/procedimento" />
 
     <Button
         android:id="@+id/button"

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.v1tcc">
 
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.V1TCC">
         <activity
-            android:name=".Procedimentos"
+            android:name=".ProcedimentosActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MenuProcedimentosActivity"
             android:exported="true" />
         <activity
             android:name=".MenuMain"

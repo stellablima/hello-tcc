@@ -3,12 +3,8 @@ package com.example.v1tcc;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.Toast;
 
 public class MenuMain extends AppCompatActivity {
 
@@ -22,7 +18,7 @@ public class MenuMain extends AppCompatActivity {
     }
 
     public void btnProcedimentosOnClick(View view){
-        Intent intent = new Intent(this, Procedimentos.class);
+        Intent intent = new Intent(this, MenuProcedimentosActivity.class);
         startActivity(intent);
     }
 }
