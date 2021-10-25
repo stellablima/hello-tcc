@@ -45,18 +45,18 @@ public class BDRotinaHelper extends SQLiteOpenHelper {
         bd.execSQL(sql);
     }
     private void insereDadosProcedimento(SQLiteDatabase bd) {
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Mussarela", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Mostarda Tradicional", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Leite Condensado", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Requeijão bisnaga", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Creme de Leite", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Queijo Parmesão Nacional", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Presunto Cozido", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Queijo Parmesão Argentino", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Peito de Peru", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Azeitona Verde com caroço", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Requeijão copo", "2021-01-01 00:00:00");
-        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Azeite de Oliva Premium", "2021-01-01 00:00:00");
+        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "12:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Losec", "Mussarela", "2021-01-01 00:00:00");
+        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "23:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Dieta", "Mostarda Tradicional", "2021-01-01 00:00:00");
+        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "02:20", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Flit", "Leite Condensado", "2021-01-01 00:00:00");
+        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "05:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Inalação", "Requeijão bisnaga", "2021-01-01 00:00:00");
+        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "10:30", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Aeropuff", "Creme de Leite", "2021-01-01 00:00:00");
+        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "13:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Sondagem", "Queijo Parmesão Nacional", "2021-01-01 00:00:00");
+        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "14:30", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Troca de fralda", "Presunto Cozido", "2021-01-01 00:00:00");
+//        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Queijo Parmesão Argentino", "2021-01-01 00:00:00");
+//        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Peito de Peru", "2021-01-01 00:00:00");
+//        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Azeitona Verde com caroço", "2021-01-01 00:00:00");
+//        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Requeijão copo", "2021-01-01 00:00:00");
+//        insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "2021-01-01 00:00:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "Nome Editavel", "Azeite de Oliva Premium", "2021-01-01 00:00:00");
     };
     private void insereProcedimento(SQLiteDatabase bd, String categoria, String dataInicio, String dataPrevisao,
                                     String debitoEstoque, String debitoFisiologico, String nome,

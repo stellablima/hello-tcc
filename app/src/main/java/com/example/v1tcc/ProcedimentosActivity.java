@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,10 @@ public class ProcedimentosActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         carregaDados();
+    }
+
+    public void btnEditarProcedimentoOnClick(View view){
+        Toast.makeText(this, "Alteração falhou", Toast.LENGTH_LONG).show();
     }
 
     private void carregaDados() {
