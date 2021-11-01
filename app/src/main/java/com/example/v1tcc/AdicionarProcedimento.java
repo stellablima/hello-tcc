@@ -1,13 +1,18 @@
 package com.example.v1tcc;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.view.View;
@@ -17,6 +22,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.sql.Struct;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AdicionarProcedimento extends AppCompatActivity {
@@ -88,27 +94,45 @@ public class AdicionarProcedimento extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void btnSalvarProcedimentoOnClick(View view){
 
         try {
             preenchimentoValido();
 
-
+            //jeito 1, abre a tela do app
             String[] txtHora =  txtHoraProcedimento.getText().toString().split(":");
-            Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM); //valor.substring(0,valor.length-2);
-            intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(txtHora[0]));//(int) txtHoraProcedimento.getText().toString().indexOf(0,2));//int
-            intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(txtHora[1]));//txtHora.substring(3,5));// (int) txtHoraProcedimento.toString().indexOf(2,4));//int
+//            Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM); //valor.substring(0,valor.length-2);
+//            intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(txtHora[0]));//(int) txtHoraProcedimento.getText().toString().indexOf(0,2));//int
+//            intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(txtHora[1]));//txtHora.substring(3,5));// (int) txtHoraProcedimento.toString().indexOf(2,4));//int
+//            //um btn para decidir esses parametros
+//            ArrayList<Integer> days = new ArrayList<Integer>();
+//            days.add(Calendar.SATURDAY);
+//            days.add(Calendar.MONDAY);
+//            intent.putExtra(AlarmClock.EXTRA_DAYS, days);
+//            //TIPO|ID|NOME|um código aqui
+//            intent.putExtra(AlarmClock.EXTRA_MESSAGE,edtNomeProcedimento.getText().toString());
+//            if(intent.resolveActivity(getPackageManager())!=null)
+//                startActivity(intent);
 
+            //jeito2 instanciar, o usuario nao acessa
+            //AlarmReceiver ar= new AlarmReceiver(1); //com id proprio
 
-            //TIPO|ID|NOME|um código aqui
-            intent.putExtra(AlarmClock.EXTRA_MESSAGE,edtNomeProcedimento.getText().toString());
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));  // set hour
+            cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));          // set minute
+            cal.set(Calendar.SECOND, 0);               // set seconds
+            //AlarmReceiver.setupAlarm(this, Bundle.EMPTY, cal, cal.getTimeInMillis(), 1);
+            //AlarmReceiver.cancelAlarm(this);
+            //AlarmReceiver.startarAlarme(this, cal);
+            startAlarm(cal);
+            Thread.sleep(1000);
+            //cancelAlarm();
+            //depois tentar cancelar com botão editar
 
-
-            if(intent.resolveActivity(getPackageManager())!=null)
-                startActivity(intent);
 
             //if (operacao == OP_INCLUI) {
-                insereEstq();
+            //    insereEstq();
             //}
             //else if (operacao == OP_ALTERA) {
             //    alteraEstq();
@@ -160,5 +184,27 @@ public class AdicionarProcedimento extends AppCompatActivity {
         //s = spnUnidade.getSelectedItem().toString();
         //if (s.equals(""))
         //    throw new Exception("A Unidade deve ser preenchida");
+    }
+
+
+    private void startAlarm(Calendar c) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, RecebedorDeAlerta.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        if (c.before(Calendar.getInstance())) {
+            c.add(Calendar.DATE, 1);
+        }
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, RecebedorDeAlerta.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        Toast.makeText(this, "Alarme cancelado", Toast.LENGTH_SHORT).show();
+        alarmManager.cancel(pendingIntent);
     }
 }

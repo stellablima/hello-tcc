@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/procedimento" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnEditarProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="btnSalvarProcedimentoOnClick"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MOCK Materiais Utilizados e demais campos"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditarProcedimento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
