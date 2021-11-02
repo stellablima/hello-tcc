@@ -100,39 +100,18 @@ public class AdicionarProcedimento extends AppCompatActivity {
         try {
             preenchimentoValido();
 
-            //jeito 1, abre a tela do app
             String[] txtHora =  txtHoraProcedimento.getText().toString().split(":");
-//            Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM); //valor.substring(0,valor.length-2);
-//            intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(txtHora[0]));//(int) txtHoraProcedimento.getText().toString().indexOf(0,2));//int
-//            intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(txtHora[1]));//txtHora.substring(3,5));// (int) txtHoraProcedimento.toString().indexOf(2,4));//int
-//            //um btn para decidir esses parametros
-//            ArrayList<Integer> days = new ArrayList<Integer>();
-//            days.add(Calendar.SATURDAY);
-//            days.add(Calendar.MONDAY);
-//            intent.putExtra(AlarmClock.EXTRA_DAYS, days);
-//            //TIPO|ID|NOME|um código aqui
-//            intent.putExtra(AlarmClock.EXTRA_MESSAGE,edtNomeProcedimento.getText().toString());
-//            if(intent.resolveActivity(getPackageManager())!=null)
-//                startActivity(intent);
-
-            //jeito2 instanciar, o usuario nao acessa
-            //AlarmReceiver ar= new AlarmReceiver(1); //com id proprio
-
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));  // set hour
             cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));          // set minute
             cal.set(Calendar.SECOND, 0);               // set seconds
-            //AlarmReceiver.setupAlarm(this, Bundle.EMPTY, cal, cal.getTimeInMillis(), 1);
-            //AlarmReceiver.cancelAlarm(this);
-            //AlarmReceiver.startarAlarme(this, cal);
-            startAlarm(cal);
-            Thread.sleep(1000);
-            //cancelAlarm();
-            //depois tentar cancelar com botão editar
 
-
+            //como montar umid? primeiro digito referente e tabela sendo 0 procedimento
+            //+ id do procedimento gravado na tabela
             //if (operacao == OP_INCLUI) {
-            //    insereEstq();
+            int idInserted = insereEstq();
+            Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
+            AlarmReceiver.startAlarmDef(this, cal, idInserted);
             //}
             //else if (operacao == OP_ALTERA) {
             //    alteraEstq();
@@ -147,17 +126,17 @@ public class AdicionarProcedimento extends AppCompatActivity {
         }
     }
 
-    private void insereEstq() {
+    private int insereEstq() {
         BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
         SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
         ContentValues cvEstq = carregaCVProcedimento();
-        bd.insert("PROCEDIMENTO", null, cvEstq);
+        return (int) bd.insert("PROCEDIMENTO", null, cvEstq);
     }
 
     private ContentValues carregaCVProcedimento() {
         ContentValues cv = new ContentValues();
         cv.put("NOME", edtNomeProcedimento.getText().toString());
-
+        cv.put("FLAG", "1");
         //o que ele vai salvar no futuro no banco vai ser um alarme com uma configuração e uma peridiocidade, e o que vai
         //persistir no banco é quando a ação for realizada os dados mínimos para relatório, toda a mágica fora o crud
         //vai acontecer ali e pode ser necessário rependar melhor esse módulo, vai ser um tabelão de crescimento esponencial com indexes
@@ -187,24 +166,7 @@ public class AdicionarProcedimento extends AppCompatActivity {
     }
 
 
-    private void startAlarm(Calendar c) {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, RecebedorDeAlerta.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
-        if (c.before(Calendar.getInstance())) {
-            c.add(Calendar.DATE, 1);
-        }
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-    }
 
-    private void cancelAlarm() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, RecebedorDeAlerta.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-
-        Toast.makeText(this, "Alarme cancelado", Toast.LENGTH_SHORT).show();
-        alarmManager.cancel(pendingIntent);
-    }
 }

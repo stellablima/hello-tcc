@@ -48,31 +48,43 @@ public class ProcedimentosActivity extends AppCompatActivity {
         carregaDados();
     }
 
-    public void btnEditarProcedimentoOnClick(View view){
-        //Toast.makeText(this, "Alteração falhou", Toast.LENGTH_LONG).show();
-
-        //pendente: aqui vai abrir a activity, podendo ser a mesma de adição
-        //primeiro mockar pra ver se é possivel
-
-        //1-perfil montar um alarme por cima:
-        //2-identificar um existente
-        //3-substituir as informações
+    public void btnDeletarProcedimentoOnClick(View view){
+        Toast.makeText(this, "Alarme Cancelado", Toast.LENGTH_LONG).show();
 
         /******************************************************/
         try {
 
+            ContentValues cv = new ContentValues();
+            cv.put("FLAG", "0");
+            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+            bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
+            AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue());
+            //finish();
+
+        } catch (SQLiteException e) {
+            Toast.makeText(this, "Deleção falhou", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void btnEditarProcedimentoOnClick(View view){
+        Toast.makeText(this, "a fazer", Toast.LENGTH_LONG).show();
+
+        /******************************************************/
+//        try {
+
             //AlarmReceiver ar= new AlarmReceiver(1); //com id proprio
-            //AlarmReceiver.cancelAlarm(this, 1);
-            AlarmReceiver.cancelarAlarme(this);
+            //AlarmReceiver.cancelAlarmDef(this, 11);
+            //AlarmReceiver.cancelarAlarme(this, 5);
 //            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 //            Intent intent = new Intent(this, AlarmReceiver.class);
 //            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
 //                    0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
 //            alarmManager.cancel(pendingIntent);
-
-
-
-
 
             /**alteração de alarme existente tentando**/
 //            String[] txtHora =  "23:59".split(":"); //txtHoraProcedimento.getText().toString().split(":");
@@ -123,12 +135,12 @@ public class ProcedimentosActivity extends AppCompatActivity {
             //bd.insert("PROCEDIMENTO", null, cv); //aqui iria um update
             //finish();
 
-        } //catch (SQLiteException e) {
+//        } //catch (SQLiteException e) {
 //            Toast.makeText(this, "Inclusão falhou", Toast.LENGTH_LONG).show();
 //        }
-        catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+//        catch (Exception e) {
+//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+//        }
         /******************************************************/
 
     }
@@ -179,4 +191,6 @@ public class ProcedimentosActivity extends AppCompatActivity {
             Toast.makeText(this, "Falha no acesso ao Banco de Dados", Toast.LENGTH_LONG).show();
         }
     }
+
+
 }

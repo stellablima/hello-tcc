@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
             Cursor cursor = bd.query(
                     "PROCEDIMENTO",
-                    new String[]{"_id", "NOME", "DATA_PREVISAO"},
-                    null,
-                    null,
+                    new String[]{"_id", "NOME","DATA_PREVISAO","FLAG"},
+                    "FLAG = ?",
+                    new String[]{"1"},
                     null,
                     null,
                     "DATA_PREVISAO"
