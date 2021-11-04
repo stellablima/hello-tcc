@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".AdicionarProcedimento">
+    tools:context=".AdicionarProcedimentoActivity">
 
     <TextView
-        android:id="@+id/procedimento"
+        android:id="@+id/editarProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lblCadastroProcedimento"
@@ -24,21 +24,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Nome do Procedimento"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/txtHoraProcedimento"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/procedimento" />
+        app:layout_constraintTop_toBottomOf="@+id/editarProcedimento" />
 
     <Button
-        android:id="@+id/btnEditarProcedimento"
+        android:id="@+id/btnAtualizarProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="btnSalvarProcedimentoOnClick"
         android:text="@string/btnSalvar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -47,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MOCK Materiais Utilizados e demais campos"
-        app:layout_constraintBottom_toTopOf="@+id/btnEditarProcedimento"
+        app:layout_constraintBottom_toTopOf="@+id/btnAtualizarProcedimento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,9 +60,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="txtHoraProcedimentoOnClick"
-        android:text="13:12"
+        android:text="00:00"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Horário do Alarme"
+        app:layout_constraintBottom_toTopOf="@+id/txtHoraProcedimento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

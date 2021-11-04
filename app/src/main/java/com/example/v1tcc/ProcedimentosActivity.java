@@ -15,12 +15,14 @@ import android.os.SystemClock;
 import android.provider.AlarmClock;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProcedimentosActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "idprocedimento";
+
     //public static final String EXTRA_TIPO = "tipoevento";
 
     private TextView txtNomeProcedimento;
@@ -30,6 +32,7 @@ public class ProcedimentosActivity extends AppCompatActivity {
     private SQLiteDatabase bd;
     private Cursor cursor;
     private Button btnEditarProcedimento;
+    SimpleCursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,7 @@ public class ProcedimentosActivity extends AppCompatActivity {
         txtNomeProcedimento=findViewById(R.id.txtNomeProcedimento);
         txtHoraProcedimento=findViewById(R.id.txtHoraProcedimento);
         //teste
-        txtNomeProcedimento.setText(String.valueOf(getIntent().getExtras().getLong(EXTRA_ID)));
+        //txtNomeProcedimento.setText(String.valueOf(getIntent().getExtras().getLong(EXTRA_ID)));
 
     }
 
@@ -72,7 +75,11 @@ public class ProcedimentosActivity extends AppCompatActivity {
     }
 
     public void btnEditarProcedimentoOnClick(View view){
-        Toast.makeText(this, "a fazer", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "(idProcedimento).intValue():"+(idProcedimento).intValue(), Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(this, EditarProcedimentoActivity.class);
+        intent.putExtra(ProcedimentosActivity.EXTRA_ID, (idProcedimento).longValue());
+        startActivity(intent);
 
         /******************************************************/
 //        try {

@@ -15,7 +15,7 @@ public class MenuProcedimentosActivity extends AppCompatActivity {
     }
 
     public void btnAdicionarProcedimentoOnClick(View view){
-        Intent intent = new Intent(this, AdicionarProcedimento.class);
+        Intent intent = new Intent(this, AdicionarProcedimentoActivity.class);
         startActivity(intent);
     }
 }

@@ -25,7 +25,7 @@ import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AdicionarProcedimento extends AppCompatActivity {
+public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
     private EditText edtNomeProcedimento;
     private TextView txtHoraProcedimento;

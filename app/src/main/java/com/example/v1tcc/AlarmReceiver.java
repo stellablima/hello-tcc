@@ -29,6 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         context.startActivity(intent2);
     }
 
+    //pendente função de update, por enquanto sobrescrendo alarmes
     public static void startAlarmDef(Context context, Calendar c, int reqcod) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);// RecebedorDeAlerta.class); //intent pendente que vai gerar o alerta

@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position); // :D EBAAAAA, nao pera se o id é sequencial id é pode ser var mesmo https://www.rlsystem.com.br/forum/android/649-filtrar-dados-da-listview-com-uso-de-sqlite-e-simplecursoradapter-
                 intent.putExtra(ProcedimentosActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-
+                //Toast.makeText(MainActivity.this, "id:"+cursor.getLong(cursor.getColumnIndex("_id")), Toast.LENGTH_LONG).show();
+                //cursor.getLong(cursor.getColumnIndex("_id"))
                 //intent.putExtra(ProcedimentosActivity.EXTRA_TIPO, "procedimento");
                 startActivity(intent);
             }
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnMenuMainOnClick(View view){
-        Intent intent = new Intent(this, MenuMain.class);
+        Intent intent = new Intent(this, MenuMainActivity.class);
         startActivity(intent);
     }
 

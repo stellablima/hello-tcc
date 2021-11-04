@@ -5,38 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".ProcedimentosActivity">
-
-    <Button
-        android:id="@+id/btnDeletarProcedimento"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="btnDeletarProcedimentoOnClick"
-        android:text="Deletar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAtualizarProcedimento" />
+    tools:context=".EditarProcedimentoActivity">
 
     <TextView
         android:id="@+id/editarProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Procedimento"
+        android:text="Editar Procedimento"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/txtNomeProcedimento"
+        app:layout_constraintBottom_toTopOf="@+id/edtNomeProcedimento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txtNomeProcedimento"
+    <EditText
+        android:id="@+id/edtNomeProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/txtHoraProcedimento"
+        android:ems="10"
+        android:hint="Nome do Procedimento"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,9 +36,9 @@
         android:id="@+id/btnAtualizarProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="btnEditarProcedimentoOnClick"
-        android:text="Editar"
-        app:layout_constraintBottom_toTopOf="@+id/btnDeletarProcedimento"
+        android:onClick="btnAtualizarProcedimentoOnClick"
+        android:text="Atualizar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,12 +59,24 @@
         android:id="@+id/txtHoraProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="13:12"
+        android:onClick="txtHoraProcedimentoOnClick"
+        android:text="00:00"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNomeProcedimento" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Horário do Alarme"
+        app:layout_constraintBottom_toTopOf="@+id/txtHoraProcedimento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtNomeProcedimento" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

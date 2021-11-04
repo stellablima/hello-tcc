@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MenuMain extends AppCompatActivity {
+public class MenuMainActivity extends AppCompatActivity {
 
 
 
