@@ -11,5 +11,19 @@
     <string name="lblConfiguracoes">Configurações</string>
     <string name="btnSalvar">Salvar</string>
     <string name="lblEstoque">Estoque</string>
-
+    <string-array name="numeros">
+        <item>1</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
+    <string-array name="categorias">
+        <item>Medicação</item>
+        <item>Higienização</item>
+        <item>Outro</item>
+    </string-array>
+    <string-array name="periodos">
+        <item>Diário</item>
+        <item>Mensal</item>
+        <item>Anual</item>
+    </string-array>
 </resources>

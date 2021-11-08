@@ -5,34 +5,38 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.view.View;
 import android.widget.Toast;
 
 public class AlarmReceiverActivity extends AppCompatActivity {
+
+    private MediaPlayer mp;
+    public static final String EXTRA_ID = "idprocedimento";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_receiver);
+
+        mp=MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI);
+        mp.start();
+
+        //Toast.makeText(this, "id"+ (getIntent().getExtras().getLong(EXTRA_ID)), Toast.LENGTH_LONG).show();
+
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void AlarmManagerListener(Context context, Bundle extras, int timeoutInSeconds){
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mp.stop();
+    }
 
-        AlarmManager alarmManager =  (AlarmManager)AlarmReceiverActivity.this.getSystemService(Context.ALARM_SERVICE);
-        long alarmTime = System.currentTimeMillis() + 4000;
-        String tagStr = "TAG";
-        Handler handler = null; // `null` means the callback will be run at the Main thread
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                alarmTime,
-                tagStr,
-                new AlarmManager.OnAlarmListener() {
-                    @Override
-                    public void onAlarm() {
-                        Toast.makeText(AlarmReceiverActivity.this, "AlarmManager.OnAlarmListener", Toast.LENGTH_SHORT).show();
-                    }
-                }, null);
+    public void btnFecharAlarmeOnClick(View view){
+        finish();
     }
 }

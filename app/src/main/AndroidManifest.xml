@@ -25,6 +25,8 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
+<!--   ponto de entrada do app             <action android:name="android.intent.action.MAIN" />-->
+
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>

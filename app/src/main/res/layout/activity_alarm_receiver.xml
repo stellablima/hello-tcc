@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".AlarmReceiverActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/btnFecharAlarme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="[FEITO]       [NÃO FEITO]"
+        android:onClick="btnFecharAlarmeOnClick"
+        android:text="Fechar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

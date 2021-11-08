@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 //https://thestreamliners.in/blog/implement-alarm-manager/
 /*
@@ -22,23 +24,62 @@ No caso de alarme do sistema, ele recebe uma transmissão do serviço de alarme 
 */
 public class AlarmReceiver extends BroadcastReceiver {
 
-    @Override
+    private static long intervalMillis;
+    public static final String EXTRA_ID = "idprocedimento";
+
+
+    @Override // ao encerrar o app ou reiniciar o celular o que irá acontecer ao abrir de novo? ira mantar os alarmes que estão no banco?
     public void onReceive(Context context, Intent intent) {
+
+        Toast.makeText(context, "id"+ (intent.getExtras().getInt(EXTRA_ID)), Toast.LENGTH_LONG).show();
+
         Intent intent2 = new Intent(context, AlarmReceiverActivity.class);
         intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent2.putExtra(ProcedimentosActivity.EXTRA_ID, intent.getExtras().getInt(EXTRA_ID));
         context.startActivity(intent2);
     }
 
-    //pendente função de update, por enquanto sobrescrendo alarmes
-    public static void startAlarmDef(Context context, Calendar c, int reqcod) {
+    public static void updateAlarmProcedimento(Context context, Calendar c, int reqcod){
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReceiver.class);// RecebedorDeAlerta.class); //intent pendente que vai gerar o alerta
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, 0);
+        Intent intent = new Intent(context, AlarmReceiver.class);                         //FLAG_UPDATE_CURRENT vou ter que passar menos parametro? tipo só o que mudou
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, String spnRepeticao){
+        //opção 1 quando disparar programe o proximo baseado nas variaveis atuais
+        //opção 2 repeat
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);// RecebedorDeAlerta.class); //intent pendente que vai gerar o alerta
+        intent.putExtra(AlarmReceiver.EXTRA_ID, reqcod);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, 0);
+
+        if (c.get(0).before(Calendar.getInstance())) {
+            c.get(0).add(Calendar.DATE, 1);
+        }
+
+        intervalMillis = getInterval(spnRepeticao);
+
+        //aqui só permite proporcional //proporcional so tem 1 cal tbm
+        alarmManager.setRepeating( //setInexactRepeating pra task deve funcionnar
+                AlarmManager.RTC_WAKEUP,
+                c.get(0).getTimeInMillis(),
+                intervalMillis, //posso passar 2 param? pra nao proporcional
+                pendingIntent
+        );
+
+        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private static long getInterval(String spnRepeticao){
+
+        //24*(hora) 60*(min) 1000*(sec)
+        //if(spnRepeticao == "Diário") //implementar /um dia sim um dia nao/ no spinner
+        return (long) ((24*60*1000)/Integer.parseInt(spnRepeticao));
     }
 
     public static void cancelAlarmDef(Context context, int reqcod) {
@@ -48,6 +89,25 @@ public class AlarmReceiver extends BroadcastReceiver {
         Toast.makeText(context, "Alarme cancelado", Toast.LENGTH_SHORT).show();
         alarmManager.cancel(pendingIntent);
     }
+}
+
+/*
+next alarm
+https://www.programcreek.com/java-api-examples/?class=android.app.AlarmManager&method=getNextAlarmClock
+
+if(pendingIntent) //ele retorna null se o alarme nao existir, nao pode ser criado com FLAG_ONE_SHOT tem que ser default
+pendingIntent = PendingIntent.getBroadcast(context,0, myIntent, PendingIntent.FLAG_NO_CREATE);
+
+FLAG_CANCEL_CURRENT // e resetar recebendo tudo de novo
+filterEquals(Intent))
+
+    private static long getNextAlarm(Context context, int reqcod) {
+        AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager.AlarmClockInfo info = alarms.getNextAlarmClock(reqcod);
+        return info != null ? info.getTriggerTime() : 0;
+    }
+* */
+
 
     //private static final String ALARM_RECEIVER_ACTION = "";
     //private static int requestCode;
@@ -263,4 +323,20 @@ public class AlarmReceiver extends BroadcastReceiver {
 //            notificationHelper.getManager().notify(1, nb.build());
 //
 
-}
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public void AlarmManagerListener(Context context, Bundle extras, int timeoutInSeconds){
+//
+//        AlarmManager alarmManager =  (AlarmManager)AlarmReceiverActivity.this.getSystemService(Context.ALARM_SERVICE);
+//        long alarmTime = System.currentTimeMillis() + 4000;
+//        String tagStr = "TAG";
+//        Handler handler = null; // `null` means the callback will be run at the Main thread
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+//                alarmTime,
+//                tagStr,
+//                new AlarmManager.OnAlarmListener() {
+//                    @Override
+//                    public void onAlarm() {
+//                        Toast.makeText(AlarmReceiverActivity.this, "AlarmManager.OnAlarmListener", Toast.LENGTH_SHORT).show();
+//                    }
+//                }, null);
+//    }
