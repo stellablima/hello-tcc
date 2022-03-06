@@ -95,12 +95,12 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
             ArrayList<Calendar> alarmeTempo = new ArrayList<>();
             alarmeTempo.add(cal);
-            //como montar umid? primeiro digito referente e tabela sendo 0 procedimento
+            //como montar um id? primeiro digito referente e tabela sendo 0 procedimento
             //+ id do procedimento gravado na tabela
             //if (operacao == OP_INCLUI) {
             int idInserted = insereEstq();
             Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
-            AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, spnRepeticao);
+            AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, spnRepeticao);
             //}
             //else if (operacao == OP_ALTERA) {
             //    alteraEstq();

@@ -50,7 +50,37 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
-    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, String spnRepeticao){
+    public static void snoozeAlarmProcedimento(long intervalMillis) {
+        AlarmReceiver.intervalMillis = intervalMillis;
+        //setar outro alame de 5min
+        //função correta
+    }
+
+    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, Boolean swtRepete, String spnRepeticao){
+
+        /* simples   NAO PREVE DURAÇÃO/TIPO/ALARME FLUTUANTTE DIA TOD0(NOTTIFICAÇÃO) OU ALARME BARULHENTO, se tipo diff fazer uma classe mae geral e ramificar por iffs
+         escopo o v2 seria uma logica unica generia que atenderia tod0 o app
+        1- repetição
+            1- 'nao proporcional', de 5 em 5 horas/7 em 7 meses, 2x ao dia, horarios nao proporcionais, 2x terça e 1 quinta? (ainda nao sei fazer é novo, nao tem em lugar nenhum)
+            2- proporcional simples
+                1- repetições serao anuais, mensais, semanais, diarias
+                2- quantidade
+                3- duração eterno ou inicio e fim
+                    1-calendario e horario incio e fim
+        2- alarme unico (nao faz sentido para procedimento porem essa pode evoluir a ser um func genrica para o app tod0)
+            1- agendamento de quando seria
+
+            fluxo complexo (começar com defaults e opções desabilitas, ver google, layout bom porem limitado ao nao proporcional)
+            1- nome alarme
+            2 ano,mes,dia,hora atual passivel setar (espera-se data futura)
+            3 unico salvo ou não, se mudar chave nao, e para procedimento pode deixar um default repetido checado, expandir opções
+            4 combo repetição: anual, mensal ,semanal,diariamente,horario
+            5 quais dias quais horarios expandir filho
+            6 quantas vezes nesses dias/hor/meses especificar por default primeiro horario botão de + para outros
+            7 fazer fluxo de procedimentos documentar a fim de achar layput melhor e se sera possivel generico mesmo
+
+        * */
+
         //opção 1 quando disparar programe o proximo baseado nas variaveis atuais
         //opção 2 repeat
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -72,6 +102,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 pendingIntent
         );
 
+        //alarme unico funciona bem
         //alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
@@ -92,6 +123,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 }
 
 /*
+bom exemplo completinho https://learntodroid.com/how-to-create-a-simple-alarm-clock-app-in-android/
+https://github.com/Cornholio2108/BestAlarm/issues/24
+https://askandroidquestions.com/2021/02/06/android-alarm-snooze-from-notification/
+setAndAllowWhileIdle() ou setExactAndAllowWhileIdle()//soneca
+
 next alarm
 https://www.programcreek.com/java-api-examples/?class=android.app.AlarmManager&method=getNextAlarmClock
 
