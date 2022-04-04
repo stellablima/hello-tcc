@@ -31,11 +31,16 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override // ao encerrar o app ou reiniciar o celular o que irá acontecer ao abrir de novo? ira mantar os alarmes que estão no banco?
     public void onReceive(Context context, Intent intent) {
 
+        /*
+         Minha ideia-> defina o alarme para todos os dias, verifique a condição do seu dia no receptor de alarme.
+         */
+
+
         Toast.makeText(context, "id"+ (intent.getExtras().getInt(EXTRA_ID)), Toast.LENGTH_LONG).show();
 
         Intent intent2 = new Intent(context, AlarmReceiverActivity.class);
         intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent2.putExtra(ProcedimentosActivity.EXTRA_ID, intent.getExtras().getInt(EXTRA_ID));
+        intent2.putExtra(ProcedimentosActivity.EXTRA_ID, intent.getExtras().getInt(EXTRA_ID)); //get extra dias da semana decide aciona ou nao
         context.startActivity(intent2);
     }
 
@@ -84,30 +89,48 @@ public class AlarmReceiver extends BroadcastReceiver {
         //opção 1 quando disparar programe o proximo baseado nas variaveis atuais
         //opção 2 repeat
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+      //AlarmManager alarmManager = SKAlarmManager.getAlarmManager(context);
+
         Intent intent = new Intent(context, AlarmReceiver.class);// RecebedorDeAlerta.class); //intent pendente que vai gerar o alerta
         intent.putExtra(AlarmReceiver.EXTRA_ID, reqcod);
+        /*
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ALARM_UNIQUE_ID, alarmUniqueId);
+        intent.putExtra(ALARM_ID, alarmId);
+         */
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, 0);
 
         if (c.get(0).before(Calendar.getInstance())) {
             c.get(0).add(Calendar.DATE, 1);
         }
 
-        intervalMillis = getInterval(spnRepeticao);
+        if(swtRepete){
+            intervalMillis = getInterval(spnRepeticao);
+            //aqui só permite proporcional //proporcional so tem 1 cal tbm
 
-        //aqui só permite proporcional //proporcional so tem 1 cal tbm
-        alarmManager.setRepeating( //setInexactRepeating pra task deve funcionnar
-                AlarmManager.RTC_WAKEUP,
-                c.get(0).getTimeInMillis(),
-                intervalMillis, //posso passar 2 param? pra nao proporcional
-                pendingIntent
-        );
+            //logica para setar mais de um alarme se nao proporcional
+            //tudo dependendo da interface, resgatar papelzinho e setar a front e montar logica com base nisso
 
-        //alarme unico funciona bem
-        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+            alarmManager.setRepeating( //setInexactRepeating pra task deve funcionnar
+                    AlarmManager.RTC_WAKEUP,  //https://developer.android.com/reference/android/app/AlarmManager#constants
+                    c.get(0).getTimeInMillis(),
+                    intervalMillis, //posso passar 2 param? pra nao proporcional, inexact parece aceitar uns caras pre formatados INTERVAL_HOUR
+                    pendingIntent
+            );
+
+
+        }else{
+            //alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.get(0).getTimeInMillis(), pendingIntent);
+            //rodar para testar e ver os pros e contras
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(c.get(0).getTimeInMillis(),
+                    null); //estranho atrasou tem que fazer mais testes
+            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+        }
     }
 
     private static long getInterval(String spnRepeticao){
-
         //24*(hora) 60*(min) 1000*(sec)
         //if(spnRepeticao == "Diário") //implementar /um dia sim um dia nao/ no spinner
         return (long) ((24*60*1000)/Integer.parseInt(spnRepeticao));
@@ -376,3 +399,9 @@ filterEquals(Intent))
 //                    }
 //                }, null);
 //    }
+/*
+alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendenteIntent)
+alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 5*1000, pendantIntent)
+alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.get(0).getTimeInMillis(), pendingIntent)
+alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+*/
