@@ -13,6 +13,10 @@
     <string name="lblEstoque">Estoque</string>
     <string-array name="numeros">
         <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
         <item>720</item>
         <item>1440</item>
     </string-array>
@@ -22,8 +26,12 @@
         <item>Outro</item>
     </string-array>
     <string-array name="periodos">
-        <item>Diário</item>
-        <item>Mensal</item>
-        <item>Anual</item>
+        <item>(MINUTO)</item>
+        <item>(HORAS)</item>
+        <item>(DIA S/N)</item>
+        <item>(DIA)</item>
+        <item>(SEMANA)</item>
+        <item>(MÊS)</item>
+        <item>(ANO)</item>
     </string-array>
 </resources>

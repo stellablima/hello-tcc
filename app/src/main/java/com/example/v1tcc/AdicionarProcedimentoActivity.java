@@ -1,21 +1,15 @@
 package com.example.v1tcc;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.AlarmClock;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -23,7 +17,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -39,8 +32,10 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
     private Spinner spnRepeticoesAlarme;
     private Spinner spnCategoriasAlarme;
     private Spinner spnPeriodoAlarme;
+    private Spinner spnPeriodo0Alarme;
+    private Spinner spnPeriodo1Alarme;
     private Switch swtRepeteAlarme;
-    private Switch swtPropocionalAlarme;
+    private Switch swtFrequenciaAlarme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +48,18 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         spnCategoriasAlarme = findViewById(R.id.spnCategoriasAlarme);
         spnPeriodoAlarme = findViewById(R.id.spnPeriodoAlarme);
         swtRepeteAlarme = findViewById(R.id.swtRepeteAlarme);
-        swtPropocionalAlarme = findViewById(R.id.swtPropocionalAlarme);
+        swtFrequenciaAlarme = findViewById(R.id.swtFrequenciaAlarme);
+        spnPeriodo1Alarme = findViewById(R.id.spnPeriodo1);
+        spnPeriodo0Alarme = findViewById(R.id.spnPeriodo0);
 
         Helpers.spinnerNumero(this, R.array.numeros, spnRepeticoesAlarme);
+        Helpers.spinnerNumero(this, R.array.numeros, spnPeriodo0Alarme);
+        Helpers.spinnerNumero(this, R.array.numeros, spnPeriodo1Alarme);
         Helpers.spinnerNumero(this, R.array.categorias, spnCategoriasAlarme);
         Helpers.spinnerNumero(this, R.array.periodos, spnPeriodoAlarme);
         Helpers.txtHoraConfig(this, txtHoraProcedimento);
 
+        ///arrummar ou arrancar
         swtRepeteAlarme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,11 +71,65 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             }
         });
 
+        //codigo duplicado
+        TextView txt;
+        txt = findViewById(R.id.txtFrequencia);
+        txt.setText("X");
+
+        spnPeriodo0Alarme.setEnabled(true);
+
+        swtFrequenciaAlarme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    TextView txt;
+                    txt = findViewById(R.id.txtFrequencia);
+                    txt.setText("EM");
+
+                    spnPeriodo0Alarme.setEnabled(false);
+                    spnPeriodo1Alarme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
+                }else{
+                    //codigo duplicado
+                    TextView txt;
+                    txt = findViewById(R.id.txtFrequencia);
+                    txt.setText("X");
+
+                    spnPeriodo0Alarme.setEnabled(true);
+                    spnPeriodo1Alarme.setOnItemSelectedListener(null);
+                }
+            }
+        });
+
         //swtPropocionalAlarme.setClickable(false);
-        swtPropocionalAlarme.setEnabled(false);
+        //swtFrequenciaAlarme.setEnabled(false);
 
         //spnPeriodoAlarme.setClickable(false);
-        spnPeriodoAlarme.setEnabled(false);
+        //spnPeriodoAlarme.setEnabled(false);
+
+          /*
+           listener no proporcional
+
+           adicionar interface para setar o array cal e enviar informaçõe de set de repetição para o alarmReceiver
+
+           5arraycal x 5repeticao (DIA). sugiro que o campo DIA seja passado como multiplicador x7,x24 etc
+           susbstituir swp de dois estagios para um de 3 estágios
+
+           listener para mudança de layout
+            */
+
+
     }
 
     public void btnSalvarProcedimentoOnClick(View view){
@@ -89,18 +143,27 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));          // set minute
             cal.set(Calendar.SECOND, 0);               // set seconds
             Boolean swtRepete = swtRepeteAlarme.isChecked();
-            Boolean swtPropocional = swtPropocionalAlarme.isChecked();
+            Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
             String spnRepeticao = spnRepeticoesAlarme.getSelectedItem().toString();
             String spnCategoria = spnCategoriasAlarme.getSelectedItem().toString();
             String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
+            String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
             ArrayList<Calendar> alarmeTempo = new ArrayList<>();
             alarmeTempo.add(cal);
+
+
+
+
+
+
+
+
             //como montar um id? primeiro digito referente e tabela sendo 0 procedimento
             //+ id do procedimento gravado na tabela
             //if (operacao == OP_INCLUI) {
             int idInserted = insereEstq();
             Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
-            AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, spnRepeticao);
+            AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, spnRepeticao, spnPeriodo, spnPeriodo1);
             //}
             //else if (operacao == OP_ALTERA) {
             //    alteraEstq();

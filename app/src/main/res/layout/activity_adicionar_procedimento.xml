@@ -54,9 +54,8 @@
         android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@+id/btnAtualizarProcedimento"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swtPropocionalAlarme" />
+        app:layout_constraintTop_toBottomOf="@+id/swtFrequenciaAlarme" />
 
     <Switch
         android:id="@+id/swtRepeteAlarme"
@@ -67,24 +66,25 @@
         android:layout_marginBottom="32dp"
         android:checked="true"
         android:text="Repetição"
-        app:layout_constraintBottom_toTopOf="@+id/swtPropocionalAlarme"
+        app:layout_constraintBottom_toTopOf="@+id/swtFrequenciaAlarme"
         app:layout_constraintEnd_toStartOf="@+id/spnRepeticoesAlarme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spnCategoriasAlarme" />
 
     <Switch
-        android:id="@+id/swtPropocionalAlarme"
+        android:id="@+id/swtFrequenciaAlarme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="35dp"
         android:layout_marginBottom="36dp"
-        android:checked="true"
-        android:text="Proporcional"
+        android:checked="false"
+        android:text="Frequência(Proporcional/Distribuída)"
+        android:textOff="Proporcional"
+        android:textOn="Distribuída"
         app:layout_constraintBottom_toTopOf="@+id/txtHoraProcedimento"
-        app:layout_constraintEnd_toStartOf="@+id/spnPeriodoAlarme"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swtRepeteAlarme" />
+        app:layout_constraintTop_toBottomOf="@+id/swtRepeteAlarme"
+        tools:visibility="visible" />
 
     <Spinner
         android:id="@+id/spnRepeticoesAlarme"
@@ -92,8 +92,6 @@
         android:layout_height="37dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="85dp"
-        android:layout_marginBottom="49dp"
-        app:layout_constraintBottom_toBottomOf="@+id/spnPeriodoAlarme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/swtRepeteAlarme"
         app:layout_constraintTop_toBottomOf="@+id/spnCategoriasAlarme" />
@@ -112,14 +110,41 @@
 
     <Spinner
         android:id="@+id/spnPeriodoAlarme"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="28dp"
-        android:layout_marginTop="98dp"
-        android:layout_marginEnd="51dp"
-        android:layout_marginBottom="99dp"
-        app:layout_constraintBottom_toBottomOf="@+id/txtHoraProcedimento"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/swtPropocionalAlarme"
-        app:layout_constraintTop_toBottomOf="@+id/spnCategoriasAlarme" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spnPeriodo0"
+        app:layout_constraintTop_toTopOf="@+id/spnPeriodo0" />
+
+    <Spinner
+        android:id="@+id/spnPeriodo0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/spnPeriodoAlarme"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txtFrequencia"
+        app:layout_constraintTop_toBottomOf="@+id/txtHoraProcedimento"
+        app:layout_constraintVertical_bias="0.514" />
+
+    <Spinner
+        android:id="@+id/spnPeriodo1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/txtFrequencia"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtFrequencia" />
+
+    <TextView
+        android:id="@+id/txtFrequencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EM"
+        app:layout_constraintEnd_toStartOf="@+id/spnPeriodo0"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spnPeriodo1"
+        app:layout_constraintTop_toTopOf="@+id/spnPeriodo0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

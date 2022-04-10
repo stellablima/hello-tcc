@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.AlarmClock;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -61,7 +62,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         //função correta
     }
 
-    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, Boolean swtRepete, String spnRepeticao){
+    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, Boolean swtRepete, String spnRepeticao, String  spnPeriodo, String spnPeriodo0){
 
         /* simples   NAO PREVE DURAÇÃO/TIPO/ALARME FLUTUANTTE DIA TOD0(NOTTIFICAÇÃO) OU ALARME BARULHENTO, se tipo diff fazer uma classe mae geral e ramificar por iffs
          escopo o v2 seria uma logica unica generia que atenderia tod0 o app
@@ -107,19 +108,19 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         if(swtRepete){
-            intervalMillis = getInterval(spnRepeticao);
+            intervalMillis = getInterval(spnRepeticao,  spnPeriodo, spnPeriodo0);
             //aqui só permite proporcional //proporcional so tem 1 cal tbm
 
             //logica para setar mais de um alarme se nao proporcional
             //tudo dependendo da interface, resgatar papelzinho e setar a front e montar logica com base nisso
+            //pendente receber paremetros, primeiro adaptar e testar o que ja tem com a atualização de interface
 
-            alarmManager.setRepeating( //setInexactRepeating pra task deve funcionnar
+            alarmManager.setInexactRepeating( // setRepeating pra task deve funcionnar
                     AlarmManager.RTC_WAKEUP,  //https://developer.android.com/reference/android/app/AlarmManager#constants
-                    c.get(0).getTimeInMillis(),
+                    c.get(0).getTimeInMillis(), //SystemClock.elapsedRealtime()
                     intervalMillis, //posso passar 2 param? pra nao proporcional, inexact parece aceitar uns caras pre formatados INTERVAL_HOUR
                     pendingIntent
             );
-
 
         }else{
             //alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.get(0).getTimeInMillis(), pendingIntent);
@@ -130,10 +131,33 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    private static long getInterval(String spnRepeticao){
-        //24*(hora) 60*(min) 1000*(sec)
-        //if(spnRepeticao == "Diário") //implementar /um dia sim um dia nao/ no spinner
-        return (long) ((24*60*1000)/Integer.parseInt(spnRepeticao));
+    private static long getInterval(String spnRepeticao,  String spnPeriodo, String spnPeriodo1){
+        //24*(1dia) 60*(1hora) 60*(1min) 1000*(1sec)
+
+        //simples sem consderar o array de  nao proporcional, pegar numero D0
+        if(spnPeriodo.contains("MINUTO")){
+            Log.v("VERBOSE","MINUTO" + ((1000*60)*Integer.parseInt(spnPeriodo1))); //sec nao consigo fazer tocar exato problema para o futuro
+            return (long) ((1000*60)*Integer.parseInt(spnPeriodo1)); //6 (1000*10); //60
+
+        }else if(spnPeriodo.contains("HORA")){
+            Log.v("VERBOSE","HORA");
+            return (long) ((60*60*1000)*Integer.parseInt(spnPeriodo1));
+
+        }else if(spnPeriodo.contains("DIA S/N")){
+            Log.v("VERBOSE","DIA S/N");
+            return (long) ((48*60*60*1000)*Integer.parseInt(spnPeriodo1));
+
+        }else if(spnPeriodo.contains("DIA")){
+            Log.v("VERBOSE","DIA");
+            return (long) ((24*60*60*1000)*Integer.parseInt(spnPeriodo1));
+
+        }else if(spnPeriodo.contains("SEMANA")){
+            Log.v("VERBOSE","SEMANA");
+            return (long) ((7*24*60*60*1000)*Integer.parseInt(spnPeriodo1));
+
+        }else
+            Log.v("VERBOSE","ELSE");
+            return (long) ((24*60*60*1000)*Integer.parseInt(spnPeriodo1));
     }
 
     public static void cancelAlarmDef(Context context, int reqcod) {
