@@ -24,6 +24,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
     private EditText edtNomeProcedimento;
     private TextView txtHoraProcedimento;
+    private TextView txtFrequenciaAlarme;
     private TimePicker tmpHoraAlarme;
     private Calendar calHoraAlarm;
     private String horaAtual;
@@ -44,6 +45,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
         edtNomeProcedimento = findViewById(R.id.edtNomeProcedimento);
         txtHoraProcedimento = findViewById(R.id.txtHoraProcedimento);
+        txtFrequenciaAlarme = findViewById(R.id.txtFrequencia);
         spnRepeticoesAlarme = findViewById(R.id.spnRepeticoesAlarme);
         spnCategoriasAlarme = findViewById(R.id.spnCategoriasAlarme);
         spnPeriodoAlarme = findViewById(R.id.spnPeriodoAlarme);
@@ -63,11 +65,22 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         swtRepeteAlarme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!swtRepeteAlarme.isChecked()){
-                    spnRepeticoesAlarme.setSelection(0);
-                    spnRepeticoesAlarme.setEnabled(false);
-                }else
-                    spnRepeticoesAlarme.setEnabled(true);
+                if(swtRepeteAlarme.isChecked()){
+                    swtFrequenciaAlarme.setEnabled(true);
+                    txtFrequenciaAlarme.setVisibility(View.VISIBLE);
+                    spnPeriodo1Alarme.setVisibility(View.VISIBLE);
+                    spnPeriodo0Alarme.setVisibility(View.VISIBLE);
+                    spnPeriodoAlarme.setVisibility(View.VISIBLE);
+                    // spnRepeticoesAlarme.setSelection(0);
+                    // spnRepeticoesAlarme.setEnabled(false);
+                }else {
+                    swtFrequenciaAlarme.setEnabled(false);
+                    txtFrequenciaAlarme.setVisibility(View.INVISIBLE);
+                    spnPeriodo1Alarme.setVisibility(View.INVISIBLE);
+                    spnPeriodo0Alarme.setVisibility(View.INVISIBLE);
+                    spnPeriodoAlarme.setVisibility(View.INVISIBLE);
+                    // spnRepeticoesAlarme.setEnabled(true);
+                }
             }
         });
 
@@ -91,7 +104,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     spnPeriodo1Alarme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                            spnPeriodo0Alarme.setSelection(i);
                         }
 
                         @Override
@@ -163,7 +176,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             //if (operacao == OP_INCLUI) {
             int idInserted = insereEstq();
             Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
-            AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, spnRepeticao, spnPeriodo, spnPeriodo1);
+            AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
             //}
             //else if (operacao == OP_ALTERA) {
             //    alteraEstq();

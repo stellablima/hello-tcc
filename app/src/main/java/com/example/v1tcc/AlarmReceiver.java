@@ -62,7 +62,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         //função correta
     }
 
-    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, Boolean swtRepete, String spnRepeticao, String  spnPeriodo, String spnPeriodo0){
+    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, Boolean swtRepete, Boolean swtFrequencia, String  spnPeriodo, String spnPeriodo0){
 
         /* simples   NAO PREVE DURAÇÃO/TIPO/ALARME FLUTUANTTE DIA TOD0(NOTTIFICAÇÃO) OU ALARME BARULHENTO, se tipo diff fazer uma classe mae geral e ramificar por iffs
          escopo o v2 seria uma logica unica generia que atenderia tod0 o app
@@ -108,19 +108,22 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         if(swtRepete){
-            intervalMillis = getInterval(spnRepeticao,  spnPeriodo, spnPeriodo0);
-            //aqui só permite proporcional //proporcional so tem 1 cal tbm
+            if(swtFrequencia) {
+                intervalMillis = getInterval(spnPeriodo, spnPeriodo0);
+                //aqui só permite proporcional //proporcional so tem 1 cal tbm
 
-            //logica para setar mais de um alarme se nao proporcional
-            //tudo dependendo da interface, resgatar papelzinho e setar a front e montar logica com base nisso
-            //pendente receber paremetros, primeiro adaptar e testar o que ja tem com a atualização de interface
+                //logica para setar mais de um alarme se nao proporcional
+                //tudo dependendo da interface, resgatar papelzinho e setar a front e montar logica com base nisso
+                //pendente receber paremetros, primeiro adaptar e testar o que ja tem com a atualização de interface
 
-            alarmManager.setInexactRepeating( // setRepeating pra task deve funcionnar
-                    AlarmManager.RTC_WAKEUP,  //https://developer.android.com/reference/android/app/AlarmManager#constants
-                    c.get(0).getTimeInMillis(), //SystemClock.elapsedRealtime()
-                    intervalMillis, //posso passar 2 param? pra nao proporcional, inexact parece aceitar uns caras pre formatados INTERVAL_HOUR
-                    pendingIntent
-            );
+                alarmManager.setRepeating( // setRepeating pra task deve funcionnar
+                        AlarmManager.RTC_WAKEUP,  //https://developer.android.com/reference/android/app/AlarmManager#constants
+                        c.get(0).getTimeInMillis(), //SystemClock.elapsedRealtime()
+                        intervalMillis, //posso passar 2 param? pra nao proporcional, inexact parece aceitar uns caras pre formatados INTERVAL_HOUR
+                        pendingIntent
+                );
+            }else
+                Toast.makeText(context, "Alarme nao proporcional ainda nao agendado", Toast.LENGTH_LONG).show();
 
         }else{
             //alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.get(0).getTimeInMillis(), pendingIntent);
@@ -131,7 +134,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    private static long getInterval(String spnRepeticao,  String spnPeriodo, String spnPeriodo1){
+    private static long getInterval(String spnPeriodo, String spnPeriodo1){
         //24*(1dia) 60*(1hora) 60*(1min) 1000*(1sec)
 
         //simples sem consderar o array de  nao proporcional, pegar numero D0
