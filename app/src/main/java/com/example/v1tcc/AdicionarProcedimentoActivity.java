@@ -30,11 +30,11 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
     private String horaAtual;
     private String minAtual;
     private TimePickerDialog mTimePicker;
-    private Spinner spnRepeticoesAlarme;
     private Spinner spnCategoriasAlarme;
     private Spinner spnPeriodoAlarme;
     private Spinner spnPeriodo0Alarme;
     private Spinner spnPeriodo1Alarme;
+    private Spinner spnRepeticaoDesproporcinalAlarme;
     private Switch swtRepeteAlarme;
     private Switch swtFrequenciaAlarme;
 
@@ -46,15 +46,14 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         edtNomeProcedimento = findViewById(R.id.edtNomeProcedimento);
         txtHoraProcedimento = findViewById(R.id.txtHoraProcedimento);
         txtFrequenciaAlarme = findViewById(R.id.txtFrequencia);
-        spnRepeticoesAlarme = findViewById(R.id.spnRepeticoesAlarme);
         spnCategoriasAlarme = findViewById(R.id.spnCategoriasAlarme);
         spnPeriodoAlarme = findViewById(R.id.spnPeriodoAlarme);
         swtRepeteAlarme = findViewById(R.id.swtRepeteAlarme);
         swtFrequenciaAlarme = findViewById(R.id.swtFrequenciaAlarme);
         spnPeriodo1Alarme = findViewById(R.id.spnPeriodo1);
         spnPeriodo0Alarme = findViewById(R.id.spnPeriodo0);
+        spnRepeticaoDesproporcinalAlarme = findViewById(R.id.spnRepeticaoDesproporcinal);
 
-        Helpers.spinnerNumero(this, R.array.numeros, spnRepeticoesAlarme);
         Helpers.spinnerNumero(this, R.array.numeros, spnPeriodo0Alarme);
         Helpers.spinnerNumero(this, R.array.numeros, spnPeriodo1Alarme);
         Helpers.spinnerNumero(this, R.array.categorias, spnCategoriasAlarme);
@@ -71,15 +70,19 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     spnPeriodo1Alarme.setVisibility(View.VISIBLE);
                     spnPeriodo0Alarme.setVisibility(View.VISIBLE);
                     spnPeriodoAlarme.setVisibility(View.VISIBLE);
-                    // spnRepeticoesAlarme.setSelection(0);
-                    // spnRepeticoesAlarme.setEnabled(false);
+
+                    if(!swtFrequenciaAlarme.isChecked()) {
+                        txtHoraProcedimento.setVisibility(View.INVISIBLE);
+                        spnRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
+                    }
                 }else {
                     swtFrequenciaAlarme.setEnabled(false);
                     txtFrequenciaAlarme.setVisibility(View.INVISIBLE);
                     spnPeriodo1Alarme.setVisibility(View.INVISIBLE);
                     spnPeriodo0Alarme.setVisibility(View.INVISIBLE);
                     spnPeriodoAlarme.setVisibility(View.INVISIBLE);
-                    // spnRepeticoesAlarme.setEnabled(true);
+                    txtHoraProcedimento.setVisibility(View.VISIBLE);
+                    spnRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -89,7 +92,12 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         txt = findViewById(R.id.txtFrequencia);
         txt.setText("X");
 
-        spnPeriodo0Alarme.setEnabled(true);
+        //txtHoraProcedimento.setVisibility(View.INVISIBLE);
+        spnPeriodoAlarme.setSelection(3);
+        spnPeriodoAlarme.setEnabled(false);
+        spnPeriodo0Alarme.setSelection(0);
+        spnPeriodo0Alarme.setEnabled(false);
+
 
         swtFrequenciaAlarme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -100,13 +108,25 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     txt = findViewById(R.id.txtFrequencia);
                     txt.setText("EM");
 
+                    txtHoraProcedimento.setVisibility(View.VISIBLE); ////
+                    spnRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
+                    /*
+                    0- DAR DE CHECK PARA UM INTERRUPTOR
+                    1- DESAPARECE HORARIO
+                    2- HABILITA ARRAY
+                    3- PEGA A FUNCAO DE BRIR POUPUP PARA HABILITAR
+                    4- VER COMO PROGRAMAR ALARMES POR TURNO
+                    5- EXECUTAR TODOS OS MANUAIS E NA REPETICAO REAGENDAR TUDO AO RECEBER ULTIMA REPETICAO OU ALGO ASSIM
+                    */
+
+
+                    spnPeriodoAlarme.setEnabled(true);
                     spnPeriodo0Alarme.setEnabled(false);
                     spnPeriodo1Alarme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                             spnPeriodo0Alarme.setSelection(i);
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -119,7 +139,12 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     txt = findViewById(R.id.txtFrequencia);
                     txt.setText("X");
 
-                    spnPeriodo0Alarme.setEnabled(true);
+                    txtHoraProcedimento.setVisibility(View.INVISIBLE);
+                    spnRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
+                    spnPeriodoAlarme.setSelection(3);
+                    spnPeriodoAlarme.setEnabled(false);
+                    spnPeriodo0Alarme.setSelection(0);
+                    spnPeriodo0Alarme.setEnabled(false);
                     spnPeriodo1Alarme.setOnItemSelectedListener(null);
                 }
             }
@@ -157,7 +182,6 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             cal.set(Calendar.SECOND, 0);               // set seconds
             Boolean swtRepete = swtRepeteAlarme.isChecked();
             Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
-            String spnRepeticao = spnRepeticoesAlarme.getSelectedItem().toString();
             String spnCategoria = spnCategoriasAlarme.getSelectedItem().toString();
             String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
             String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
