@@ -57,7 +57,7 @@ public class Helpers {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 itens[position]=( String.format("%02d",selectedHour) + ":" + String.format("%02d",selectedMinute));
-                Toast.makeText( context, ":"+  itens[position]+"_"+itens.toString(), Toast.LENGTH_SHORT ).show();
+                //Toast.makeText( context, ":"+  itens[position]+"_"+itens.toString(), Toast.LENGTH_SHORT ).show();
                 lvDinamico( context, itens, lv);
             }
         }, hour, minute, true);//tem como pegar o padrão corernte no dispositivo?

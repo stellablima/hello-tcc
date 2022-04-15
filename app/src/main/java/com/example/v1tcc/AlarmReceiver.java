@@ -35,10 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         /*
          Minha ideia-> defina o alarme para todos os dias, verifique a condição do seu dia no receptor de alarme.
          */
-
-
         Toast.makeText(context, "id"+ (intent.getExtras().getInt(EXTRA_ID)), Toast.LENGTH_LONG).show();
-
         Intent intent2 = new Intent(context, AlarmReceiverActivity.class);
         intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent2.putExtra(ProcedimentosActivity.EXTRA_ID, intent.getExtras().getInt(EXTRA_ID)); //get extra dias da semana decide aciona ou nao
@@ -46,6 +43,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     public static void updateAlarmProcedimento(Context context, Calendar c, int reqcod){
+
+        Toast.makeText(context, "verifique se esse id é do banco e se precisa fazer logica de jogar ultimo digito fora para alterar"+reqcod, Toast.LENGTH_LONG).show();
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);                         //FLAG_UPDATE_CURRENT vou ter que passar menos parametro? tipo só o que mudou
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -64,7 +64,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, Boolean swtRepete, Boolean swtFrequencia, String  spnPeriodo, String spnPeriodo0){
 
-        /* simples   NAO PREVE DURAÇÃO/TIPO/ALARME FLUTUANTTE DIA TOD0(NOTTIFICAÇÃO) OU ALARME BARULHENTO, se tipo diff fazer uma classe mae geral e ramificar por iffs
+
+
+        if(swtRepete){
+            if(swtFrequencia) {
+
+                /* simples   NAO PREVE DURAÇÃO/TIPO/ALARME FLUTUANTTE DIA TOD0(NOTTIFICAÇÃO) OU ALARME BARULHENTO, se tipo diff fazer uma classe mae geral e ramificar por iffs
          escopo o v2 seria uma logica unica generia que atenderia tod0 o app
         1- repetição
             1- 'nao proporcional', de 5 em 5 horas/7 em 7 meses, 2x ao dia, horarios nao proporcionais, 2x terça e 1 quinta? (ainda nao sei fazer é novo, nao tem em lugar nenhum)
@@ -87,13 +92,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         * */
 
-        //opção 1 quando disparar programe o proximo baseado nas variaveis atuais
-        //opção 2 repeat
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-      //AlarmManager alarmManager = SKAlarmManager.getAlarmManager(context);
+                //opção 1 quando disparar programe o proximo baseado nas variaveis atuais
+                //opção 2 repeat
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                //AlarmManager alarmManager = SKAlarmManager.getAlarmManager(context);
 
-        Intent intent = new Intent(context, AlarmReceiver.class);// RecebedorDeAlerta.class); //intent pendente que vai gerar o alerta
-        intent.putExtra(AlarmReceiver.EXTRA_ID, reqcod);
+                Intent intent = new Intent(context, AlarmReceiver.class);// RecebedorDeAlerta.class); //intent pendente que vai gerar o alerta
+                intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+"0")); //ids multiplos??
         /*
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -101,40 +106,125 @@ public class AlarmReceiver extends BroadcastReceiver {
         intent.putExtra(ALARM_ID, alarmId);
          */
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, 0);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+"0"), intent, 0);
 
-        if (c.get(0).before(Calendar.getInstance())) {
-            c.get(0).add(Calendar.DATE, 1);
-        }
+                if (c.get(0).before(Calendar.getInstance())) {
+                    c.get(0).add(Calendar.DATE, 1);
+                }
 
-        if(swtRepete){
-            if(swtFrequencia) {
                 intervalMillis = getInterval(spnPeriodo, spnPeriodo0);
-                //aqui só permite proporcional //proporcional so tem 1 cal tbm
-
-                //logica para setar mais de um alarme se nao proporcional
-                //tudo dependendo da interface, resgatar papelzinho e setar a front e montar logica com base nisso
-                //pendente receber paremetros, primeiro adaptar e testar o que ja tem com a atualização de interface
-
                 alarmManager.setRepeating( // setRepeating pra task deve funcionnar
                         AlarmManager.RTC_WAKEUP,  //https://developer.android.com/reference/android/app/AlarmManager#constants
                         c.get(0).getTimeInMillis(), //SystemClock.elapsedRealtime()
                         intervalMillis, //posso passar 2 param? pra nao proporcional, inexact parece aceitar uns caras pre formatados INTERVAL_HOUR
                         pendingIntent
                 );
-            }else
-                Toast.makeText(context, "Alarme nao proporcional ainda nao agendado", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(context, "Alarme nao proporcional tentando", Toast.LENGTH_SHORT).show();
+                //gravar array de calendar no banco
+                //programmar alarmmes e gravar os seus ids
+                //a principio considerar todos os dias da semana
+                //depois os dias da semama serao pickados
+                //adicionar id_n manualmente para achar alarmme no banco apenas dar um split em _
+                /*
+                ALARME QUANDO SEMANAL PICKER IMPLEMENTADO
+                em vez de um array de semana, cada horario tera seu proprio picker de dia
 
-            //gravar array de calendar no banco
-            //programmar alarmmes e gravar os seus ids
-            //a principio considerar todos os dias da semana
-            //depois os dias da semama serao pickados
+                nao faço ideia como adicionar os dias da semana...
+                talvez ultimoms 7 zeros poderiam ser dias da semana ou um codigo menor comm dois digitos
+                e uma função pra converter todas as possibilidades ou ainda
+                mais um extra do alarme, onde o primmeiro digito seria o array e o segundo os valores
+
+                DIAS_SEMANA = 0_STQQQSSD
+                DIAS_SEMANA = 1_0000000
+
+                porem seria conveninte ter essa if no banco
+                entao criar realmente novo campo no banco aqui ja pensando em limitar o escopo dessa realease
+                para fixo dias emm alarmmmes nao proporcionais pois esse codigo teria que abrir mmamis ainda
+                o capo configurador
+
+                DIAS_CONFIGURADOR
+
+                ANO_MES_DIA_SEMANARIO
+                ?_JANFEVMARETC_123..31_STQQSSD
+
+                */
+
+                int index = 0;
+                for (Calendar calendarHorario: c) {
+
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(context, AlarmReceiver.class);
+                    intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+""+index)); //index _0..n
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+""+index), intent, 0);
+
+                    Toast.makeText(context, "reqcod:"+reqcod+"_EXTRA_ID:"+(reqcod+""+index), Toast.LENGTH_SHORT).show();
+                    /*
+                    problemma comm index aqui
+                    sujestão deixar negativo para sinalizar
+                    adicionar 0000 para sinalizar
+                    tragico demais isso
+                    usar flags?? pesquisa isso pfv
+                    seila meee
+
+                    tentativa de implementação de logica
+                    caso negativo os 2 ultimos ids é referente a repetição
+
+                    ex
+                    BANCO 05
+                    INTENT -0500
+                    PEDENT INTENT -0500
+
+                    BANCO 05
+                    INTENT -0501
+                    PEDENT INTENT -0501
+
+                    necessario conversao para acessar ao banco
+                    positvar e dar split dos dois ultimos digitos
+                    decidir por uma liimtação de até 9 repetições por alarme por agora, ja que é v1 e nao é ideal
+
+                    funfou agora ajuste para ele respeitar a logica de dar split nos ultimmos digitos para recuperar o id e preencher dados de layput de banco na tela
+
+
+                    nova logica, sempre concatenar 0 a direita e subir caso repetição
+
+                    proximo passo: como gravar essa informação no banco
+                    */
+
+
+                    //testando como vai sobrescrever o outro na vdd por ter os mesmo id
+                    //alem de sobrescrever ele nao conseguiu recuperar o id e retornou 0 default
+
+                    if (calendarHorario.before(Calendar.getInstance())) {
+                        calendarHorario.add(Calendar.DATE, 1);
+                    }
+
+                    intervalMillis = getInterval(spnPeriodo, spnPeriodo0);
+                    alarmManager.setRepeating( // setRepeating pra task deve funcionnar
+                            AlarmManager.RTC_WAKEUP,  //https://developer.android.com/reference/android/app/AlarmManager#constants
+                            calendarHorario.getTimeInMillis(), //SystemClock.elapsedRealtime()
+                            intervalMillis, //posso passar 2 param? pra nao proporcional, inexact parece aceitar uns caras pre formatados INTERVAL_HOUR
+                            pendingIntent
+                    );
+                    index++;
+                }
+
+
+            }
 
         }else{
-            //alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.get(0).getTimeInMillis(), pendingIntent);
-            //rodar para testar e ver os pros e contras
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+            Intent intent = new Intent(context, AlarmReceiver.class);
+            intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+"0"));
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+"0"), intent, 0);
+
+            if (c.get(0).before(Calendar.getInstance())) {
+                c.get(0).add(Calendar.DATE, 1);
+            }
+
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(c.get(0).getTimeInMillis(),
-                    null); //estranho atrasou tem que fazer mais testes
+                    null);
             alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
         }
     }
@@ -174,6 +264,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, 0);
         Toast.makeText(context, "Alarme cancelado", Toast.LENGTH_SHORT).show();
         alarmManager.cancel(pendingIntent);
+
+        //como deletar todos
+        //como editar todos
     }
 }
 

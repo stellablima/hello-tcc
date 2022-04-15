@@ -39,6 +39,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
     private Switch swtRepeteAlarme;
     private Switch swtFrequenciaAlarme;
     private ListView lvRepeticaoDesproporcinalAlarme;
+    List<String> listHorarios = new ArrayList<String>(); //para uso em mais de um função, mmelhor implemmentação seria pegar do commponente na hora
 
 
     @Override
@@ -105,8 +106,9 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 //Toast.makeText( view.getContext(), ":"+  (i+1), Toast.LENGTH_SHORT ).show();
-                List<String> listHorarios = new ArrayList<String>();
+                //List<String> listHorarios = new ArrayList<String>();//global por necessidade, reverter pois nao funcionou, vai ter que ser com extras
 
+                listHorarios.clear();
                 for (int count =0; count < (i+1); count++){
                     listHorarios.add("00:00");
                 }
@@ -115,6 +117,16 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                 listHorarios.toArray(itens);
                 //setContentView(R.layout.activity_adicionar_procedimento);
                 Helpers.lvDinamico(view.getContext(), itens, lvRepeticaoDesproporcinalAlarme);
+
+                //atualize o listview
+                lvRepeticaoDesproporcinalAlarme.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View view, int ii, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                        for (int i=0;i<lvRepeticaoDesproporcinalAlarme.getCount();i++){
+                            listHorarios.set(i,lvRepeticaoDesproporcinalAlarme.getItemAtPosition(i).toString());
+                        }
+                    }
+                });
 
             }
             @Override
@@ -202,6 +214,8 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             }
         });
 
+
+
         //swtPropocionalAlarme.setClickable(false);
         //swtFrequenciaAlarme.setEnabled(false);
         //spnPeriodoAlarme.setClickable(false);
@@ -226,30 +240,50 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         try {
             Helpers.preenchimentoValido(edtNomeProcedimento);
 
-            String[] txtHora =  txtHoraProcedimento.getText().toString().split(":");
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));  // set hour
-            cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));          // set minute
-            cal.set(Calendar.SECOND, 0);               // set seconds
             Boolean swtRepete = swtRepeteAlarme.isChecked();
             Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
             String spnCategoria = spnCategoriasAlarme.getSelectedItem().toString();
             String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
             String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
             ArrayList<Calendar> alarmeTempo = new ArrayList<>();
-            alarmeTempo.add(cal);
 
+            if(swtRepete && swtFrequencia){
+                String[] txtHora =  txtHoraProcedimento.getText().toString().split(":");
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
+                cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));
+                cal.set(Calendar.SECOND, 0);
+                alarmeTempo.add(cal);
 
+            }else{
+                //resgatar os elementos dos list view
+                //preencher o listarray de calendar
 
+                //fazer variavel global porque nao sei pegar escopo que o list view ta inflado, nao da global é so contador de posição, pior hipotese trazendo do helper pa ca a função e conseguir o valor semmpre atuazado
+                //String itens = (String) lvRepeticaoDesproporcinalAlarme.getSelectedItem();
 
-
-
+                // movito para listener on change para atualizer var assis que ouver alteração
+//                for (int i=0;i<lvRepeticaoDesproporcinalAlarme.getCount();i++){
+//                    listHorarios.set(i,lvRepeticaoDesproporcinalAlarme.getItemAtPosition(i).toString());
+//                }
+                for (String horarios:listHorarios) {
+                    String[] txtHora =  horarios.split(":");
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
+                    cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));
+                    cal.set(Calendar.SECOND, 0);
+                    alarmeTempo.add(cal);
+                }
+                //Toast.makeText(this, "itens:"+alarmeTempo.size(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "itens:"+alarmeTempo.get(0).getTime()+"_"+alarmeTempo.get(1).getTime(), Toast.LENGTH_SHORT).show();
+                //return;
+            }
 
 
             //como montar um id? primeiro digito referente e tabela sendo 0 procedimento
             //+ id do procedimento gravado na tabela
             //if (operacao == OP_INCLUI) {
-            int idInserted = insereEstq();
+            int idInserted = insereEstq(); // como nao é orientado a obj ainda, o id sera unico no banco concatenado co _n no java para identificar repetições
             Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
             AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
             //}
@@ -258,6 +292,8 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             //    finish();
             //}
             finish();
+
+
         } catch (SQLiteException e) {
             Toast.makeText(this, "Inclusão falhou", Toast.LENGTH_LONG).show();
         }
@@ -266,6 +302,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         }
     }
 
+    //retornar lista de ids referentes para preparar para alarmes nao proporcionais?
     private int insereEstq() {
         BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
         SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
