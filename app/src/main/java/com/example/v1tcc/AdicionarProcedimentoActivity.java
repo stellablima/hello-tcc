@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
@@ -34,9 +36,10 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
     private Spinner spnPeriodoAlarme;
     private Spinner spnPeriodo0Alarme;
     private Spinner spnPeriodo1Alarme;
-    private Spinner spnRepeticaoDesproporcinalAlarme;
     private Switch swtRepeteAlarme;
     private Switch swtFrequenciaAlarme;
+    private ListView lvRepeticaoDesproporcinalAlarme;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         swtFrequenciaAlarme = findViewById(R.id.swtFrequenciaAlarme);
         spnPeriodo1Alarme = findViewById(R.id.spnPeriodo1);
         spnPeriodo0Alarme = findViewById(R.id.spnPeriodo0);
-        spnRepeticaoDesproporcinalAlarme = findViewById(R.id.spnRepeticaoDesproporcinal);
+        lvRepeticaoDesproporcinalAlarme = findViewById(R.id.lvRepeticaoDesproporcinal);
 
         Helpers.spinnerNumero(this, R.array.numeros, spnPeriodo0Alarme);
         Helpers.spinnerNumero(this, R.array.numeros, spnPeriodo1Alarme);
@@ -73,7 +76,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
                     if(!swtFrequenciaAlarme.isChecked()) {
                         txtHoraProcedimento.setVisibility(View.INVISIBLE);
-                        spnRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
+                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
                     }
                 }else {
                     swtFrequenciaAlarme.setEnabled(false);
@@ -82,7 +85,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     spnPeriodo0Alarme.setVisibility(View.INVISIBLE);
                     spnPeriodoAlarme.setVisibility(View.INVISIBLE);
                     txtHoraProcedimento.setVisibility(View.VISIBLE);
-                    spnRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
+                    lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -97,8 +100,28 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         spnPeriodoAlarme.setEnabled(false);
         spnPeriodo0Alarme.setSelection(0);
         spnPeriodo0Alarme.setEnabled(false);
+        spnPeriodo1Alarme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+                //Toast.makeText( view.getContext(), ":"+  (i+1), Toast.LENGTH_SHORT ).show();
+                List<String> listHorarios = new ArrayList<String>();
 
+                for (int count =0; count < (i+1); count++){
+                    listHorarios.add("00:00");
+                }
+
+                String[] itens = new String[ listHorarios.size() ];
+                listHorarios.toArray(itens);
+                //setContentView(R.layout.activity_adicionar_procedimento);
+                Helpers.lvDinamico(view.getContext(), itens, lvRepeticaoDesproporcinalAlarme);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         swtFrequenciaAlarme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -109,7 +132,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     txt.setText("EM");
 
                     txtHoraProcedimento.setVisibility(View.VISIBLE); ////
-                    spnRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
+                    lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
                     /*
                     0- DAR DE CHECK PARA UM INTERRUPTOR
                     1- DESAPARECE HORARIO
@@ -119,9 +142,10 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     5- EXECUTAR TODOS OS MANUAIS E NA REPETICAO REAGENDAR TUDO AO RECEBER ULTIMA REPETICAO OU ALGO ASSIM
                     */
 
-
                     spnPeriodoAlarme.setEnabled(true);
                     spnPeriodo0Alarme.setEnabled(false);
+                    spnPeriodo1Alarme.setSelection(0); //para setar o array list com 00:00 aproveitar evento antigo
+                    spnPeriodo1Alarme.setOnItemSelectedListener(null);
                     spnPeriodo1Alarme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -133,26 +157,53 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                         }
                     });
 
+                    spnPeriodo0Alarme.setSelection(0);
+                    spnPeriodo1Alarme.setSelection(0);
+
                 }else{
+                    //codigo duplicado 2
                     //codigo duplicado
                     TextView txt;
                     txt = findViewById(R.id.txtFrequencia);
                     txt.setText("X");
 
                     txtHoraProcedimento.setVisibility(View.INVISIBLE);
-                    spnRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
-                    spnPeriodoAlarme.setSelection(3);
+                    lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
+                    spnPeriodoAlarme.setSelection(3); //(dia)
                     spnPeriodoAlarme.setEnabled(false);
+                    spnPeriodo1Alarme.setOnItemSelectedListener(null);
+                    spnPeriodo1Alarme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            //Toast.makeText( view.getContext(), ":"+  (i+1), Toast.LENGTH_SHORT ).show();
+                            List<String> listHorarios = new ArrayList<String>();
+
+                            for (int count =0; count < (i+1); count++){
+                                listHorarios.add("00:00");
+                            }
+
+                            String[] itens = new String[ listHorarios.size() ];
+                            listHorarios.toArray(itens);
+                            //setContentView(R.layout.activity_adicionar_procedimento);
+                            Helpers.lvDinamico(view.getContext(), itens, lvRepeticaoDesproporcinalAlarme);
+
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
+                    spnPeriodo1Alarme.setSelection(0);
                     spnPeriodo0Alarme.setSelection(0);
                     spnPeriodo0Alarme.setEnabled(false);
-                    spnPeriodo1Alarme.setOnItemSelectedListener(null);
                 }
             }
         });
 
         //swtPropocionalAlarme.setClickable(false);
         //swtFrequenciaAlarme.setEnabled(false);
-
         //spnPeriodoAlarme.setClickable(false);
         //spnPeriodoAlarme.setEnabled(false);
 

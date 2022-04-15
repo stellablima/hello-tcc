@@ -34,4 +34,7 @@
         <item>(MÊS)</item>
         <item>(ANO)</item>
     </string-array>
+    <string-array name="horarios">
+        <item>00:00</item>
+    </string-array>
 </resources>

@@ -97,8 +97,8 @@
 
         </LinearLayout>
 
-        <Spinner
-            android:id="@+id/spnRepeticaoDesproporcinal"
+        <ListView
+            android:id="@+id/lvRepeticaoDesproporcinal"
             android:layout_width="411dp"
             android:layout_height="wrap_content"
             android:visibility="invisible" />

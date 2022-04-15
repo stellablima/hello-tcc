@@ -125,6 +125,11 @@ public class AlarmReceiver extends BroadcastReceiver {
             }else
                 Toast.makeText(context, "Alarme nao proporcional ainda nao agendado", Toast.LENGTH_LONG).show();
 
+            //gravar array de calendar no banco
+            //programmar alarmmes e gravar os seus ids
+            //a principio considerar todos os dias da semana
+            //depois os dias da semama serao pickados
+
         }else{
             //alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.get(0).getTimeInMillis(), pendingIntent);
             //rodar para testar e ver os pros e contras

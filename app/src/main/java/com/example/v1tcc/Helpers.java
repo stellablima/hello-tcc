@@ -6,13 +6,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class Helpers {
 
@@ -24,6 +28,41 @@ public class Helpers {
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 //        spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) context);
+    }
+
+    public static void lvDinamico(Context context, String[] itens, ListView lv){
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String> ( context,
+                android.R.layout.simple_list_item_1, itens );
+
+        lv.setAdapter( adapter );
+
+        lv.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+                Helpers.lvHoraConfig(context, itens, lv,arg2);
+            }
+        } );
+    }
+
+    protected static void lvHoraConfig(Context context, String[] itens, ListView lv, int position){
+
+        String[] txtHora =  itens[position].toString().split(":");
+        int hour = Integer.parseInt(txtHora[0]);
+        int minute = Integer.parseInt(txtHora[1]);
+
+        TimePickerDialog mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                itens[position]=( String.format("%02d",selectedHour) + ":" + String.format("%02d",selectedMinute));
+                Toast.makeText( context, ":"+  itens[position]+"_"+itens.toString(), Toast.LENGTH_SHORT ).show();
+                lvDinamico( context, itens, lv);
+            }
+        }, hour, minute, true);//tem como pegar o padrão corernte no dispositivo?
+
+        mTimePicker.show();
     }
 
     public static void preenchimentoValido(EditText edtNomeProcedimento) throws Exception {
