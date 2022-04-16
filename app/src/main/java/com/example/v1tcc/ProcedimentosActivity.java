@@ -52,8 +52,6 @@ public class ProcedimentosActivity extends AppCompatActivity {
     }
 
     public void btnDeletarProcedimentoOnClick(View view){
-        Toast.makeText(this, "Alarme Cancelado", Toast.LENGTH_LONG).show();
-
         /******************************************************/
         try {
 
@@ -62,7 +60,24 @@ public class ProcedimentosActivity extends AppCompatActivity {
             BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
-            AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue());
+
+            //recuperar tamanho do alarme
+            bd = bdRotinaHelper.getReadableDatabase();
+            cursor = bd.query("PROCEDIMENTO",
+                    new String[] {"_id", "QTDDISPAROS"},
+                    "_id = ?",
+                    new String[] {Long.toString(idProcedimento)},
+                    null,
+                    null,
+                    null
+            );
+            int qtdDisparos=1;
+            if (cursor.moveToFirst())
+                qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
+            else
+                Toast.makeText(this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
+
+            AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
             //finish();
 
         } catch (SQLiteException e) {

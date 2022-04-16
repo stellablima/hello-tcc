@@ -190,6 +190,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
                             //Toast.makeText( view.getContext(), ":"+  (i+1), Toast.LENGTH_SHORT ).show();
                             List<String> listHorarios = new ArrayList<String>();
+                            listHorarios.clear();
 
                             for (int count =0; count < (i+1); count++){
                                 listHorarios.add("00:00");
@@ -200,11 +201,24 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                             //setContentView(R.layout.activity_adicionar_procedimento);
                             Helpers.lvDinamico(view.getContext(), itens, lvRepeticaoDesproporcinalAlarme);
 
+                            //atualize o listview
+                            lvRepeticaoDesproporcinalAlarme.addOnLayoutChangeListener(null);
+                            lvRepeticaoDesproporcinalAlarme.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                                @Override
+                                public void onLayoutChange(View view, int ii, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                                    for (int i=0;i<lvRepeticaoDesproporcinalAlarme.getCount();i++){
+                                        listHorarios.set(i,lvRepeticaoDesproporcinalAlarme.getItemAtPosition(i).toString());
+                                    }
+                                }
+                            });
+
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {
 
                         }
+
+
                     });
 
                     spnPeriodo1Alarme.setSelection(0);
@@ -283,9 +297,18 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             //como montar um id? primeiro digito referente e tabela sendo 0 procedimento
             //+ id do procedimento gravado na tabela
             //if (operacao == OP_INCLUI) {
+
+            //SE RECEBO -1 É CATCH
             int idInserted = insereEstq(); // como nao é orientado a obj ainda, o id sera unico no banco concatenado co _n no java para identificar repetições
-            Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
-            AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
+
+            if(idInserted == -1){
+
+                Toast.makeText(this, "Inclusão falhou", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
+                AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
+            }
+
             //}
             //else if (operacao == OP_ALTERA) {
             //    alteraEstq();
@@ -314,6 +337,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         ContentValues cv = new ContentValues();
         cv.put("NOME", edtNomeProcedimento.getText().toString());
         cv.put("FLAG", "1");
+        cv.put("QTDDISPAROS", spnPeriodo1Alarme.getSelectedItem().toString()); //spnPeriodo1Alarme.getSelectedItem().toString()
         //o que ele vai salvar no futuro no banco vai ser um alarme com uma configuração e uma peridiocidade, e o que vai
         //persistir no banco é quando a ação for realizada os dados mínimos para relatório, toda a mágica fora o crud
         //vai acontecer ali e pode ser necessário rependar melhor esse módulo, vai ser um tabelão de crescimento esponencial com indexes
@@ -322,8 +346,6 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         //cv.put("UNID", spnUnidade.getSelectedItem().toString());
         //cv.put("QTDE", qtde);
         //cv.put("PCUNIT", pcUnit);
-
-
         return cv;
     }
 

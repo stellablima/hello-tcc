@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,6 +20,9 @@
             android:id="@+id/editarProcedimento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/lblCadastroProcedimento"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -27,6 +30,8 @@
             android:id="@+id/edtNomeProcedimento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:ems="10"
             android:hint="Nome do Procedimento"
             android:inputType="textPersonName" />
@@ -34,12 +39,16 @@
         <Spinner
             android:id="@+id/spnCategoriasAlarme"
             android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
 
         <Switch
             android:id="@+id/swtRepeteAlarme"
             android:layout_width="411dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:checked="false"
             android:layoutDirection="rtl"
             android:showText="false"
@@ -50,6 +59,8 @@
             android:id="@+id/swtFrequenciaAlarme"
             android:layout_width="411dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:checked="false"
             android:enabled="false"
             android:layoutDirection="rtl"
@@ -62,12 +73,16 @@
             android:id="@+id/txtHoraProcedimento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:text="00:00"
             android:textSize="48sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <Spinner
@@ -101,12 +116,16 @@
             android:id="@+id/lvRepeticaoDesproporcinal"
             android:layout_width="411dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:visibility="invisible" />
 
         <Button
             android:id="@+id/btnAtualizarProcedimento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:onClick="btnSalvarProcedimentoOnClick"
             android:text="@string/btnSalvar" />
     </LinearLayout>

@@ -148,6 +148,17 @@ public class AlarmReceiver extends BroadcastReceiver {
                 ANO_MES_DIA_SEMANARIO
                 ?_JANFEVMARETC_123..31_STQQSSD
 
+
+                novo reqcod para id unico
+                e nova variavel no banco para recuperar e configurar facil
+
+                var do banco e possivel extra:
+                DIAS_SEMANA = 0_STQQQSSD,1_S00000D
+
+                novo id unico do alarme no sistema:
+                reqcod = 9900 id_primmeirohorario_domingo
+                reqcod = 9916 id_segundohorario_sabado
+
                 */
 
                 int index = 0;
@@ -258,14 +269,15 @@ public class AlarmReceiver extends BroadcastReceiver {
             return (long) ((24*60*60*1000)*Integer.parseInt(spnPeriodo1));
     }
 
-    public static void cancelAlarmDef(Context context, int reqcod) {
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, 0);
-        Toast.makeText(context, "Alarme cancelado", Toast.LENGTH_SHORT).show();
-        alarmManager.cancel(pendingIntent);
+    public static void cancelAlarmDef(Context context, int reqcod, int nAlarmes) {
 
-        //como deletar todos
+        for (int i = 0; i < nAlarmes; i++) {
+            AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+""+i), intent, 0);
+            Toast.makeText(context, "Alarme cancelado, id: "+reqcod+""+i, Toast.LENGTH_SHORT).show();
+            alarmManager.cancel(pendingIntent);
+        }
         //como editar todos
     }
 }
