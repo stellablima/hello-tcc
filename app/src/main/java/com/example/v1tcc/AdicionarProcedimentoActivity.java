@@ -261,7 +261,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
             ArrayList<Calendar> alarmeTempo = new ArrayList<>();
 
-            if(swtRepete && swtFrequencia){
+            if(!swtRepete || swtRepete && swtFrequencia){
                 String[] txtHora =  txtHoraProcedimento.getText().toString().split(":");
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
@@ -269,6 +269,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                 cal.set(Calendar.SECOND, 0);
                 alarmeTempo.add(cal);
 
+                Toast.makeText(this, "calendario unico: "+ cal.get(0), Toast.LENGTH_LONG).show();
             }else{
                 //resgatar os elementos dos list view
                 //preencher o listarray de calendar
@@ -291,6 +292,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                 //Toast.makeText(this, "itens:"+alarmeTempo.size(), Toast.LENGTH_SHORT).show();
                 //Toast.makeText(this, "itens:"+alarmeTempo.get(0).getTime()+"_"+alarmeTempo.get(1).getTime(), Toast.LENGTH_SHORT).show();
                 //return;
+                Toast.makeText(this, "calendario array", Toast.LENGTH_LONG).show();
             }
 
 
@@ -305,8 +307,8 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
                 Toast.makeText(this, "Inclusão falhou", Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
-                AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
+                Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+spnPeriodo1Alarme.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1); //endiando 1 e la pego 0?
             }
 
             //}
