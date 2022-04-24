@@ -90,10 +90,12 @@ public class ProcedimentosActivity extends AppCompatActivity {
     }
 
     public void btnEditarProcedimentoOnClick(View view){
-        Toast.makeText(this, "(idProcedimento).intValue():"+(idProcedimento).intValue(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "idProcedimento:"+(idProcedimento).intValue(), Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, EditarProcedimentoActivity.class);
-        intent.putExtra(ProcedimentosActivity.EXTRA_ID, (idProcedimento).longValue());
+        //futuramente preparar e passar flag para usar a mesma interface do cadastro
+        Intent intent = new Intent(this, AdicionarProcedimentoActivity.class);
+        intent.putExtra(ProcedimentosActivity.EXTRA_ID, (idProcedimento).longValue()); //mandar valor pra activity destino
+        intent.putExtra(AdicionarProcedimentoActivity.EXTRA_PROCEDIMENTO, "EDITAR_PROCEDIMENTO");
         startActivity(intent);
 
         /******************************************************/

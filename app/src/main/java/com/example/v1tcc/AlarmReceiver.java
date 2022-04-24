@@ -20,7 +20,7 @@ import java.util.GregorianCalendar;
 
 //https://thestreamliners.in/blog/implement-alarm-manager/
 /*
-BroadcastReceiveré uma classe para receber e manipular a transmissão enviada ao seu aplicativo.
+BroadcastReceiver é uma classe para receber e manipular a transmissão enviada ao seu aplicativo.
 No caso de alarme do sistema, ele recebe uma transmissão do serviço de alarme do sistema quando o alarme dispara.
 */
 public class AlarmReceiver extends BroadcastReceiver {

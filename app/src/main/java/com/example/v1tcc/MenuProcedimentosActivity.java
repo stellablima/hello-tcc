@@ -8,6 +8,8 @@ import android.view.View;
 
 public class MenuProcedimentosActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,6 +18,11 @@ public class MenuProcedimentosActivity extends AppCompatActivity {
 
     public void btnAdicionarProcedimentoOnClick(View view){
         Intent intent = new Intent(this, AdicionarProcedimentoActivity.class);
+        intent.putExtra(AdicionarProcedimentoActivity.EXTRA_PROCEDIMENTO, "ADICIONAR_PROCEDIMENTO");
         startActivity(intent);
+
     }
 }
+//public static final String EXTRA_PROCEDIMENTO = "extraProcedimento";
+//intent.putExtra(AlarmReceiver.EXTRA_PROCEDIMENTO, "ALTERAR_PROCEDIMENTO");
+//intent.getExtras().getString(EXTRA_PROCEDIMENTO)

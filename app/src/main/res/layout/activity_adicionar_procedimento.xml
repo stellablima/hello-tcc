@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/editarProcedimento"
+            android:id="@+id/txtProcedimentoEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -79,6 +79,7 @@
             android:textSize="48sp" />
 
         <LinearLayout
+            android:id="@+id/llAlarmeDistribuido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -89,26 +90,26 @@
                 android:id="@+id/spnPeriodo1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/txtFrequencia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="EM"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <Spinner
                 android:id="@+id/spnPeriodo0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <Spinner
                 android:id="@+id/spnPeriodoAlarme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -118,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/btnAtualizarProcedimento"

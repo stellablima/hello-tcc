@@ -35,8 +35,9 @@ public class Helpers {
         ArrayAdapter<String> adapter = new ArrayAdapter<String> ( context,
                 android.R.layout.simple_list_item_1, itens );
 
-        lv.setAdapter( adapter );
-
+        lv.setAdapter(null); // adapter tem que resetar mesmo
+        lv.setAdapter(adapter);
+        //lv.setOnItemClickListener(null); evento ele sobrescreve
         lv.setOnItemClickListener( new AdapterView.OnItemClickListener() {
 
             @Override
@@ -80,12 +81,14 @@ public class Helpers {
         //    throw new Exception("A Unidade deve ser preenchida");
     }
 
-    public static void txtHoraConfig(Context context, TextView txtHoraProcedimento){
+    public static void txtHoraConfig(Context context, TextView txtHoraProcedimento, boolean flagAtualizaCampo){
 
-        Calendar calHoraAlarm = Calendar.getInstance();
-        String horaAtual = String.format("%02d", calHoraAlarm.get(Calendar.HOUR_OF_DAY));
-        String minAtual = String.format("%02d", calHoraAlarm.get(Calendar.MINUTE));
-        txtHoraProcedimento.setText(horaAtual+":"+minAtual);
+        if(flagAtualizaCampo){
+            Calendar calHoraAlarm = Calendar.getInstance();
+            String horaAtual = String.format("%02d", calHoraAlarm.get(Calendar.HOUR_OF_DAY));
+            String minAtual = String.format("%02d", calHoraAlarm.get(Calendar.MINUTE));
+            txtHoraProcedimento.setText(horaAtual+":"+minAtual);
+        }
 
         txtHoraProcedimento.setOnClickListener(new View.OnClickListener() {
             @Override
