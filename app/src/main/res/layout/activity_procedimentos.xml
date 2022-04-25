@@ -17,10 +17,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAtualizarProcedimento" />
+        app:layout_constraintTop_toBottomOf="@+id/btnManterProcedimento" />
 
     <TextView
-        android:id="@+id/txtProcedimentoEditar"
+        android:id="@+id/txtProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Procedimento"
@@ -40,10 +40,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtProcedimentoEditar" />
+        app:layout_constraintTop_toBottomOf="@+id/txtProcedimento" />
 
     <Button
-        android:id="@+id/btnAtualizarProcedimento"
+        android:id="@+id/btnManterProcedimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="btnEditarProcedimentoOnClick"
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MOCK Materiais Utilizados e demais campos"
-        app:layout_constraintBottom_toTopOf="@+id/btnAtualizarProcedimento"
+        app:layout_constraintBottom_toTopOf="@+id/btnManterProcedimento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

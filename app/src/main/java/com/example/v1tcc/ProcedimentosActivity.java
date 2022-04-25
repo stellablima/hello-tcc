@@ -94,7 +94,8 @@ public class ProcedimentosActivity extends AppCompatActivity {
 
         //futuramente preparar e passar flag para usar a mesma interface do cadastro
         Intent intent = new Intent(this, AdicionarProcedimentoActivity.class);
-        intent.putExtra(ProcedimentosActivity.EXTRA_ID, (idProcedimento).longValue()); //mandar valor pra activity destino
+        //intent.putExtra(ProcedimentosActivity.EXTRA_ID, (idProcedimento).longValue()); //mandar valor pra activity destino
+        intent.putExtra(AdicionarProcedimentoActivity.EXTRA_ID, (idProcedimento).longValue());
         intent.putExtra(AdicionarProcedimentoActivity.EXTRA_PROCEDIMENTO, "EDITAR_PROCEDIMENTO");
         startActivity(intent);
 
