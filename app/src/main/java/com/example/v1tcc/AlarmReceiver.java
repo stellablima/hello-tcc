@@ -278,7 +278,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             Toast.makeText(context, "Alarme cancelado, id: "+reqcod+""+i, Toast.LENGTH_SHORT).show();
             alarmManager.cancel(pendingIntent);
         }
-        //como editar todos
     }
 }
 

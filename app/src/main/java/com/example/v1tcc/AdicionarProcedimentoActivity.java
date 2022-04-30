@@ -1,5 +1,6 @@
 package com.example.v1tcc;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
@@ -11,6 +12,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -58,6 +60,8 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
     private SQLiteDatabase bd;
     private Cursor cursor;
     private Button btnManterProcedimento;
+    private boolean flagAlterarLVBugado = false;
+    private String[] dataPrevisaoSplitado;
 
     /*DEFINIR AQUI QUANDO CADASTRO QUANDO EDIÇÃO E OTIMIZAR O CODIGO, E RETIRAR BUG SWT DE REPETICAO*/
     @Override
@@ -86,8 +90,27 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             configurarCampos(false);
             carregaDados();
             txtProcedimento.setText("Editar Procedimento");
+            btnManterProcedimento.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) { btnEditarProcedimentoOnClick(view); }
+            });
+
+//            if(flagAlterarLVBugado)
+//                Helpers.lvDinamico(getApplicationContext(),dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme);
         }
     }
+
+
+
+
+//    @Override
+//    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+//        super.onPostCreate(savedInstanceState);
+////nao sei o que ta rolando, mudar o foco, ele seta certo e depois simplesmente zera tudo
+////        if(flagAlterarLVBugado)
+////            Helpers.lvDinamico(getApplicationContext(),dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme);
+////        Toast.makeText(this, dataPrevisaoSplitado[0]+"", Toast.LENGTH_LONG);
+//    }
 
     private void configurarCampos(Boolean extraProcedimento){
 
@@ -222,12 +245,10 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
     private void carregaDados() {
         /*
-        prencher com que tem
-        update no banco pra gravar o que nao tem
         logica deletar e editar
-        como nao mudar a categoria
 
-        pendente preecnher arrays na linha 316
+
+        pendente preecnher arrays e txt na linha 316
         */
 
         try { //pode ver a logica de deletar se quiser pegar os alarmes
@@ -263,6 +284,10 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                         break;
                 }
 
+                //List<String> dataPrevisaoSplitado = new ArrayList<String>();
+                String dataPrevisaoSplitadoTxt = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("[")+1, dataPrevisaoAlarme.indexOf("]"));
+                dataPrevisaoSplitado = dataPrevisaoSplitadoTxt.split(", ");
+
                 if (flagRepeticaoAlarme.equals("1")){
                     swtRepeteAlarme.setChecked(true);
                     String textoParenteses = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("(")+1, dataPrevisaoAlarme.lastIndexOf(")"));
@@ -294,7 +319,6 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     }
 
                     int intSpnPeriodo1Alarme = (Integer.parseInt(dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("]")+1, dataPrevisaoAlarme.indexOf("]")+2)))-1;
-                    Toast.makeText(getApplicationContext(),"spnPeriodo1Alarme:" + intSpnPeriodo1Alarme, Toast.LENGTH_SHORT).show();
 
                     swtFrequenciaAlarme.setEnabled(true);
                     llAlarmeDistribuido.setVisibility(View.VISIBLE);
@@ -306,15 +330,58 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                         txt.setText("EM");
                         spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);
                         spnPeriodo0Alarme.setSelection(spnPeriodo1Alarme.getSelectedItemPosition());
+                        txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
                     }else{
                         txtHoraProcedimento.setVisibility(View.INVISIBLE);
                         lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
                         spnPeriodoAlarme.setEnabled(false);
                         txt.setText("X");
                         spnPeriodo0Alarme.setSelection(0);
-                        spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);
+                        spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);//ja esta zerado ai ele preenche com mais zeros
+
+                        flagAlterarLVBugado = true;
+                        //itens
+                        //porquqe nao preencheu, ele precnhe e zera logo em seguida
+                        //tentando mexer com a var global list horario
+//                        listHorarios.clear();
+//                        for (int count =0; count < (i+1); count++){
+//                            listHorarios.add("00:00");
+//                        }
+
+                        //String[] itens = new String[listHorarios.size()];
+                        //listHorarios.toArray(dataPrevisaoSplitado);
+                        //Helpers.lvDinamico(getApplicationContext(),dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme);
+
+
+
+
+
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<String> ( getApplicationContext(),
+//                                android.R.layout.simple_list_item_1, dataPrevisaoSplitado );
+//
+//                        lvRepeticaoDesproporcinalAlarme.setAdapter(null);
+//                        lvRepeticaoDesproporcinalAlarme.setAdapter(adapter);
+//                        lvRepeticaoDesproporcinalAlarme.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+//
+//                            @Override
+//                            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//
+//                                Helpers.lvHoraConfig(getApplicationContext(), dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme,arg2);
+//                            }
+//                        } );
+
+
+
+
+
+
+                        //Helpers.lvDinamico(context, itens, lvRepeticaoDesproporcinalAlarme);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        //resetLvDesproporcional(getApplicationContext(),i);
+                        //Toast.makeText(getApplicationContext(),"dataPrevisaoSplitado:" + dataPrevisaoSplitado[0]+dataPrevisaoSplitado[1], Toast.LENGTH_SHORT).show();
                     }
-                }
+                }else
+                    txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
             }
             else
                 Toast.makeText(this, "Procedimento não encontrado", Toast.LENGTH_SHORT).show();
@@ -326,7 +393,59 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
 
 
+    public void btnEditarProcedimentoOnClick(View view){
+        Toast.makeText(this,"editeiiii", Toast.LENGTH_LONG).show();
+        //excluir alarmes
+        btnDeletarProcedimentoOnClick(view);
+        //salvar um novo alarme
+        btnSalvarProcedimentoOnClick(view);
+        //rever logica:
+        //realmente deletou os alarmes multiplos?
+        //vale a pena manter no banco com flag desativada
+        //ele iria criar outro cara com outro id pro banco e o mesmo id pro alarm? faz sentido
+        //r: nao, ele deletou, criando assim outro alarme e deixando o antigo na banco com flag desativada
+        //seria legal manter um historico entao
+        //r: como nao teria nada que ligasse o historico com o alterado acho que é worth deletar do banco depois
 
+    }
+
+    public void btnDeletarProcedimentoOnClick(View view){
+        /******************************************************/
+        try {
+
+            ContentValues cv = new ContentValues();
+            cv.put("FLAG", "0");
+            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+            bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
+
+            //recuperar tamanho do alarme
+            bd = bdRotinaHelper.getReadableDatabase();
+            cursor = bd.query("PROCEDIMENTO",
+                    new String[] {"_id", "QTDDISPAROS"},
+                    "_id = ?",
+                    new String[] {Long.toString(idProcedimento)},
+                    null,
+                    null,
+                    null
+            );
+            int qtdDisparos=1;
+            if (cursor.moveToFirst())
+                qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
+            else
+                Toast.makeText(this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
+
+            AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
+            //finish();
+
+        } catch (SQLiteException e) {
+            Toast.makeText(this, "Deleção falhou", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+    }
 
     public void btnSalvarProcedimentoOnClick(View view){
 
