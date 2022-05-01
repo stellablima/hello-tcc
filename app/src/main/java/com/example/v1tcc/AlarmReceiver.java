@@ -27,6 +27,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static long intervalMillis;
     public static final String EXTRA_ID = "idprocedimento";
+    public static final String EXTRA_ID_PROCEDIMENTO = "idprocedimento";
+    public static final String EXTRA_ID_ALARME = "idalarme"; // <0> precisa fazer review e implementar essa var nos casos que
+    //manda o id do alame /inutilizar o EXTRA_ID nas situação de EXTRA_ID_ALARME
 
 
     @Override // ao encerrar o app ou reiniciar o celular o que irá acontecer ao abrir de novo? ira mantar os alarmes que estão no banco?
@@ -35,25 +38,32 @@ public class AlarmReceiver extends BroadcastReceiver {
         /*
          Minha ideia-> defina o alarme para todos os dias, verifique a condição do seu dia no receptor de alarme.
          */
-        Toast.makeText(context, "id"+ (intent.getExtras().getInt(EXTRA_ID)), Toast.LENGTH_LONG).show();
         Intent intent2 = new Intent(context, AlarmReceiverActivity.class);
         intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent2.putExtra(ProcedimentosActivity.EXTRA_ID, intent.getExtras().getInt(EXTRA_ID)); //get extra dias da semana decide aciona ou nao
+        intent2.putExtra(AlarmReceiverActivity.EXTRA_ID_ALARME, intent.getExtras().getInt(EXTRA_ID_ALARME));
+        //intent2.putExtra(ProcedimentosActivity.EXTRA_ID_ALARME, intent.getExtras().getInt(EXTRA_ID)); //get extra dias da semana decide aciona ou nao
+//  String dataPrevisaoSplitadoTxt = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("[")+1, dataPrevisaoAlarme.indexOf("]"));
+
+        String idProcedimentoProvisorio = Integer.toString(intent.getExtras().getInt(EXTRA_ID_ALARME));
+        idProcedimentoProvisorio = idProcedimentoProvisorio.substring(0,idProcedimentoProvisorio.length() -1);
+        intent2.putExtra(AlarmReceiverActivity.EXTRA_ID_PROCEDIMENTO, Long.parseLong(idProcedimentoProvisorio)); //passando uma string pra long
+
         context.startActivity(intent2);
     }
 
     public static void updateAlarmProcedimento(Context context, Calendar c, int reqcod){
+//imbutir aquiu<- o adicionar e o deletar ou qualquer logica que precise ser melhorada
 
-        Toast.makeText(context, "verifique se esse id é do banco e se precisa fazer logica de jogar ultimo digito fora para alterar"+reqcod, Toast.LENGTH_LONG).show();
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReceiver.class);                         //FLAG_UPDATE_CURRENT vou ter que passar menos parametro? tipo só o que mudou
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        if (c.before(Calendar.getInstance())) {
-            c.add(Calendar.DATE, 1);
-        }
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+//        Toast.makeText(context, "verifique se esse id é do banco e se precisa fazer logica de jogar ultimo digito fora para alterar"+reqcod, Toast.LENGTH_LONG).show();
+//
+//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(context, AlarmReceiver.class);                         //FLAG_UPDATE_CURRENT vou ter que passar menos parametro? tipo só o que mudou
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqcod, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//
+//        if (c.before(Calendar.getInstance())) {
+//            c.add(Calendar.DATE, 1);
+//        }
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
     public static void snoozeAlarmProcedimento(long intervalMillis) {
@@ -99,6 +109,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 Intent intent = new Intent(context, AlarmReceiver.class);// RecebedorDeAlerta.class); //intent pendente que vai gerar o alerta
                 intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+"0")); //ids multiplos??
+                intent.putExtra(AlarmReceiver.EXTRA_ID_ALARME, Integer.parseInt(reqcod+"0"));//<0>
         /*
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -166,7 +177,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     Intent intent = new Intent(context, AlarmReceiver.class);
-                    intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+""+index)); //index _0..n
+                    intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+""+index)); //index _0..n //mudar aqui <0>
+                    intent.putExtra(AlarmReceiver.EXTRA_ID_ALARME, Integer.parseInt(reqcod+""+index));
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+""+index), intent, 0);
 
                     Toast.makeText(context, "reqcod:"+reqcod+"_EXTRA_ID:"+(reqcod+""+index), Toast.LENGTH_SHORT).show();
@@ -228,6 +240,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             Intent intent = new Intent(context, AlarmReceiver.class);
             intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+"0"));
+            intent.putExtra(AlarmReceiver.EXTRA_ID_ALARME, Integer.parseInt(reqcod+""+"0"));
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+"0"), intent, 0);
 
             if (c.get(0).before(Calendar.getInstance())) {
@@ -275,7 +288,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+""+i), intent, 0);
-            Toast.makeText(context, "Alarme cancelado, id: "+reqcod+""+i, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "alarme consumido, id: "+reqcod+""+i, Toast.LENGTH_SHORT).show();
             alarmManager.cancel(pendingIntent);
         }
     }

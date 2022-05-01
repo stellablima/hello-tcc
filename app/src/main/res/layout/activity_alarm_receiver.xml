@@ -4,16 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_main"
     tools:context=".AlarmReceiverActivity">
+
+    <TextView
+        android:id="@+id/txtCategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categoria"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/txtHoraProcedimento2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtProcedimento2" />
+
+    <Button
+        android:id="@+id/btnAtrasarAlarme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Atrasar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnFecharAlarme"
+        app:layout_constraintTop_toBottomOf="@+id/txtHoraProcedimento2" />
+
+    <TextView
+        android:id="@+id/txtProcedimento2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Nome Procedimento"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/txtCategoria"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtHoraProcedimento2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="00:00"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAtrasarAlarme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCategoria" />
 
     <Button
         android:id="@+id/btnFecharAlarme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="btnFecharAlarmeOnClick"
-        android:text="Fechar"
+        android:text="Concluir"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnAtrasarAlarme"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtHoraProcedimento2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

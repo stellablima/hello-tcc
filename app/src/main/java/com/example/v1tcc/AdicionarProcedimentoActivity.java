@@ -432,8 +432,10 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             int qtdDisparos=1;
             if (cursor.moveToFirst())
                 qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
-            else
+            else{
                 Toast.makeText(this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
+                //tem que dar exeption, provavelmente o sql de?
+            }
 
             AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
             //finish();
