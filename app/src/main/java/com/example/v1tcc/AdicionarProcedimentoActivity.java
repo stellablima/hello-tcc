@@ -506,14 +506,13 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             }
 
 
-            //como montar um id? primeiro digito referente e tabela sendo 0 procedimento
-            //+ id do procedimento gravado na tabela
             //if (operacao == OP_INCLUI) {
             int idInserted = insereEstq(); // como nao é orientado a obj ainda, o id sera unico no banco concatenado co _n no java para identificar repetições
             if(idInserted == -1)
                 Toast.makeText(this, "Inclusão falhou "+"-1", Toast.LENGTH_LONG).show();
             else{
-                Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+spnPeriodo1Alarme.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+spnPeriodo1Alarme.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+alarmeTempo.size(), Toast.LENGTH_SHORT).show();
                 AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1); //endiando 1 e la pego 0?
             }
 
@@ -545,19 +544,35 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         cv.put("NOME", edtNomeProcedimento.getText().toString());
         cv.put("CATEGORIA", spnCategoriasAlarme.getSelectedItem().toString());
         cv.put("FLAG", "1");
-        cv.put("QTDDISPAROS", spnPeriodo1Alarme.getSelectedItem().toString()); //spnPeriodo1Alarme.getSelectedItem().toString()
+
+
 
 
         Boolean swtRepete = swtRepeteAlarme.isChecked();
         Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
         String FLAGREPETICAO;
         String FLAGFREQUENCIA;
+
+
+        //arrumar QTDDISPAROS  > 1 so quando for swtrepete e swtfrequencia
+        String qtdDisparos;
+
+        if(swtRepete && !swtFrequencia)
+            qtdDisparos = spnPeriodo1Alarme.getSelectedItem().toString();
+        else
+            qtdDisparos = "1";
+
+        cv.put("QTDDISPAROS", qtdDisparos); //spnPeriodo1Alarme.getSelectedItem().toString()
+
+/*?situação, salvou o layout certo mas passou horario errado horario array quando deveria ser 1 cara so?*/
+
+        //rever
         if(swtRepete)
             FLAGREPETICAO="1";
         else
             FLAGREPETICAO="0";
-        if(swtFrequencia)
-            FLAGFREQUENCIA="1";
+        if(swtFrequencia) // a frequencia pode estar em 1 mas se o repete tiver disabled de nada vale
+            FLAGFREQUENCIA="1";//na real nao importa porque isso é um switch e vai ter valor de qqr forma
         else
             FLAGFREQUENCIA="0";
         cv.put("FLAG_REPETICAO", FLAGREPETICAO); //comentar ajudou no bug de limpar cache?
@@ -567,11 +582,12 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         //vai acontecer ali e pode ser necessário rependar melhor esse módulo, vai ser um tabelão de crescimento esponencial com indexes
         //mas tbm pode filtrar gerar o relatório e apagar os dados mais antigos periodicamente
 
-        if(!swtRepete) {
+        //forlar bug aqui
+        if(!swtRepete) { // se alarme unico
             cv.put("DATA_PREVISAO", "["+txtHoraProcedimento.getText().toString()+"]");
         }
-        else if(swtRepete && swtFrequencia) {
-            cv.put("DATA_PREVISAO", listHorarios.toString()+""+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
+        else if(swtRepete && swtFrequencia) { // aqui importa
+            cv.put("DATA_PREVISAO", "["+txtHoraProcedimento.getText().toString()+"]"+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
         }
         else {
             cv.put("DATA_PREVISAO", listHorarios.toString()+""+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());

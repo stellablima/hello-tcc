@@ -28,9 +28,11 @@ public class AlarmReceiverActivity extends AppCompatActivity {
     private SQLiteDatabase bd;
     private Cursor cursor;
     private Long idProcedimento;
+    private Long idAlarme;
     private TextView txtNomeProcedimento;
     private TextView txtCategoria;
     private TextView txtHoraProcedimento2;
+    String flagRepeticaoAlarme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,16 @@ public class AlarmReceiverActivity extends AppCompatActivity {
         //ao concluir um alarme unico ele tem que sumir da tela, apagar do banco
 
         //SO SE FOR ALARME UNICO
-        btnDeletarProcedimentoOnClick(view);
+        if (flagRepeticaoAlarme.equals("0"))
+            btnDeletarProcedimentoOnClick(view);
+        else
+            Toast.makeText(this, "nao apaga do banco", Toast.LENGTH_SHORT).show();
+        //nao excluir se alarme multiplo
+        //qual valor de hora carregar no txt
+
+        //ao fechar gravar no relatorio de urina ou qual for a categoria do alarme como feito e o horario de inicio
+        //pode futuramente configurar a duração(pré) e status(pos)
+        //
         finish();
     }
 
@@ -65,7 +76,7 @@ public class AlarmReceiverActivity extends AppCompatActivity {
         txtCategoria = findViewById(R.id.txtCategoria);
         txtHoraProcedimento2 = findViewById(R.id.txtHoraProcedimento2);
         idProcedimento = getIntent().getExtras().getLong(EXTRA_ID_PROCEDIMENTO);
-
+        idAlarme = getIntent().getExtras().getLong(EXTRA_ID_ALARME);
 
         try {
 
@@ -73,7 +84,7 @@ public class AlarmReceiverActivity extends AppCompatActivity {
             bd = bdRotinaHelper.getReadableDatabase();
             cursor = bd.query("PROCEDIMENTO",
                     //new String[] {"_id", "", "", , "QTDDISPAROS", "FLAG_REPETICAO", "FLAG_FREQUENCIA"},
-                    new String[] {"_id", "NOME", "CATEGORIA", "DATA_PREVISAO"},
+                    new String[] {"_id", "NOME", "CATEGORIA", "DATA_PREVISAO", "QTDDISPAROS", "FLAG_REPETICAO"},
                     "_id = ?",
                     new String[] {Long.toString(idProcedimento)},
                     null,
@@ -85,87 +96,35 @@ public class AlarmReceiverActivity extends AppCompatActivity {
                 txtNomeProcedimento.setText(cursor.getString(cursor.getColumnIndexOrThrow("NOME")));
                 txtCategoria.setText(cursor.getString(cursor.getColumnIndexOrThrow("CATEGORIA")));
 
-                String dataPrevisaoSplitadoTxt = cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO"));
-                dataPrevisaoSplitadoTxt = dataPrevisaoSplitadoTxt.substring(dataPrevisaoSplitadoTxt.indexOf("[")+1, dataPrevisaoSplitadoTxt.indexOf("]"));
-                String[] dataPrevisaoTxt = dataPrevisaoSplitadoTxt.split(", ");
+                String dataPrevisaoTxt = cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO"));
+                dataPrevisaoTxt = dataPrevisaoTxt.substring(dataPrevisaoTxt.indexOf("[")+1, dataPrevisaoTxt.indexOf("]"));
+                String[] dataPrevisaoSplitadoTxt = dataPrevisaoTxt.split(", ");
 
-                txtHoraProcedimento2.setText(dataPrevisaoTxt[0]);
-//
-//                String categoriaAlarme = cursor.getString(cursor.getColumnIndexOrThrow("CATEGORIA"));
-//                String qtdDisparosAlarme = cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS"));
-//                String flagRepeticaoAlarme = cursor.getString(cursor.getColumnIndexOrThrow("FLAG_REPETICAO"));
-//                String flagFrequenciaAlarme = cursor.getString(cursor.getColumnIndexOrThrow("FLAG_FREQUENCIA"));
-//                String dataPrevisaoAlarme = cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO"));
-//                switch (categoriaAlarme + "") {
-//                    case "Medicação":
-//                        spnCategoriasAlarme.setSelection(0);
-//                        break;
-//                    case "Higienização":
-//                        spnCategoriasAlarme.setSelection(1);
-//                        break;
-//                    default: //"Outro"
-//                        spnCategoriasAlarme.setSelection(2);
-//                        break;
-//                }
-//
-//                String dataPrevisaoSplitadoTxt = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("[")+1, dataPrevisaoAlarme.indexOf("]"));
-//                dataPrevisaoSplitado = dataPrevisaoSplitadoTxt.split(", ");
-//
-//                if (flagRepeticaoAlarme.equals("1")){
-//                    swtRepeteAlarme.setChecked(true);
-//                    String textoParenteses = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("(")+1, dataPrevisaoAlarme.lastIndexOf(")"));
-//                    switch (textoParenteses){
-//                        case "MINUTO":
-//                            spnPeriodoAlarme.setSelection(0);
-//                            break;
-//                        case "HORAS":
-//                            spnPeriodoAlarme.setSelection(1);
-//                            break;
-//                        case "DIA S/N":
-//                            spnPeriodoAlarme.setSelection(2);
-//                            break;
-//                        case "DIA":
-//                            spnPeriodoAlarme.setSelection(3);
-//                            break;
-//                        case "SEMANA":
-//                            spnPeriodoAlarme.setSelection(4);
-//                            break;
-//                        case "MÊS":
-//                            spnPeriodoAlarme.setSelection(5);
-//                            break;
-//                        case "ANO":
-//                            spnPeriodoAlarme.setSelection(6);
-//                            break;
-//                        default:
-//                            spnPeriodoAlarme.setSelection(3);
-//                            break;
-//                    }
-//
-//                    int intSpnPeriodo1Alarme = (Integer.parseInt(dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("]")+1, dataPrevisaoAlarme.indexOf("]")+2)))-1;
-//
-//                    swtFrequenciaAlarme.setEnabled(true);
-//                    llAlarmeDistribuido.setVisibility(View.VISIBLE);
-//
-//                    if (flagFrequenciaAlarme.equals("1")) {
-//                        swtFrequenciaAlarme.setChecked(true);
-//                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
-//                        spnPeriodoAlarme.setEnabled(true);
-//                        txt.setText("EM");
-//                        spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);
-//                        spnPeriodo0Alarme.setSelection(spnPeriodo1Alarme.getSelectedItemPosition());
-//                        txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
-//                    }else{
-//                        txtHoraProcedimento.setVisibility(View.INVISIBLE);
-//                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
-//                        spnPeriodoAlarme.setEnabled(false);
-//                        txt.setText("X");
-//                        spnPeriodo0Alarme.setSelection(0);
-//                        spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);//ja esta zerado ai ele preenche com mais zeros
-//
-//                        flagAlterarLVBugado = true;
-//                    }
-//                }else
-//                    txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
+                //int qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
+                flagRepeticaoAlarme = cursor.getString(cursor.getColumnIndexOrThrow("FLAG_REPETICAO"));
+
+                //if (flagRepeticaoAlarme.equals("1")){
+
+                //    String idAlarmePop = Float.toString(idAlarme).substring((Float.toString(idAlarme)).length() - 1,(Float.toString(idAlarme)).length());
+                //    txtHoraProcedimento2.setText(dataPrevisaoSplitadoTxt[0]);
+                //    Toast.makeText(this, "dataPrevisaoSplitadoTxt[0]: "+dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)], Toast.LENGTH_SHORT).show();
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//parece ter funfado porem bug: ele nao aciona segundo alarme do array na repeticao desproporcional
+//ele duplicao alarme desproporcional ao alarmar
+//sugiro estressar sem essa parte pra corrigir os bugs acima
+//alarm tela branca e minimiza?
+//outro bug: ao mudat tipo de alarme ele mantei string3 [00:00, 00:00] de array do antigo
+//ou com aspas [] vazias
+//provavel motivo, tem que resetar as flags antigas setadas ou mal funcionamento do modulo editar
+//ele nao da erro apenas nao rendederiza p txt e interagindo vem o erro
+
+// problema, quando se edita e muda p tipo do alarme, isso bug o campo de data previsao
+// teste um programei dois alarmes e editei, passou
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                //}else{
+                    //txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
+                //    txtHoraProcedimento2.setText(dataPrevisaoSplitadoTxt[0]);
+                //}
             }
             else
                 Toast.makeText(this, "Procedimento não encontrado", Toast.LENGTH_SHORT).show();
