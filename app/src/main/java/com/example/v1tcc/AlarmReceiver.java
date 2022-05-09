@@ -26,7 +26,7 @@ No caso de alarme do sistema, ele recebe uma transmissão do serviço de alarme 
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static long intervalMillis;
-    public static final String EXTRA_ID = "idprocedimento";
+    public static final String EXTRA_ID = "idprocedimento"; //trocar os id por id_procedimento
     public static final String EXTRA_ID_PROCEDIMENTO = "idprocedimento";
     public static final String EXTRA_ID_ALARME = "idalarme"; // <0> precisa fazer review e implementar essa var nos casos que
     //manda o id do alame /inutilizar o EXTRA_ID nas situação de EXTRA_ID_ALARME
@@ -46,7 +46,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         String idProcedimentoProvisorio = Integer.toString(intent.getExtras().getInt(EXTRA_ID_ALARME));
         idProcedimentoProvisorio = idProcedimentoProvisorio.substring(0,idProcedimentoProvisorio.length() -1);
-        intent2.putExtra(AlarmReceiverActivity.EXTRA_ID_PROCEDIMENTO, Long.parseLong(idProcedimentoProvisorio)); //passando uma string pra long
+        intent2.putExtra(AlarmReceiverActivity.EXTRA_ID_PROCEDIMENTO, Integer.parseInt(idProcedimentoProvisorio)); //passando uma string pra long pq??
 
         context.startActivity(intent2);
     }

@@ -27,8 +27,8 @@ public class AlarmReceiverActivity extends AppCompatActivity {
     private BDRotinaHelper bdRotinaHelper;
     private SQLiteDatabase bd;
     private Cursor cursor;
-    private Long idProcedimento;
-    private Long idAlarme;
+    private int idProcedimento;
+    private int idAlarme;
     private TextView txtNomeProcedimento;
     private TextView txtCategoria;
     private TextView txtHoraProcedimento2;
@@ -38,13 +38,13 @@ public class AlarmReceiverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_receiver);
+        carregaDados();
 
         mp=MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI);
         mp.start();
 
-        //Toast.makeText(this, "id"+ (getIntent().getExtras().getLong(EXTRA_ID)), Toast.LENGTH_LONG).show();
-
-        carregaDados();
+        String txt = "EXTRA_ID_ALARME:"+ (getIntent().getExtras().getInt(EXTRA_ID_ALARME)) + "\nflagRepeticaoAlarme:" + flagRepeticaoAlarme;
+        Toast.makeText(this, txt, Toast.LENGTH_LONG).show();
 
     }
 
@@ -58,10 +58,10 @@ public class AlarmReceiverActivity extends AppCompatActivity {
         //ao concluir um alarme unico ele tem que sumir da tela, apagar do banco
 
         //SO SE FOR ALARME UNICO
-        if (flagRepeticaoAlarme.equals("0"))
-            btnDeletarProcedimentoOnClick(view);
-        else
-            Toast.makeText(this, "nao apaga do banco", Toast.LENGTH_SHORT).show();
+        //if (flagRepeticaoAlarme.equals("0"))
+        //    btnDeletarProcedimentoOnClick(view); //ele da erro de flag aqui
+        //else
+        //    Toast.makeText(this, "nao apaga do banco", Toast.LENGTH_SHORT).show();
         //nao excluir se alarme multiplo
         //qual valor de hora carregar no txt
 
@@ -75,8 +75,8 @@ public class AlarmReceiverActivity extends AppCompatActivity {
         txtNomeProcedimento = findViewById(R.id.txtProcedimento2);
         txtCategoria = findViewById(R.id.txtCategoria);
         txtHoraProcedimento2 = findViewById(R.id.txtHoraProcedimento2);
-        idProcedimento = getIntent().getExtras().getLong(EXTRA_ID_PROCEDIMENTO);
-        idAlarme = getIntent().getExtras().getLong(EXTRA_ID_ALARME);
+        idProcedimento = getIntent().getExtras().getInt(EXTRA_ID_PROCEDIMENTO);
+        idAlarme = getIntent().getExtras().getInt(EXTRA_ID_ALARME);
 
         try {
 
@@ -103,11 +103,12 @@ public class AlarmReceiverActivity extends AppCompatActivity {
                 //int qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
                 flagRepeticaoAlarme = cursor.getString(cursor.getColumnIndexOrThrow("FLAG_REPETICAO"));
 
-                //if (flagRepeticaoAlarme.equals("1")){
+                if (flagRepeticaoAlarme.equals("1")){
 
-                //    String idAlarmePop = Float.toString(idAlarme).substring((Float.toString(idAlarme)).length() - 1,(Float.toString(idAlarme)).length());
-                //    txtHoraProcedimento2.setText(dataPrevisaoSplitadoTxt[0]);
-                //    Toast.makeText(this, "dataPrevisaoSplitadoTxt[0]: "+dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)], Toast.LENGTH_SHORT).show();
+                    String idAlarmePop = Integer.toString(idAlarme).substring((Integer.toString(idAlarme)).length() - 1);
+                    txtHoraProcedimento2.setText(dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)]);
+                    //txtHoraProcedimento2.setText("dataPrevisaoSplitadoTxt["+idAlarmePop+"]: "+dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)]);
+                    //Toast.makeText(this, "dataPrevisaoSplitadoTxt["+idAlarmePop+"]: "+dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)], Toast.LENGTH_SHORT).show();
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //parece ter funfado porem bug: ele nao aciona segundo alarme do array na repeticao desproporcional
 //ele duplicao alarme desproporcional ao alarmar
@@ -121,10 +122,10 @@ public class AlarmReceiverActivity extends AppCompatActivity {
 // problema, quando se edita e muda p tipo do alarme, isso bug o campo de data previsao
 // teste um programei dois alarmes e editei, passou
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                //}else{
+                }else{
                     //txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
-                //    txtHoraProcedimento2.setText(dataPrevisaoSplitadoTxt[0]);
-                //}
+                    txtHoraProcedimento2.setText(dataPrevisaoSplitadoTxt[0]);
+                }
             }
             else
                 Toast.makeText(this, "Procedimento não encontrado", Toast.LENGTH_SHORT).show();
@@ -145,7 +146,7 @@ public class AlarmReceiverActivity extends AppCompatActivity {
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
 
-            AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), 1);
+            AlarmReceiver.cancelAlarmDef(this, (idProcedimento), 1);
 
         } catch (SQLiteException e) {
             Toast.makeText(this, "Deleção falhou", Toast.LENGTH_LONG).show();
