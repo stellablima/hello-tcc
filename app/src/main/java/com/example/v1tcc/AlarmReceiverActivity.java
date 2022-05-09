@@ -58,10 +58,10 @@ public class AlarmReceiverActivity extends AppCompatActivity {
         //ao concluir um alarme unico ele tem que sumir da tela, apagar do banco
 
         //SO SE FOR ALARME UNICO
-        //if (flagRepeticaoAlarme.equals("0"))
-        //    btnDeletarProcedimentoOnClick(view); //ele da erro de flag aqui
-        //else
-        //    Toast.makeText(this, "nao apaga do banco", Toast.LENGTH_SHORT).show();
+        if (flagRepeticaoAlarme.equals("0"))
+            btnDeletarProcedimentoOnClick(view); //ele da erro de flag aqui
+        else
+            Toast.makeText(this, "nao apaga do banco", Toast.LENGTH_SHORT).show();
         //nao excluir se alarme multiplo
         //qual valor de hora carregar no txt
 
