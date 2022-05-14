@@ -66,10 +66,30 @@ public class AlarmReceiver extends BroadcastReceiver {
 //        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
-    public static void snoozeAlarmProcedimento(long intervalMillis) {
-        AlarmReceiver.intervalMillis = intervalMillis;
+    //receber o id do alarme e anexar mais um digito nao final com uma flag que indique o id que é pra recuperar o carregaDados()
+    public static void snoozeAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod,  Boolean swtRepete, Boolean swtFrequencia, String  spnPeriodo, String spnPeriodo0) {
+        //AlarmReceiver.intervalMillis = intervalMillis;
         //setar outro alame de 5min
         //função correta
+
+        String idAlarmDuplicado = reqcod + Integer.toString(reqcod).substring((Integer.toString(reqcod)).length() - 1);
+        //txtHoraProcedimento2.setText(dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmSolo)]);
+
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra(AlarmReceiver.EXTRA_ID, reqcod); //idAlarmDuplicado//tentar tirar essa linha
+        intent.putExtra(AlarmReceiver.EXTRA_ID_ALARME, reqcod);//intent com o alarme atrasado e alarm sem id em vez do id unico desnecessario que eu quebrei a cabeça pra fazer
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(idAlarmDuplicado), intent, 0);
+
+        if (c.get(0).before(Calendar.getInstance())) {
+            c.get(0).add(Calendar.DATE, 1);
+        }
+
+        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(c.get(0).getTimeInMillis(),
+                null);
+        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
     }
 
     public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, Boolean swtRepete, Boolean swtFrequencia, String  spnPeriodo, String spnPeriodo0){
@@ -239,7 +259,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
             Intent intent = new Intent(context, AlarmReceiver.class);
-            intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+"0"));
+            intent.putExtra(AlarmReceiver.EXTRA_ID, Integer.parseInt(reqcod+"0")); //adaptar pra receber 0 ou 9
             intent.putExtra(AlarmReceiver.EXTRA_ID_ALARME, Integer.parseInt(reqcod+""+"0"));
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+"0"), intent, 0);
 

@@ -14,10 +14,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AlarmReceiverActivity extends AppCompatActivity {
 
@@ -33,7 +37,15 @@ public class AlarmReceiverActivity extends AppCompatActivity {
     private TextView txtCategoria;
     private TextView txtHoraProcedimento2;
     String flagRepeticaoAlarme;
-
+    String flagFrequenciaAlarme;
+    String dataPrevisaoTxt;
+/*Os alarmes não são acionados quando o dispositivo está inativo no modo Soneca.
+Todos os alarmes programados serão adiados até que o dispositivo saia do modo Soneca.
+Várias opções estão disponíveis se você precisa garantir que seu trabalho seja concluído
+mesmo quando o dispositivo estiver inativo. Você pode usar setAndAllowWhileIdle() ou
+setExactAndAllowWhileIdle() para garantir que os alarmes serão executados. Outra opção é
+usar a nova API WorkManager, que foi criada para executar trabalho em segundo plano uma
+única vez ou periodicamente. Para saber mais, consulte Agendar tarefas com o WorkManager.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +83,58 @@ public class AlarmReceiverActivity extends AppCompatActivity {
         finish();
     }
 
+    public void btnAtrasarAlarmeOnClick(View view){
+        //pegar id do alarme
+        //renovar a função update
+        //nao usar ela XD
+        //reagendar disparo unico pra daquqi 5 minutos
+
+        //qual id preencher? adicionar outro numero no final do id do alarme, ...
+        //reservar o numero 9 para isso limitando ainda a 9 disparos em vez de 10?
+        //adicionar uma flag, e usar o id da tabela para agendar alarme unico?
+        //roubar id repetitivo em particular e escrever por cima e depois devolver?
+
+        //id final 9 reservado para alarme de atraso podendo ser sobrescrito
+        //interpretar pelo txt o tipo do alarme e mandar, tem um pedaço disso na edição
+
+        try {
+
+            Boolean swtRepete = false;
+            Boolean swtFrequencia = false;
+            int idInserted = idProcedimento;//9
+            String spnPeriodo = "";
+            String spnPeriodo1 = "";
+            ArrayList<Calendar> alarmeTempo = new ArrayList<>();
+
+
+
+            Calendar cal = Calendar.getInstance();
+
+
+            cal.add(Calendar.MINUTE, 1);//1min
+            alarmeTempo.add(cal);
+
+            //if(flagRepeticaoAlarme=="1")
+            //    swtRepete = true;
+            //if(flagFrequenciaAlarme=="1")
+            //    swtFrequencia = true;
+
+            //idInserted é o id do banco nao id do alarme pegar o idlarme aqui, toquei o id inseretd
+            AlarmReceiver.snoozeAlarmProcedimento(this, alarmeTempo, idAlarme, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
+            Toast.makeText(this, "alarmeTempo:"+alarmeTempo.get(0)+"\nidAlarme:"+idAlarme+"\nswtRepete:"+swtRepete+"\nswtFrequencia:"+swtFrequencia+"\nspnPeriodo:"+spnPeriodo+"\nspnPeriodo1:"+spnPeriodo1, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Atraso incluído com sucesso", Toast.LENGTH_LONG).show();
+            Log.v("VERBOSE","alarmeTempo:"+alarmeTempo.get(0)+"\nidAlarme:"+idAlarme+"\nswtRepete:"+swtRepete+"\nswtFrequencia:"+swtFrequencia+"\nspnPeriodo:"+spnPeriodo+"\nspnPeriodo1:"+spnPeriodo1);
+            finish();
+
+
+        } catch (SQLiteException e) {
+            Toast.makeText(this, "Inclusão de atraso falhou "+e, Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void carregaDados(){
         txtNomeProcedimento = findViewById(R.id.txtProcedimento2);
         txtCategoria = findViewById(R.id.txtCategoria);
@@ -84,7 +148,7 @@ public class AlarmReceiverActivity extends AppCompatActivity {
             bd = bdRotinaHelper.getReadableDatabase();
             cursor = bd.query("PROCEDIMENTO",
                     //new String[] {"_id", "", "", , "QTDDISPAROS", "FLAG_REPETICAO", "FLAG_FREQUENCIA"},
-                    new String[] {"_id", "NOME", "CATEGORIA", "DATA_PREVISAO", "QTDDISPAROS", "FLAG_REPETICAO"},
+                    new String[] {"_id", "NOME", "CATEGORIA", "DATA_PREVISAO", "QTDDISPAROS", "FLAG_REPETICAO", "FLAG_FREQUENCIA"},
                     "_id = ?",
                     new String[] {Long.toString(idProcedimento)},
                     null,
@@ -96,20 +160,27 @@ public class AlarmReceiverActivity extends AppCompatActivity {
                 txtNomeProcedimento.setText(cursor.getString(cursor.getColumnIndexOrThrow("NOME")));
                 txtCategoria.setText(cursor.getString(cursor.getColumnIndexOrThrow("CATEGORIA")));
 
-                String dataPrevisaoTxt = cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO"));
+                dataPrevisaoTxt = cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO"));
                 dataPrevisaoTxt = dataPrevisaoTxt.substring(dataPrevisaoTxt.indexOf("[")+1, dataPrevisaoTxt.indexOf("]"));
                 String[] dataPrevisaoSplitadoTxt = dataPrevisaoTxt.split(", ");
 
                 //int qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
                 flagRepeticaoAlarme = cursor.getString(cursor.getColumnIndexOrThrow("FLAG_REPETICAO"));
+                flagFrequenciaAlarme = cursor.getString(cursor.getColumnIndexOrThrow("FLAG_FREQUENCIA"));
+
 
                 if (flagRepeticaoAlarme.equals("1")){
+
+                    //se alarme repetição -2 digitos, simplificado se apenas dobrar, dai o ultimo digito sera igual no index txt
+                    //pegar ultimo digito, se for 9
 
                     String idAlarmePop = Integer.toString(idAlarme).substring((Integer.toString(idAlarme)).length() - 1);
                     txtHoraProcedimento2.setText(dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)]);
                     //txtHoraProcedimento2.setText("dataPrevisaoSplitadoTxt["+idAlarmePop+"]: "+dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)]);
-                    //Toast.makeText(this, "dataPrevisaoSplitadoTxt["+idAlarmePop+"]: "+dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)], Toast.LENGTH_SHORT).show();
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    Log.v("VERBOSE","dataPrevisaoSplitadoTxt["+idAlarmePop+"]: "+dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)]);
+                    Toast.makeText(this, "dataPrevisaoSplitadoTxt["+idAlarmePop+"]: "+dataPrevisaoSplitadoTxt[Integer.parseInt(idAlarmePop)], Toast.LENGTH_SHORT).show();
+
+                    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //parece ter funfado porem bug: ele nao aciona segundo alarme do array na repeticao desproporcional
 //ele duplicao alarme desproporcional ao alarmar
 //sugiro estressar sem essa parte pra corrigir os bugs acima
