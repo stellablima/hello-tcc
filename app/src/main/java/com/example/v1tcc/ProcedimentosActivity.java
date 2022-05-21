@@ -27,6 +27,7 @@ public class ProcedimentosActivity extends AppCompatActivity {
 
     private TextView txtNomeProcedimento;
     private TextView txtHoraProcedimento;
+    private TextView txtCategoriaProcedimento;
     private Long idProcedimento;
     private BDRotinaHelper bdRotinaHelper;
     private SQLiteDatabase bd;
@@ -40,6 +41,7 @@ public class ProcedimentosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_procedimentos);
         txtNomeProcedimento=findViewById(R.id.txtNomeProcedimento);
         txtHoraProcedimento=findViewById(R.id.txtHoraProcedimento);
+        txtCategoriaProcedimento=findViewById(R.id.txtCategoriaProcedimento);
         //teste
         //txtNomeProcedimento.setText(String.valueOf(getIntent().getExtras().getLong(EXTRA_ID)));
 
@@ -183,7 +185,7 @@ public class ProcedimentosActivity extends AppCompatActivity {
 //            // new String[] {Long.toString(idEstq)} );
 //            // ou com query(). O rawQuery foi usado na app anterior (Biblioteca) e aqui usamos query()
             cursor = bd.query("PROCEDIMENTO",
-                    new String[] {"_id", "NOME", "DATA_PREVISAO"},
+                    new String[] {"_id", "NOME", "DATA_PREVISAO", "CATEGORIA"},
                     "_id = ?",
                     new String[] {Long.toString(idProcedimento)},
                     null,
@@ -195,6 +197,9 @@ public class ProcedimentosActivity extends AppCompatActivity {
                 txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("NOME")));
                 txt = findViewById(R.id.txtHoraProcedimento);
                 txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO")));
+                txt = txtCategoriaProcedimento;
+                txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("CATEGORIA")));
+
 //                txt = findViewById(R.id.txtUnid);
 //                String unid = cursor.getString(cursor.getColumnIndexOrThrow("UNID"));
 //                txt.setText(unid);

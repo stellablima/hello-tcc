@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lvRotinaMain = findViewById(R.id.lvRotinaMain);
+        lvRotinaMain = findViewById(R.id.lvProcedimentosMenuMain);
         setLvEstoqueOnItemClick();
     }
 
@@ -41,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     protected void onStart() {
         super.onStart();
         setLvRotinaMainAdapter();
     }
+
 
     public void btnMenuMainOnClick(View view){
         Intent intent = new Intent(this, MenuMainActivity.class);

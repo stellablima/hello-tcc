@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AlarmReceiverActivity extends AppCompatActivity {
 
@@ -79,8 +80,16 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
 
         //ao fechar gravar no relatorio de urina ou qual for a categoria do alarme como feito e o horario de inicio
         //pode futuramente configurar a duração(pré) e status(pos)
-        //
+
+        preencherRelatorio(view);
         finish();
+
+
+        /*
+        * PRRENCHER RELATORIO
+        * interface mostrar por categoria
+        * adicionar filtro categoria e ordem dedrescente
+        * */
     }
 
     public void btnAtrasarAlarmeOnClick(View view){
@@ -227,4 +236,49 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
         }
 
     }
+
+    public void preencherRelatorio(View view){
+        try {
+
+//            Boolean swtRepete = swtRepeteAlarme.isChecked();
+//            Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
+//            String spnCategoria = spnCategoriasAlarme.getSelectedItem().toString();
+//            String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
+//            String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
+//            ArrayList<Calendar> alarmeTempo = new ArrayList<>();
+
+            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
+            SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
+            ContentValues cvEstq = carregaCVProcedimento();
+            int idInserted = (int) bd.insert("RELATORIO", null, cvEstq);
+
+            if(idInserted > 1)
+                Toast.makeText(this,"Gravado em relatório", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(this, "Erro ao gravar", Toast.LENGTH_LONG).show();
+
+        } catch (SQLiteException e) {
+            Toast.makeText(this, "Inclusão falhou "+e, Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private ContentValues carregaCVProcedimento() {
+
+
+
+        ContentValues cv = new ContentValues();
+        cv.put("_id_PROCEDIMENTO", idProcedimento);
+        cv.put("CATEGORIA", txtCategoria.getText().toString());
+        cv.put("DATA_INICIO", Calendar.getInstance(Locale.getDefault()).getTime().toString());
+        //cv.put("DATA_INICIO", Calendar.getInstance(Locale.BRAZIL).getTime().toString());
+        cv.put("DATA_PREVISAO", dataPrevisaoTxt);
+        cv.put("NOME", txtNomeProcedimento.getText().toString());
+
+
+        return cv;
+    }
+
 }

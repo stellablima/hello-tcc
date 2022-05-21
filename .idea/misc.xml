@@ -14,10 +14,11 @@
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_adicionar_procedimento_v2.xml" value="0.25" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_alarm_receiver.xml" value="0.25" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_editar_procedimento.xml" value="0.33" />
-        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_main.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_procedimentos.xml" value="0.153125" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_procedimentos.xml" value="0.22" />
+        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_relatorios.xml" value="0.22" />
         <entry key="..\:/Users/stell/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/activity_list_item.xml" value="0.20416666666666666" />
       </map>
     </option>

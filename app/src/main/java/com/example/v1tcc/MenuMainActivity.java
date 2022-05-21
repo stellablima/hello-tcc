@@ -21,4 +21,9 @@ public class MenuMainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MenuProcedimentosActivity.class);
         startActivity(intent);
     }
+
+    public void btnRelatoriosOnClick(View view){
+        Intent intent = new Intent(this, RelatoriosActivity.class);
+        startActivity(intent);
+    }
 }

@@ -26,24 +26,24 @@ public class BDRotinaHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase bd, int i, int i1) {
-        String sql = "";
-        switch (i){
-            case 1://anterior(i) atual(i1)
-                sql = "ALTER TABLE PROCEDIMENTO ADD COLUMN QTDDISPAROS TEXT;";
-                bd.execSQL(sql);
-                break;
-            case 2:
-                sql= "ALTER TABLE PROCEDIMENTO ADD COLUMN FLAG_REPETICAO TEXT;";
-                bd.execSQL(sql);
-                sql= "ALTER TABLE PROCEDIMENTO ADD COLUMN FLAG_FREQUENCIA TEXT;";
-                bd.execSQL(sql);
-                break;
+//        String sql = "";
+//        switch (i){
+//            case 1://anterior(i) atual(i1)
+//                sql = "ALTER TABLE PROCEDIMENTO ADD COLUMN QTDDISPAROS TEXT;";
+//                bd.execSQL(sql);
+//                break;
+//            case 2:
+//                sql= "ALTER TABLE PROCEDIMENTO ADD COLUMN FLAG_REPETICAO TEXT;";
+//                bd.execSQL(sql);
+//                sql= "ALTER TABLE PROCEDIMENTO ADD COLUMN FLAG_FREQUENCIA TEXT;";
+//                bd.execSQL(sql);
+//                break;
 /*
 tutorial update
 acrescentar switch > compilar
 acrescentar numero > compilar // instalar como 2, upar 3
 */
-        }
+        //}
     }
 
     private void criaBdRotina(SQLiteDatabase bd) {
@@ -56,10 +56,25 @@ acrescentar numero > compilar // instalar como 2, upar 3
                 "DEBITO_ESTOQUE TEXT, " +
                 "DEBITO_FISIOLOGICO TEXT, " +
                 "FLAG TEXT, " +
+                "FLAG_FREQUENCIA TEXT, " + //SOCRR??
+                "FLAG_REPETICAO TEXT, " + //SOCRR??
+                "QTDDISPAROS TEXT, " + //SOCRR??
                 "NOME TEXT, " +
                 "OBSERVACAO TEXT, " +
                 "TEMPO_PREVISAO NUMERIC " +
                 ")";
+
+        bd.execSQL(sql);
+
+        sql = "CREATE TABLE RELATORIO (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "_id_PROCEDIMENTO INTEGER, " +
+                "CATEGORIA TEXT, " +
+                "DATA_INICIO TEXT, " +
+                "DATA_PREVISAO TEXT, " +//como o procedimento pode ser editavel, melhor replicar o dado
+                "NOME TEXT " +
+                ")";
+
         bd.execSQL(sql);
     }
     private void insereDadosProcedimento(SQLiteDatabase bd) {
