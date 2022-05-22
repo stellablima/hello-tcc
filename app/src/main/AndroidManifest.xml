@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.V1TCC">
         <activity
+            android:name=".ManterEstadoActivity"
+            android:exported="true" />
+        <activity
             android:name=".RelatoriosActivity"
             android:exported="true" />
         <activity
@@ -46,7 +49,7 @@
             android:exported="true" />
         <activity
             android:name=".AdicionarProcedimentoActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

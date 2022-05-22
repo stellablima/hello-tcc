@@ -68,11 +68,21 @@ acrescentar numero > compilar // instalar como 2, upar 3
 
         sql = "CREATE TABLE RELATORIO (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "_id_PROCEDIMENTO INTEGER, " +
+                "_id_PROCEDIMENTO NUMERIC, " +
                 "CATEGORIA TEXT, " +
                 "DATA_INICIO TEXT, " +
                 "DATA_PREVISAO TEXT, " +//como o procedimento pode ser editavel, melhor replicar o dado
                 "NOME TEXT " +
+                ")";
+
+        bd.execSQL(sql);
+
+        sql = "CREATE TABLE ESTADO (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "TITULO TEXT, " +
+                "CATEGORIA TEXT, " +
+                "FLAG TEXT, " +
+                "TEXTO TEXT " +
                 ")";
 
         bd.execSQL(sql);

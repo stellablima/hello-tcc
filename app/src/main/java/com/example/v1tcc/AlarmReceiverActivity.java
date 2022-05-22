@@ -221,7 +221,7 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
         try {
 
             ContentValues cv = new ContentValues();
-            cv.put("FLAG", "2");//0excluido,1ativo,2concluido
+            cv.put("FLAG", "2");//0excluido,1ativo,2concluidoprocedimentounico(evolua pra alarme com expiração),3procedimentopararegistrosemalarme
             BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});

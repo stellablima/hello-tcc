@@ -7,16 +7,24 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     ListView lvRotinaMain;
     SimpleCursorAdapter cursorAdapter;
+    private TextView txtHoraMain;
+    private Handler handler= new Handler();
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +32,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         lvRotinaMain = findViewById(R.id.lvProcedimentosMenuMain);
         setLvEstoqueOnItemClick();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        configurarCampos();
+        setLvRotinaMainAdapter();
+    }
+
+    private void configurarCampos(){
+        txtHoraMain = findViewById(R.id.txtHoraMain);
+        atualizarHora();
+    }
+
+    private void atualizarHora(){
+        https://www.youtube.com/watch?v=Pj9XEimUCMM
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                Calendar calendar =  Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+
+                String horaMinuto = String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
+                txtHoraMain.setText(horaMinuto);
+
+                long agora = SystemClock.uptimeMillis();
+                long proximo = agora + (1000-(agora%1000));
+
+                handler.postAtTime(runnable,proximo);
+            }
+        };
+        runnable.run();
     }
 
     private void setLvEstoqueOnItemClick(){
@@ -41,12 +81,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setLvRotinaMainAdapter();
-    }
-
 
     public void btnMenuMainOnClick(View view){
         Intent intent = new Intent(this, MenuMainActivity.class);
