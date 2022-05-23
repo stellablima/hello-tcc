@@ -12,7 +12,7 @@ import java.util.Date;
 public class BDRotinaHelper extends SQLiteOpenHelper {
 
     private static final String NOMEDB = "rotina";
-    private static final int VERSAOBD = 3;
+    private static final int VERSAOBD = 4;
 
     public BDRotinaHelper(Context context) {
         super(context, NOMEDB, null, VERSAOBD);
@@ -21,12 +21,14 @@ public class BDRotinaHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase bd) {
         criaBdRotina(bd);
+        insereDadosAlertaDia(bd);
+        insereDadosTarefas(bd);
         //insereDadosProcedimento(bd);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase bd, int i, int i1) {
-//        String sql = "";
+        String sql = "";
 //        switch (i){
 //            case 1://anterior(i) atual(i1)
 //                sql = "ALTER TABLE PROCEDIMENTO ADD COLUMN QTDDISPAROS TEXT;";
@@ -44,6 +46,30 @@ acrescentar switch > compilar
 acrescentar numero > compilar // instalar como 2, upar 3
 */
         //}
+
+//        sql = "CREATE TABLE RELATORIO (" +
+//                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "_id_PROCEDIMENTO NUMERIC, " +
+//                "CATEGORIA TEXT, " +
+//                "DATA_INICIO TEXT, " +
+//                "DATA_PREVISAO TEXT, " +//como o procedimento pode ser editavel, melhor replicar o dado
+//                "NOME TEXT " +
+//                ")";
+//
+//        bd.execSQL(sql);
+//
+//        sql = "CREATE TABLE ESTADO (" +
+//                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "TITULO TEXT, " +
+//                "CATEGORIA TEXT, " +
+//                "FLAG TEXT, " +
+//                "TEXTO TEXT " +
+//                ")";
+//
+//        bd.execSQL(sql);
+//
+//        insereDadosAlertaDia(bd);
+//        insereDadosTarefas(bd);
     }
 
     private void criaBdRotina(SQLiteDatabase bd) {
@@ -87,6 +113,43 @@ acrescentar numero > compilar // instalar como 2, upar 3
 
         bd.execSQL(sql);
     }
+
+     void insereDadosAlertaDia(SQLiteDatabase bd){
+        ContentValues cv = new ContentValues();
+        cv.put("CATEGORIA", "Alerta do dia");
+        cv.put("TITULO", "O2 chegará hoje");
+        cv.put("FLAG", "1");
+        cv.put("TEXTO", "Verificar a real necessidade de existtir um alerta na tela principal, e se isso seria manual, verificar a viabilidade e uso disso no app, pode edixar na verdade e na semana teste uso ver s situaçãoo e o uso disso, ao meu ver talvez seria manual nao sei \n melhore revisao o escopo, lorem ipsun loren ispsuj lotens ispsum");
+        bd.insert("ESTADO", null, cv);
+    }
+
+     void insereDadosTarefas(SQLiteDatabase bd){
+        ContentValues cv = new ContentValues();
+        cv.put("CATEGORIA", "Tarefa");
+        cv.put("FLAG", "3");
+        //cv.put("TEXTO", "Verificar a real necessidade de existtir um alerta na tela principal, e se isso seria manual, verificar a viabilidade e uso disso no app, pode edixar na verdade e na semana teste uso ver s situaçãoo e o uso disso, ao meu ver talvez seria manual nao sei \n melhore revisao o escopo, lorem ipsun loren ispsuj lotens ispsum");
+        cv.put("NOME", "Tarefa Mockada0");
+        cv.put("OBSERVACAO", "Observacao Tarefa Mockada0");
+        bd.insert("PROCEDIMENTO", null, cv);//procedimento sem alarme, clique concluir manual, grava em relatorio
+
+        cv = new ContentValues();
+        cv.put("CATEGORIA", "Tarefa");
+        cv.put("FLAG", "3");
+        //cv.put("TEXTO", "Verificar a real necessidade de existtir um alerta na tela principal, e se isso seria manual, verificar a viabilidade e uso disso no app, pode edixar na verdade e na semana teste uso ver s situaçãoo e o uso disso, ao meu ver talvez seria manual nao sei \n melhore revisao o escopo, lorem ipsun loren ispsuj lotens ispsum");
+        cv.put("NOME", "Tarefa Mockada1");
+        cv.put("OBSERVACAO", "Observacao Tarefa Mockada1");
+        bd.insert("PROCEDIMENTO", null, cv);//procedimento sem alarme, clique concluir manual, grava em relatorio
+
+        cv = new ContentValues();
+        cv.put("CATEGORIA", "Tarefa");
+        cv.put("FLAG", "3");
+        //cv.put("TEXTO", "Verificar a real necessidade de existtir um alerta na tela principal, e se isso seria manual, verificar a viabilidade e uso disso no app, pode edixar na verdade e na semana teste uso ver s situaçãoo e o uso disso, ao meu ver talvez seria manual nao sei \n melhore revisao o escopo, lorem ipsun loren ispsuj lotens ispsum");
+        cv.put("NOME", "Tarefa Mockada2");
+        cv.put("OBSERVACAO", "Observacao Tarefa Mockada2");
+        bd.insert("PROCEDIMENTO", null, cv);//procedimento sem alarme, clique concluir manual, grava em relatorio
+    }
+
+
     private void insereDadosProcedimento(SQLiteDatabase bd) {
         insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "12:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "1", "1","Losec", "Mussarela", "2021-01-01 00:00:00");
         insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "23:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "1","1", "Dieta", "Mostarda Tradicional", "2021-01-01 00:00:00");
