@@ -240,13 +240,6 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
     public void preencherRelatorio(View view){
         try {
 
-//            Boolean swtRepete = swtRepeteAlarme.isChecked();
-//            Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
-//            String spnCategoria = spnCategoriasAlarme.getSelectedItem().toString();
-//            String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
-//            String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
-//            ArrayList<Calendar> alarmeTempo = new ArrayList<>();
-
             BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
             SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
             ContentValues cvEstq = carregaCVProcedimento();

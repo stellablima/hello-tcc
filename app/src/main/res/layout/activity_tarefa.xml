@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main"
+    tools:context=".TarefaActivity">
+
+    <TextView
+        android:id="@+id/txtTarefa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tarefa"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/txtNomeTarefa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNomeTarefa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NOME TAREFA"
+        app:layout_constraintBottom_toTopOf="@+id/txtObservacaoTarefa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTarefa" />
+
+    <TextView
+        android:id="@+id/txtObservacaoTarefa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OBS TAREFA"
+        app:layout_constraintBottom_toTopOf="@+id/btnManterTarefa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNomeTarefa" />
+
+    <Button
+        android:id="@+id/btnManterTarefa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btnEditarProcedimentoOnClick"
+        android:text="Concluir"
+        app:layout_constraintBottom_toTopOf="@+id/btnFecharTarefa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtObservacaoTarefa" />
+
+    <Button
+        android:id="@+id/btnFecharTarefa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fechar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnManterTarefa" />
+</androidx.constraintlayout.widget.ConstraintLayout>

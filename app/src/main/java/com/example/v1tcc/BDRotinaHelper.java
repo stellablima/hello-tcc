@@ -99,6 +99,7 @@ acrescentar numero > compilar // instalar como 2, upar 3
                 "DATA_INICIO TEXT, " +
                 "DATA_PREVISAO TEXT, " +//como o procedimento pode ser editavel, melhor replicar o dado
                 "NOME TEXT " +
+                //falta OBSERVACAO que poderia se chamar DESCRICAO nas duas tabelas talvez por ser tarefa tudo bem pegar por join...
                 ")";
 
         bd.execSQL(sql);

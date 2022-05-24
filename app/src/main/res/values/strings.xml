@@ -27,6 +27,12 @@
         <item>Higienização</item>
         <item>Outro</item>
     </string-array>
+    <string-array name="categoriasRelatorio">
+        <item>Medicação</item>
+        <item>Higienização</item>
+        <item>Tarefa</item>
+        <item>Outro</item>
+    </string-array>
     <string-array name="periodos">
         <item>(MINUTO)</item>
         <item>(HORAS)</item>

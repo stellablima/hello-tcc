@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lvRotinaMain = findViewById(R.id.lvProcedimentosMenuMain);
-        setLvEstoqueOnItemClick();
+
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); para manter tela sempre acesa no app
     }
 
@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
         setLvTarefasMainAdapter();
         //MainActivity.this.deleteDatabase("rotina");
         //bdRotinaHelper.onCreate(bd);
-        //bdRotinaHelper.close();
         //bdRotinaHelper.insereDadosAlertaDia(bd);
         //bdRotinaHelper.insereDadosTarefas(bd);
+        //bdRotinaHelper.close();
     }
 
     @Override
@@ -111,6 +111,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        lvRotinaMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, ProcedimentosActivity.class);
+
+                Cursor cursor = (Cursor) cursorAdapter.getItem(position); // :D EBAAAAA, nao pera se o id é sequencial id é pode ser var mesmo https://www.rlsystem.com.br/forum/android/649-filtrar-dados-da-listview-com-uso-de-sqlite-e-simplecursoradapter-
+                intent.putExtra(ProcedimentosActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                //Toast.makeText(MainActivity.this, "id:"+cursor.getLong(cursor.getColumnIndex("_id")), Toast.LENGTH_LONG).show();
+                //cursor.getLong(cursor.getColumnIndex("_id"))
+                //intent.putExtra(ProcedimentosActivity.EXTRA_TIPO, "procedimento");
+                startActivity(intent);
+            }
+        });
+
+        lvTarefasMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Intent intent = new Intent(MainActivity.this, TarefaActivity.class);
+
+                Cursor cursor = (Cursor) cursorAdapter.getItem(position);
+                intent.putExtra(ProcedimentosActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                startActivity(intent);
+            }
+        });
     }
 
     private void carregaDadosAviso() {
@@ -167,22 +191,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         runnable.run();
-    }
-
-    private void setLvEstoqueOnItemClick(){
-        lvRotinaMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, ProcedimentosActivity.class);
-
-                Cursor cursor = (Cursor) cursorAdapter.getItem(position); // :D EBAAAAA, nao pera se o id é sequencial id é pode ser var mesmo https://www.rlsystem.com.br/forum/android/649-filtrar-dados-da-listview-com-uso-de-sqlite-e-simplecursoradapter-
-                intent.putExtra(ProcedimentosActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                //Toast.makeText(MainActivity.this, "id:"+cursor.getLong(cursor.getColumnIndex("_id")), Toast.LENGTH_LONG).show();
-                //cursor.getLong(cursor.getColumnIndex("_id"))
-                //intent.putExtra(ProcedimentosActivity.EXTRA_TIPO, "procedimento");
-                startActivity(intent);
-            }
-        });
     }
 
     public void btnMenuMainOnClick(View view){
