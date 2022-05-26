@@ -26,4 +26,9 @@ public class MenuMainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RelatoriosActivity.class);
         startActivity(intent);
     }
+
+    public void btnTarefasOnClick(View view){
+        Intent intent = new Intent(this, MenuTarefaActivity.class);
+        startActivity(intent);
+    }
 }
