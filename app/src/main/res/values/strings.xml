@@ -48,6 +48,7 @@
         <item>00:00</item>
     </string-array>
     <string-array name="estados">
+        <item>Defaults</item>
         <item>Vencimentos</item>
         <item>Instruções</item>
         <item>Lista ToDo (suspenso do escopo)</item>

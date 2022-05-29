@@ -3,7 +3,6 @@ package com.example.v1tcc;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,11 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -39,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
     private boolean runnableStopped = false;
     private String alertaDiaTitulo;
     private String alertaDiaTexto;
+    private ImageButton btnMenuMain;
+    private ImageButton btnMenuVencimentos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lvRotinaMain = findViewById(R.id.lvProcedimentosMenuMain);
 
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); para manter tela sempre acesa no app
     }
@@ -78,10 +77,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configurarCampos(){
-        txtHoraMain = findViewById(R.id.txtHoraMain);
-        txtAviso = findViewById(R.id.txtAviso);
-        lvTarefasMain = findViewById(R.id.lvTarefasMain);
 
+        txtHoraMain = findViewById(R.id.txtHoraMain);
+
+        btnMenuMain = findViewById(R.id.btnMenuMain);
+        btnMenuMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnMenuMainOnClick(view);
+            }
+        });
+
+        btnMenuVencimentos = findViewById(R.id.btnMenuVencimentos);
+        btnMenuVencimentos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnMenuVencimentosOnClick(view);
+                //btnMenuMainOnClick(view);
+                /*
+
+                btnMenuVencimentos
+                btnMenuInstrucoes
+                btnMenuAnortarAlimentacao
+                btnMenuAnortarNecessidades
+                btnMenuAnotarRelatorio
+
+                 */
+            }
+        });
+
+        txtAviso = findViewById(R.id.txtAviso);
         txtAviso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        lvRotinaMain = findViewById(R.id.lvProcedimentosMenuMain);
         lvRotinaMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -123,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        lvTarefasMain = findViewById(R.id.lvTarefasMain);
         lvTarefasMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -145,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
             Cursor cursor = bd.query("ESTADO",
                     new String[] {"_id", "TITULO", "TEXTO"},
-                    "_id = ?",
+                    "_id = ?",//CATEGORIA="Alerta" FLAG="1" (ATIVO)
                     new String[] {Long.toString(idAlertaDia)},
                     null,
                     null,
@@ -188,8 +215,13 @@ public class MainActivity extends AppCompatActivity {
         runnable.run();
     }
 
-    public void btnMenuMainOnClick(View view){
+    private void btnMenuMainOnClick(View view){
         Intent intent = new Intent(this, MenuMainActivity.class);
+        startActivity(intent);
+    }
+
+    private void btnMenuVencimentosOnClick(View view){
+        Intent intent = new Intent(this, MenuVencimentosActivity.class);
         startActivity(intent);
     }
 

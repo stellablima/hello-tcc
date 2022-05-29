@@ -33,13 +33,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/btnMenuAnortarAlimentacao"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/ic_launcher_background"
+                    android:clickable="false"
+                    android:src="@drawable/btn_icon_main_food" />
+
+                <ImageButton
+                    android:id="@+id/btnMenuAnortarNecessidades"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/btn_bg_main"
+                    android:src="@drawable/btn_icon_main_needs" />
+
+                <ImageButton
+                    android:id="@+id/btnMenuAnotarRelatorio"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/btn_bg_main"
+                    app:srcCompat="@drawable/btn_icon_main_relatorio" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -52,50 +88,19 @@
                     android:text="00:00"
                     android:textSize="48sp" />
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imageView"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/btnMenuAnortarNecessidades"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="2dp"
-                            android:background="@drawable/btn_bg_main"
-                            android:src="@drawable/btn_icon_main_needs" />
-
-                        <ImageButton
-                            android:id="@+id/btnMenuAnotarRelatorio"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="2dp"
-                            android:background="@drawable/btn_bg_main"
-                            app:srcCompat="@drawable/btn_icon_main_relatorio" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/icon_2_main"
-                        tools:srcCompat="@drawable/icon_2_main" />
-                </LinearLayout>
-
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/icon_2_main"
+                    tools:srcCompat="@drawable/icon_2_main" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="105dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -126,7 +131,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="2dp"
-                    android:background="@drawable/btn_bg_main"
+                    android:background="@drawable/ic_launcher_background"
+                    android:clickable="false"
                     app:srcCompat="@android:drawable/ic_popup_sync" />
 
                 <ImageButton

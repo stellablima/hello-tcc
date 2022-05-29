@@ -12,7 +12,7 @@ import java.util.Date;
 public class BDRotinaHelper extends SQLiteOpenHelper {
 
     private static final String NOMEDB = "rotina";
-    private static final int VERSAOBD = 4;
+    private static final int VERSAOBD = 6;
 
     public BDRotinaHelper(Context context) {
         super(context, NOMEDB, null, VERSAOBD);
@@ -22,13 +22,16 @@ public class BDRotinaHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase bd) {
         criaBdRotina(bd);
         insereDadosAlertaDia(bd);
-        insereDadosTarefas(bd);
+        //insereDadosTarefas(bd);
         //insereDadosProcedimento(bd);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase bd, int i, int i1) {
-        String sql = "";
+//        String sql = "";
+//        sql = "ALTER TABLE ESTADO ADD COLUMN DATA_ULTIMA_OCORRENCIA TEXT;";
+//        bd.execSQL(sql);
+
 //        switch (i){
 //            case 1://anterior(i) atual(i1)
 //                sql = "ALTER TABLE PROCEDIMENTO ADD COLUMN QTDDISPAROS TEXT;";
@@ -107,6 +110,7 @@ acrescentar numero > compilar // instalar como 2, upar 3
         sql = "CREATE TABLE ESTADO (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "TITULO TEXT, " +
+                "DATA_ULTIMA_OCORRENCIA TEXT," +
                 "CATEGORIA TEXT, " +
                 "FLAG TEXT, " +
                 "TEXTO TEXT " +
@@ -117,9 +121,9 @@ acrescentar numero > compilar // instalar como 2, upar 3
 
      void insereDadosAlertaDia(SQLiteDatabase bd){
         ContentValues cv = new ContentValues();
-        cv.put("CATEGORIA", "Alerta do dia"); //mudar para alerta
-        cv.put("TITULO", "O2 chegará hoje");
-        cv.put("FLAG", "1");
+        cv.put("CATEGORIA", "Alerta"); //a categoria é como se fosse um agrupamento mesmo
+        cv.put("TITULO", "Clique para adicionar");
+        cv.put("FLAG", "1");//default ativo
         cv.put("TEXTO", "Verificar a real necessidade de existtir um alerta na tela principal, e se isso seria manual, verificar a viabilidade e uso disso no app, pode edixar na verdade e na semana teste uso ver s situaçãoo e o uso disso, ao meu ver talvez seria manual nao sei \n melhore revisao o escopo, lorem ipsun loren ispsuj lotens ispsum");
         bd.insert("ESTADO", null, cv);
     }
@@ -149,7 +153,6 @@ acrescentar numero > compilar // instalar como 2, upar 3
         cv.put("OBSERVACAO", "Observacao Tarefa Mockada2");
         bd.insert("PROCEDIMENTO", null, cv);//procedimento sem alarme, clique concluir manual, grava em relatorio
     }
-
 
     private void insereDadosProcedimento(SQLiteDatabase bd) {
         insereProcedimento(bd, "Medicação", "2021-01-01 00:00:00", "12:00", "4u8r_-1_un|cd09_-3_ml|jki5_-2_pc", "34e3_-350_ml|ks94_100_kg", "1", "1","Losec", "Mussarela", "2021-01-01 00:00:00");

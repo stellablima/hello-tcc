@@ -1,10 +1,12 @@
 package com.example.v1tcc;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -105,6 +107,36 @@ public class Helpers {
                     }
                 }, hour, minute, true);//tem como pegar o padrão corernte no dispositivo?
                 mTimePicker.show();
+            }
+        });
+    }
+
+    public static void txtDataConfig(Context context, TextView txtDataProcedimento, boolean flagAtualizaCampo){
+
+        if(flagAtualizaCampo){
+            Calendar calHoraAlarm = Calendar.getInstance();
+            String diaAtual = String.format("%02d", calHoraAlarm.get(Calendar.DAY_OF_MONTH));
+            String mesAtual = String.format("%02d", calHoraAlarm.get(Calendar.MONTH)+1);
+            String anoAtual = String.format("%02d", calHoraAlarm.get(Calendar.YEAR));
+            txtDataProcedimento.setText(diaAtual+"/"+(mesAtual)+"/"+anoAtual);
+        }
+
+        txtDataProcedimento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String[] txtHora =  txtDataProcedimento.getText().toString().split("/");
+                int diaAtual = Integer.parseInt(txtHora[0]);
+                int mesAtual = Integer.parseInt(txtHora[1]);
+                int anoAtual = Integer.parseInt(txtHora[2]);
+
+                DatePickerDialog dPickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        txtDataProcedimento.setText(String.format("%02d",i2) + "/" + String.format("%02d",i1+1) + "/" + String.format("%02d",i));
+                    }
+                }, anoAtual, mesAtual-1, diaAtual);
+                dPickerDialog.show();
             }
         });
     }
