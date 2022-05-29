@@ -91,19 +91,16 @@ public class MainActivity extends AppCompatActivity {
 
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                         .setTitle(alertaDiaTitulo)
-                        .setMessage(alertaDiaTexto +
-                                "\n lorem ipsum" +
-                                "\n lorem ipsum" +
-                                "\n lorem ipsum" +
-                                "\n lorem ipsum" +
-                                "\n lorem ipsum" +
-                                "\n lorem ipsum" +
-                                "\n lorem ipsum")
+                        .setMessage(alertaDiaTexto)
                         .setCancelable(false)
                         .setPositiveButton("Editar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
+                                //fecha modal
+                                //abre activit de editar alerta do dia
+                                //ou tentar mudar no proprio alerta
+                                Intent intent = new Intent(MainActivity.this, AlertaActivity.class);
+                                startActivity(intent);
                             }
                         })
                         .setNegativeButton("Fechar", null)
@@ -170,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void atualizarHora(){
-        https://www.youtube.com/watch?v=Pj9XEimUCMM
+        //https://www.youtube.com/watch?v=Pj9XEimUCMM
         runnable = new Runnable() {
             @Override
             public void run() {

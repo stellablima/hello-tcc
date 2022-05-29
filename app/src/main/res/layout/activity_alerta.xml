@@ -5,62 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".AdicionarTarefaActivity">
+    tools:context=".AlertaActivity">
 
     <TextView
-        android:id="@+id/txtCadastroTarefa"
+        android:id="@+id/txtManterAlerta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/lblCadastroTarefa"
+        android:text="Alerta"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/edtNomeTarefa"
+        app:layout_constraintBottom_toTopOf="@+id/edtNomeAlerta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edtNomeTarefa"
+        android:id="@+id/edtNomeAlerta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Nome da tarefa"
+        android:hint="Nome do Alerta"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/edtObservacaoTarefa"
+        app:layout_constraintBottom_toTopOf="@+id/edtObservacaoAlerta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCadastroTarefa" />
+        app:layout_constraintTop_toBottomOf="@+id/txtManterAlerta" />
 
     <EditText
-        android:id="@+id/edtObservacaoTarefa"
+        android:id="@+id/edtObservacaoAlerta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Escopo da Tarefa"
+        android:hint="Descrição"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtNomeTarefa" />
+        app:layout_constraintTop_toBottomOf="@+id/edtNomeAlerta" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtObservacaoTarefa">
+        app:layout_constraintTop_toBottomOf="@+id/edtObservacaoAlerta">
 
         <Space
             android:layout_width="wrap_content"
@@ -68,7 +64,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/btnSalvarTarefa"
+            android:id="@+id/btnSalvarAlerta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,7 +76,19 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/btnFecharSalvarTarefa"
+            android:id="@+id/btnExcluirAlerta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Excluir" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnFecharAlerta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -91,5 +99,4 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

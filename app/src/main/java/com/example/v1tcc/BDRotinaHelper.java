@@ -117,7 +117,7 @@ acrescentar numero > compilar // instalar como 2, upar 3
 
      void insereDadosAlertaDia(SQLiteDatabase bd){
         ContentValues cv = new ContentValues();
-        cv.put("CATEGORIA", "Alerta do dia");
+        cv.put("CATEGORIA", "Alerta do dia"); //mudar para alerta
         cv.put("TITULO", "O2 chegará hoje");
         cv.put("FLAG", "1");
         cv.put("TEXTO", "Verificar a real necessidade de existtir um alerta na tela principal, e se isso seria manual, verificar a viabilidade e uso disso no app, pode edixar na verdade e na semana teste uso ver s situaçãoo e o uso disso, ao meu ver talvez seria manual nao sei \n melhore revisao o escopo, lorem ipsun loren ispsuj lotens ispsum");
