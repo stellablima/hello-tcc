@@ -27,10 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView lvRotinaMain;
     private ListView lvTarefasMain;
-    private SimpleCursorAdapter cursorAdapter;
-    private BDRotinaHelper bdRotinaHelper;
-    private SQLiteDatabase bd;
-    private Cursor cursor;
+    private SimpleCursorAdapter cursorAdapterProcedimentos;
+    private SimpleCursorAdapter cursorAdapterTarefas;
+//    private BDRotinaHelper bdRotinaHelper;
+//    private SQLiteDatabase bd;
+//    private Cursor cursor;
     private TextView txtHoraMain;
     private TextView txtAviso;
     private Handler handler= new Handler();
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, ProcedimentosActivity.class);
 
-                Cursor cursor = (Cursor) cursorAdapter.getItem(position); // :D EBAAAAA, nao pera se o id é sequencial id é pode ser var mesmo https://www.rlsystem.com.br/forum/android/649-filtrar-dados-da-listview-com-uso-de-sqlite-e-simplecursoradapter-
+                Cursor cursor = (Cursor) cursorAdapterProcedimentos.getItem(position); // :D EBAAAAA, nao pera se o id é sequencial id é pode ser var mesmo https://www.rlsystem.com.br/forum/android/649-filtrar-dados-da-listview-com-uso-de-sqlite-e-simplecursoradapter-
                 intent.putExtra(ProcedimentosActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
                 //Toast.makeText(MainActivity.this, "id:"+cursor.getLong(cursor.getColumnIndex("_id")), Toast.LENGTH_LONG).show();
                 //cursor.getLong(cursor.getColumnIndex("_id"))
@@ -130,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Intent intent = new Intent(MainActivity.this, TarefaActivity.class);
 
-                Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(ProcedimentosActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                Cursor cursor = (Cursor) cursorAdapterTarefas.getItem(position);
+                intent.putExtra(TarefaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
                 startActivity(intent);
             }
         });
@@ -143,10 +144,9 @@ public class MainActivity extends AppCompatActivity {
         int valor; //txtHoraProcedimento
         try {
             int idAlertaDia = 1 ;
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getWritableDatabase();
-
-            cursor = bd.query("ESTADO",
+            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
+            SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
+            Cursor cursor = bd.query("ESTADO",
                     new String[] {"_id", "TITULO", "TEXTO"},
                     "_id = ?",
                     new String[] {Long.toString(idAlertaDia)},
@@ -157,8 +157,6 @@ public class MainActivity extends AppCompatActivity {
             if (cursor.moveToFirst()) {
                 alertaDiaTitulo = cursor.getString(cursor.getColumnIndexOrThrow("TITULO"));
                 alertaDiaTexto = cursor.getString(cursor.getColumnIndexOrThrow("TEXTO"));
-
-
                 txt = findViewById(R.id.txtAviso);
                 txt.setText(alertaDiaTitulo);
 
@@ -212,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                     null,
                     "DATA_PREVISAO"
             );
-            cursorAdapter = new SimpleCursorAdapter(
+            cursorAdapterProcedimentos = new SimpleCursorAdapter(
                     this,
                     android.R.layout.simple_list_item_2,
                     cursor,
@@ -220,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                     new int[]{android.R.id.text1, android.R.id.text2},
                     0
             );
-            lvRotinaMain.setAdapter(cursorAdapter);
+            lvRotinaMain.setAdapter(cursorAdapterProcedimentos);
         } catch (SQLiteException e) {
             Toast.makeText(this, "Erro: " + e, Toast.LENGTH_LONG).show();
         }
@@ -240,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     null,
                     "_id DESC"
             );
-            cursorAdapter = new SimpleCursorAdapter(
+            cursorAdapterTarefas = new SimpleCursorAdapter(
                     this,
                     android.R.layout.simple_list_item_2,
                     cursor,
@@ -248,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
                     new int[]{android.R.id.text1, android.R.id.text2},
                     0
             );
-            lvTarefasMain.setAdapter(cursorAdapter);
+            lvTarefasMain.setAdapter(cursorAdapterTarefas);
         } catch (SQLiteException e) {
             Toast.makeText(this, "Erro: " + e, Toast.LENGTH_LONG).show();
         }

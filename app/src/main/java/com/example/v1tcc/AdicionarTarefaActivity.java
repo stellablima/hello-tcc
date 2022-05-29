@@ -4,24 +4,32 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
+//trocar pra manter tarefa parece melhor
 public class AdicionarTarefaActivity extends AppCompatActivity {
 
-    public static final String EXTRA_TAREFA = "extraTarefa";
-    private Button btnSalvarTarefa ;
+    public static final String EXTRA_TAREFA = "extratarefa";
+    public static final String EXTRA_ID = "idTarefa";
+    private Button btnSalvarTarefa;
     private Button btnFecharSalvarTarefa;
     private EditText edtNomeTarefa;
     private EditText edtObservacaoTarefa;
+    private TextView txtCadastroTarefa;
+    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteDatabase bd;
+    private Cursor cursor;
+    private long idProcedimento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +41,16 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(getIntent().getExtras().getString(EXTRA_TAREFA).equals("ADICIONAR_TAREFA")){
+        if (getIntent().getExtras().getString(EXTRA_TAREFA).equals("ADICIONAR_TAREFA")) {
             configurarCampos(true);
 
-        }
-        else if(getIntent().getExtras().getString(EXTRA_TAREFA).equals("EDITAR_TAREFA")){
+        } else if (getIntent().getExtras().getString(EXTRA_TAREFA).equals("EDITAR_TAREFA")) {
+
+            configurarCampos(false);
+            carregaDados();
+            Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
+
+
 //
 //            configurarCampos(false);
 //            carregaDados();
@@ -52,210 +65,146 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         }
     }
 
-    private void configurarCampos(Boolean extraTarefa){
-        edtNomeTarefa = findViewById(R.id.edtNomeTarefa);
-        edtObservacaoTarefa = findViewById(R.id.edtObservacaoTarefa);
+    //update no salvar do editar
+    private void configurarCampos(Boolean cadastrarTarefa) {
         btnSalvarTarefa = findViewById(R.id.btnSalvarTarefa);
-        btnSalvarTarefa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnSalvarTarefaOnClick(view);
-            }
-        });
         btnFecharSalvarTarefa = findViewById(R.id.btnFecharSalvarTarefa);
-        btnFecharSalvarTarefa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnFecharSalvarTarefaOnClick(view);
-            }
-        });
+        if (cadastrarTarefa) {
 
+
+            btnSalvarTarefa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btnSalvarTarefaOnClick(view, false);
+                }
+            });
+            btnFecharSalvarTarefa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btnFecharSalvarTarefaOnClick(view, false);
+                }
+            });
+        } else {
+            edtNomeTarefa = findViewById(R.id.edtNomeTarefa);
+            edtObservacaoTarefa = findViewById(R.id.edtObservacaoTarefa);
+
+            txtCadastroTarefa = findViewById(R.id.txtCadastroTarefa);
+            txtCadastroTarefa.setText("Editar Tarefa");
+
+            btnFecharSalvarTarefa.setText("Excluir");
+            btnSalvarTarefa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btnSalvarTarefaOnClick(view, true);
+                }
+            });
+            btnFecharSalvarTarefa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btnFecharSalvarTarefaOnClick(view, true);
+                }
+            });
+        }
     }
 
-    private void carregaDados(){
+    private void carregaDados() {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
-          /* idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
+            idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
             bdRotinaHelper = new BDRotinaHelper(this);
             bd = bdRotinaHelper.getReadableDatabase();
             cursor = bd.query("PROCEDIMENTO",
-                    new String[] {"_id", "NOME", "DATA_PREVISAO", "CATEGORIA", "QTDDISPAROS", "FLAG_REPETICAO", "FLAG_FREQUENCIA"},
+                    new String[]{"_id", "NOME", "OBSERVACAO"},
                     "_id = ?",
-                    new String[] {Long.toString(idProcedimento)},
+                    new String[]{Long.toString(idProcedimento)},
                     null,
                     null,
                     null
             );
             if (cursor.moveToFirst()) {
 
-                edtNomeProcedimento.setText(cursor.getString(cursor.getColumnIndexOrThrow("NOME")));
-
-                String categoriaAlarme = cursor.getString(cursor.getColumnIndexOrThrow("CATEGORIA"));
-                String qtdDisparosAlarme = cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS"));
-                String flagRepeticaoAlarme = cursor.getString(cursor.getColumnIndexOrThrow("FLAG_REPETICAO"));
-                String flagFrequenciaAlarme = cursor.getString(cursor.getColumnIndexOrThrow("FLAG_FREQUENCIA"));
-                String dataPrevisaoAlarme = cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO"));
-                switch (categoriaAlarme + "") {
-                    case "Medicação":
-                        spnCategoriasAlarme.setSelection(0);
-                        break;
-                    case "Higienização":
-                        spnCategoriasAlarme.setSelection(1);
-                        break;
-                    default: //"Outro"
-                        spnCategoriasAlarme.setSelection(2);
-                        break;
-                }
-
-                //List<String> dataPrevisaoSplitado = new ArrayList<String>();
-                String dataPrevisaoSplitadoTxt = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("[")+1, dataPrevisaoAlarme.indexOf("]"));
-                dataPrevisaoSplitado = dataPrevisaoSplitadoTxt.split(", ");
-
-                if (flagRepeticaoAlarme.equals("1")){
-                    swtRepeteAlarme.setChecked(true);
-                    String textoParenteses = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("(")+1, dataPrevisaoAlarme.lastIndexOf(")"));
-                    switch (textoParenteses){
-                        case "MINUTO":
-                            spnPeriodoAlarme.setSelection(0);
-                            break;
-                        case "HORAS":
-                            spnPeriodoAlarme.setSelection(1);
-                            break;
-                        case "DIA S/N":
-                            spnPeriodoAlarme.setSelection(2);
-                            break;
-                        case "DIA":
-                            spnPeriodoAlarme.setSelection(3);
-                            break;
-                        case "SEMANA":
-                            spnPeriodoAlarme.setSelection(4);
-                            break;
-                        case "MÊS":
-                            spnPeriodoAlarme.setSelection(5);
-                            break;
-                        case "ANO":
-                            spnPeriodoAlarme.setSelection(6);
-                            break;
-                        default:
-                            spnPeriodoAlarme.setSelection(3);
-                            break;
-                    }
-
-                    int intSpnPeriodo1Alarme = (Integer.parseInt(dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("]")+1, dataPrevisaoAlarme.indexOf("]")+2)))-1;
-
-                    swtFrequenciaAlarme.setEnabled(true);
-                    llAlarmeDistribuido.setVisibility(View.VISIBLE);
-
-                    if (flagFrequenciaAlarme.equals("1")) {
-                        swtFrequenciaAlarme.setChecked(true);
-                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
-                        spnPeriodoAlarme.setEnabled(true);
-                        txt.setText("EM");
-                        spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);
-                        spnPeriodo0Alarme.setSelection(spnPeriodo1Alarme.getSelectedItemPosition());
-                        txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
-                    }else{
-                        txtHoraProcedimento.setVisibility(View.INVISIBLE);
-                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
-                        spnPeriodoAlarme.setEnabled(false);
-                        txt.setText("X");
-                        spnPeriodo0Alarme.setSelection(0);
-                        spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);//ja esta zerado ai ele preenche com mais zeros
-
-                        flagAlterarLVBugado = true;
-                        //itens
-                        //porquqe nao preencheu, ele precnhe e zera logo em seguida
-                        //tentando mexer com a var global list horario
-//                        listHorarios.clear();
-//                        for (int count =0; count < (i+1); count++){
-//                            listHorarios.add("00:00");
-//                        }
-
-                        //String[] itens = new String[listHorarios.size()];
-                        //listHorarios.toArray(dataPrevisaoSplitado);
-                        //Helpers.lvDinamico(getApplicationContext(),dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme);
-
-
-
-
-
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String> ( getApplicationContext(),
-//                                android.R.layout.simple_list_item_1, dataPrevisaoSplitado );
-//
-//                        lvRepeticaoDesproporcinalAlarme.setAdapter(null);
-//                        lvRepeticaoDesproporcinalAlarme.setAdapter(adapter);
-//                        lvRepeticaoDesproporcinalAlarme.setOnItemClickListener( new AdapterView.OnItemClickListener() {
-//
-//                            @Override
-//                            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//
-//                                Helpers.lvHoraConfig(getApplicationContext(), dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme,arg2);
-//                            }
-//                        } );
-
-
-
-
-
-
-                        //Helpers.lvDinamico(context, itens, lvRepeticaoDesproporcinalAlarme);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //resetLvDesproporcional(getApplicationContext(),i);
-                        //Toast.makeText(getApplicationContext(),"dataPrevisaoSplitado:" + dataPrevisaoSplitado[0]+dataPrevisaoSplitado[1], Toast.LENGTH_SHORT).show();
-                    }
-                }else
-                    txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
-            }
-            else
-                Toast.makeText(this, "Procedimento não encontrado", Toast.LENGTH_SHORT).show();*/
-        }
-        catch (SQLiteException e){
-            Toast.makeText(this, "Falha no acesso ao Banco de Dados "+e, Toast.LENGTH_LONG).show();
+                edtNomeTarefa.setText(cursor.getString(cursor.getColumnIndexOrThrow("NOME")));
+                edtObservacaoTarefa.setText(cursor.getString(cursor.getColumnIndexOrThrow("OBSERVACAO")));
+            } else
+                Toast.makeText(this, "Tarefa não encontrada", Toast.LENGTH_SHORT).show();
+        } catch (SQLiteException e) {
+            Toast.makeText(this, "Falha no acesso ao Banco de Dados " + e, Toast.LENGTH_LONG).show();
         }
     }
 
-    private void btnSalvarTarefaOnClick(View view){
+    //fazer função update ou trocar para manter
+    private void btnSalvarTarefaOnClick(View view, Boolean updateRow) {
         try {
 
             Helpers.preenchimentoValido(edtNomeTarefa);
 
-            int idInserted = insereTarefa();
-            if(idInserted == -1)
-                Toast.makeText(this, "Inclusão falhou "+"-1", Toast.LENGTH_LONG).show();
-            else{
-                Toast.makeText(this, "Id inserido:"+idInserted, Toast.LENGTH_SHORT).show();
+            int idInserted = insereTarefa(updateRow);
+            if (idInserted == -1)
+                Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
+            else {
+                Toast.makeText(this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
             }
             finish();
-
-        } catch (SQLiteException e) {
-            Toast.makeText(this, "Inclusão falhou "+e, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Falha ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    private void btnFecharSalvarTarefaOnClick(View view){
-        //finish();
+    private void btnFecharSalvarTarefaOnClick(View view, Boolean deleteRow) {
 
-        //ficou ridiculo o branco que da mas pra agora ta pft,
-        //replicar nos outros botões fechar, talvez colocar a classe um um helper
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        if(deleteRow){
+
+            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+            bd.delete("PROCEDIMENTO","_id = ?", new String[] {Long.toString(idProcedimento)});
+            bd.close();
+            finish();
+        } else {
+            //ficou ridiculo o branco que da mas pra agora ta pft,
+            //replicar nos outros botões fechar, talvez colocar a classe um um helper
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 
-    //criar função excluir sem concluir tarefa em relatorio
+    private int insereTarefa(Boolean updateRow) {
 
-    private int insereTarefa() {
+        if(updateRow){
+            try {
+                ContentValues cv = new ContentValues();
+                //cv.put("FLAG", "4");
+                cv.put("NOME", edtNomeTarefa.getText().toString());
+                cv.put("OBSERVACAO", edtObservacaoTarefa.getText().toString());
+                //nome
+                //obs
+                BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+                SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                return (int) bd.update("PROCEDIMENTO", cv, "_id = ?", new String[]{Long.toString(idProcedimento)});
 
-        BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-        SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
-        ContentValues cvTarefa = new ContentValues();
-        cvTarefa.put("NOME", edtNomeTarefa.getText().toString());
-        cvTarefa.put("OBSERVACAO", edtObservacaoTarefa.getText().toString());
-        cvTarefa.put("FLAG", "3");
-        cvTarefa.put("CATEGORIA", "Tarefa");
+            } catch (SQLiteException e) {
+                Toast.makeText(this, "Atualização falhou", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
 
-        return (int) bd.insert("PROCEDIMENTO", null, cvTarefa);
+        }else {
+            try {
+                bdRotinaHelper = new BDRotinaHelper(this);
+                bd = bdRotinaHelper.getWritableDatabase();
+                ContentValues cvTarefa = new ContentValues();
+                cvTarefa.put("NOME", edtNomeTarefa.getText().toString());
+                cvTarefa.put("OBSERVACAO", edtObservacaoTarefa.getText().toString());
+                cvTarefa.put("FLAG", "3");
+                cvTarefa.put("CATEGORIA", "Tarefa");
+                return (int) bd.insert("PROCEDIMENTO", null, cvTarefa);
+
+            } catch (SQLiteException e) {
+                Toast.makeText(this, "Criação falhou", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+        return -1;
     }
 
 //    @Override
@@ -265,3 +214,4 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 //        startActivity(intent);
 //    }
 }
+///retirar action bar https://pt.stackoverflow.com/questions/86728/removendo-o-titlebar-do-app-android

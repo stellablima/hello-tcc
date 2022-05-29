@@ -436,6 +436,8 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                 Toast.makeText(this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
                 //tem que dar exeption, provavelmente o sql de?
             }
+            //new
+            bd.close();
 
             AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
             //finish();
