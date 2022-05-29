@@ -47,4 +47,9 @@
     <string-array name="horarios">
         <item>00:00</item>
     </string-array>
+    <string-array name="estados">
+        <item>Vencimentos</item>
+        <item>Instruções</item>
+        <item>Lista ToDo (suspenso do escopo)</item>
+    </string-array>
 </resources>
