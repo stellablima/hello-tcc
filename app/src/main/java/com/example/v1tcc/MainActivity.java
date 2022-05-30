@@ -31,8 +31,9 @@ public class MainActivity extends AppCompatActivity {
 //    private SQLiteDatabase bd;
 //    private Cursor cursor;
     private TextView txtHoraMain;
+    private TextView txDataMain;
     private TextView txtAviso;
-    private Handler handler= new Handler();
+    private Handler handler = new Handler();
     private Runnable runnable;
     private boolean runnableStopped = false;
     private String alertaDiaTitulo;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private void configurarCampos(){
 
         txtHoraMain = findViewById(R.id.txtHoraMain);
+        txDataMain = findViewById(R.id.txDataMain);
 
         btnMenuMain = findViewById(R.id.btnMenuMain);
         btnMenuMain.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
                 String horaMinuto = String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
                 txtHoraMain.setText(horaMinuto);
 
+                String dataAno = String.format("%02d/%02d/%04d", calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.YEAR));
+                txDataMain.setText(dataAno);
+
                 long agora = SystemClock.uptimeMillis();
                 long proximo = agora + (1000-(agora%1000));
 
@@ -213,6 +218,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         runnable.run();
+    }
+    private void atualizarData(){
+
     }
 
     private void btnMenuMainOnClick(View view){
