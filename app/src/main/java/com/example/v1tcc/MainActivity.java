@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private String alertaDiaTexto;
     private ImageButton btnMenuMain;
     private ImageButton btnMenuVencimentos;
+    private ImageButton btnMenuInstrucoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,14 @@ public class MainActivity extends AppCompatActivity {
                 btnMenuAnotarRelatorio
 
                  */
+            }
+        });
+
+        btnMenuInstrucoes = findViewById(R.id.btnMenuInstrucoes);
+        btnMenuInstrucoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnMenuInstrucoesOnClick(view);
             }
         });
 
@@ -230,6 +239,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void btnMenuVencimentosOnClick(View view){
         Intent intent = new Intent(this, MenuVencimentosActivity.class);
+        startActivity(intent);
+    }
+
+    private void btnMenuAnotarRelatorioOnClick(View view){}
+
+    private void btnMenuAnortarNecessidades(View view){}
+
+    private void btnMenuInstrucoesOnClick(View view){
+        Intent intent = new Intent(this, MenuInstrucoesActivity.class);
         startActivity(intent);
     }
 

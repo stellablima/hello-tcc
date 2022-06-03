@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.V1TCC">
         <activity
+            android:name=".AdicionarInstrucaoActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MenuInstrucoesActivity"
+            android:exported="true" />
+        <activity
             android:name=".AdicionarVencimentoActivity"
             android:exported="true" />
         <activity

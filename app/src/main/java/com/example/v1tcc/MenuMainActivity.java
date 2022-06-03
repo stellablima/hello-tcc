@@ -31,4 +31,14 @@ public class MenuMainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MenuTarefaActivity.class);
         startActivity(intent);
     }
+
+    public void btnAlertaOnClickOnClick(View view){
+        Intent intent = new Intent(this, AlertaActivity.class);
+        startActivity(intent);
+    }
+
+    public void btnVencimentosOnClick(View view){
+        Intent intent = new Intent(this, MenuVencimentosActivity.class);
+        startActivity(intent);
+    }
 }

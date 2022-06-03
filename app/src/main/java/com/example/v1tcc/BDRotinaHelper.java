@@ -128,6 +128,15 @@ acrescentar numero > compilar // instalar como 2, upar 3
         bd.insert("ESTADO", null, cv);
     }
 
+    static void insereDadosInstrucaoDia(SQLiteDatabase bd){
+        ContentValues cv = new ContentValues();
+        cv.put("CATEGORIA", "Instrucao"); //a categoria é como se fosse um agrupamento mesmo
+        cv.put("TITULO", "Protocolo de saída");
+        cv.put("FLAG", "1");//default ativo
+        cv.put("TEXTO", "Texto enorme de uma instrucao aleatoria aqui\n\n1-Equipamentos a levar\n*espaço morto\nblablabla");
+        bd.insert("ESTADO", null, cv);
+    }
+
      void insereDadosTarefas(SQLiteDatabase bd){
         ContentValues cv = new ContentValues();
         cv.put("CATEGORIA", "Tarefa");

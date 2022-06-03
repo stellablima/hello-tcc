@@ -33,7 +33,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
     private Cursor cursor;
     private Button btnSalvarVencimento;
     private Button btnFecharSalvarVencimento;
-    private Button  btnExcluirVencimento;
+    private Button btnExcluirVencimento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +139,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
         return -1;
     }
 
-    private void configurarCampos(Boolean cadastrarTarefa) {
+    private void configurarCampos(Boolean cadastrarVencimento) {
         txtDataUltimaOcorrencia = findViewById(R.id.txtDataUltimaOcorrencia);
         Helpers.txtDataConfig(this, txtDataUltimaOcorrencia,true);
         edtTituloVencimento = findViewById(R.id.edtTituloVencimento);
@@ -156,7 +156,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
             }
         });
 
-        if (cadastrarTarefa) {
+        if (cadastrarVencimento) {
 
             btnSalvarVencimento.setOnClickListener(new View.OnClickListener() {
                 @Override

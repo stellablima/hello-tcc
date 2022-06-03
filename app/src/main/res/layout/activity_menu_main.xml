@@ -17,7 +17,7 @@
         android:enabled="true"
         android:onClick="btnTarefasOnClick"
         android:text="@string/lblTarefas"
-        app:layout_constraintBottom_toTopOf="@+id/btnTerapias"
+        app:layout_constraintBottom_toTopOf="@+id/btnAlerta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,18 +51,18 @@
         app:layout_constraintTop_toBottomOf="@+id/btnPerfil" />
 
     <android.widget.Button
-        android:id="@+id/btnEventos"
+        android:id="@+id/btnVencimentos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg_menu_main"
-        android:enabled="false"
-        android:onClick="btnProcedimentosOnClick"
-        android:text="@string/lblEventos"
+        android:enabled="true"
+        android:onClick="btnVencimentosOnClick"
+        android:text="Vencimentos"
         app:layout_constraintBottom_toTopOf="@+id/btnEstoque"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTerapias" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAlerta" />
 
     <android.widget.Button
         android:id="@+id/btnPerfil"
@@ -90,17 +90,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnEventos" />
+        app:layout_constraintTop_toBottomOf="@+id/btnVencimentos" />
 
     <android.widget.Button
-        android:id="@+id/btnTerapias"
+        android:id="@+id/btnAlerta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg_menu_main"
-        android:enabled="false"
-        android:onClick="btnProcedimentosOnClick"
-        android:text="@string/lblTerapias"
-        app:layout_constraintBottom_toTopOf="@+id/btnEventos"
+        android:enabled="true"
+        android:onClick="btnAlertaOnClickOnClick"
+        android:text="Alerta"
+        app:layout_constraintBottom_toTopOf="@+id/btnVencimentos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

@@ -151,11 +151,11 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
                     if(swtFrequenciaAlarme.isChecked()) {
                         txtHoraProcedimento.setVisibility(View.VISIBLE);
-                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
+                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
                         spnPeriodoAlarme.setEnabled(true);
                         txt.setText("EM");
                     }else{
-                        txtHoraProcedimento.setVisibility(View.INVISIBLE);
+                        txtHoraProcedimento.setVisibility(View.GONE);
                         lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
                         spnPeriodoAlarme.setSelection(3);
                         spnPeriodo0Alarme.setSelection(0);
@@ -164,10 +164,10 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     }
                 }else {
                     swtFrequenciaAlarme.setEnabled(false);
-                    txtFrequenciaAlarme.setVisibility(View.INVISIBLE);
-                    llAlarmeDistribuido.setVisibility(View.INVISIBLE);
+                    txtFrequenciaAlarme.setVisibility(View.GONE);
+                    llAlarmeDistribuido.setVisibility(View.GONE);
                     txtHoraProcedimento.setVisibility(View.VISIBLE);
-                    lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
+                    lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
                 }
             }
         });
@@ -180,7 +180,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                     txt.setText("EM");
 
                     txtHoraProcedimento.setVisibility(View.VISIBLE);
-                    lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
+                    lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
 
                     spnPeriodoAlarme.setEnabled(true);
                     spnPeriodo1Alarme.setSelection(0); //para setar o array list com 00:00 aproveitar evento antigo
@@ -207,7 +207,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
                     txt.setText("X");
 
-                    txtHoraProcedimento.setVisibility(View.INVISIBLE);
+                    txtHoraProcedimento.setVisibility(View.GONE);
                     lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
                     spnPeriodoAlarme.setSelection(3);
                     spnPeriodoAlarme.setEnabled(false);
@@ -234,8 +234,8 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         Helpers.spinnerNumero(this, R.array.categorias, spnCategoriasAlarme);
         Helpers.spinnerNumero(this, R.array.periodos, spnPeriodoAlarme);
         Helpers.txtHoraConfig(this, txtHoraProcedimento,extraProcedimento);
-        lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
-        llAlarmeDistribuido.setVisibility(View.INVISIBLE);
+        lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
+        llAlarmeDistribuido.setVisibility(View.GONE);
         spnPeriodo0Alarme.setSelection(0);
         spnPeriodo0Alarme.setEnabled(false);
         spnPeriodoAlarme.setSelection(3);
@@ -325,14 +325,14 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
                     if (flagFrequenciaAlarme.equals("1")) {
                         swtFrequenciaAlarme.setChecked(true);
-                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.INVISIBLE);
+                        lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
                         spnPeriodoAlarme.setEnabled(true);
                         txt.setText("EM");
                         spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);
                         spnPeriodo0Alarme.setSelection(spnPeriodo1Alarme.getSelectedItemPosition());
                         txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
                     }else{
-                        txtHoraProcedimento.setVisibility(View.INVISIBLE);
+                        txtHoraProcedimento.setVisibility(View.GONE);
                         lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
                         spnPeriodoAlarme.setEnabled(false);
                         txt.setText("X");

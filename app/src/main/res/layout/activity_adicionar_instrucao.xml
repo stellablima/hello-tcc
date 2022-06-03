@@ -5,88 +5,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".AdicionarVencimentoActivity">
+    tools:context=".AdicionarInstrucaoActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
+        android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
-        android:id="@+id/txtCadastroVencimento"
+        android:id="@+id/txtCadastroInstrucao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Cadastro Vencimento"
+        android:text="Cadastro Instrução"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/edtTituloVencimento"
+        app:layout_constraintBottom_toTopOf="@+id/edtTituloInstrucao"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edtTituloVencimento"
+        android:id="@+id/edtTituloInstrucao"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="Nome do Vencimento"
+        android:hint="Nome da instrução"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/edtTextoVencimento"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/txtCadastroVencimento" />
+        app:layout_constraintBottom_toTopOf="@+id/edtTextoInstrucao"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/txtCadastroInstrucao" />
 
     <EditText
-        android:id="@+id/edtTextoVencimento"
+        android:id="@+id/edtTextoInstrucao"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Detalhe do Vencimento"
+        android:hint="Descrição da Instrução"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/txtDataUltimaOcorrencia"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/edtTituloVencimento" />
-
-    <TextView
-        android:id="@+id/txtDataUltimaOcorrencia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:text="00/00/0000"
-        android:textSize="48sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtTextoVencimento" />
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/edtTituloInstrucao" />
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDataUltimaOcorrencia">
+        app:layout_constraintTop_toBottomOf="@+id/edtTextoInstrucao">
 
         <Space
             android:layout_width="wrap_content"
@@ -94,20 +81,20 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/btnSalvarVencimento"
+            android:id="@+id/btnSalvarInstrucao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/btnSalvar" />
 
         <Space
-            android:id="@+id/spcBtnExcluirVencimento"
+            android:id="@+id/spcbtnExcluirInstrucao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/btnExcluirVencimento"
+            android:id="@+id/btnExcluirInstrucao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -119,7 +106,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/btnFecharSalvarVencimento"
+            android:id="@+id/btnFecharSalvarInstrucao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

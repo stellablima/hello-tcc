@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".MenuVencimentosActivity">
+    tools:context=".MenuInstrucoesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,12 +29,12 @@
                 android:layout_weight="1" />
 
             <android.widget.Button
-                android:id="@+id/btnAdicionarVencimento"
+                android:id="@+id/btnAdicionarInstrucao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg_menu_main"
-                android:text="Adicionar Vencimento" />
+                android:text="Adicionar Instrução" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -47,19 +49,19 @@
             android:orientation="vertical">
 
             <View
-                android:id="@+id/divider6"
+                android:id="@+id/divider7"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:background="?android:attr/listDivider" />
 
             <TextView
-                android:id="@+id/lblLVencimentosMenu"
+                android:id="@+id/lblLvInstrucoesMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Vencimentos" />
+                android:text="Instruções" />
 
             <ListView
-                android:id="@+id/lvVencimentosMenu"
+                android:id="@+id/lvInstrucoesMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
