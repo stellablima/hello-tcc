@@ -7,12 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class BDRotinaHelper extends SQLiteOpenHelper {
 
     private static final String NOMEDB = "rotina";
-    private static final int VERSAOBD = 6;
+    private static final int VERSAOBD = 7;
 
     public BDRotinaHelper(Context context) {
         super(context, NOMEDB, null, VERSAOBD);
@@ -21,7 +22,7 @@ public class BDRotinaHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase bd) {
         criaBdRotina(bd);
-        insereDadosAlertaDia(bd);
+        //insereDadosAlertaDia(bd);
         //insereDadosTarefas(bd);
         //insereDadosProcedimento(bd);
     }
@@ -29,8 +30,10 @@ public class BDRotinaHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase bd, int i, int i1) {
 //        String sql = "";
-//        sql = "ALTER TABLE ESTADO ADD COLUMN DATA_ULTIMA_OCORRENCIA TEXT;";
+//        sql = "ALTER TABLE RELATORIO ADD COLUMN OBSERVACAO TEXT;";
 //        bd.execSQL(sql);
+//
+//        insereDadosNecessidadesOcorrencia(bd);
 
 //        switch (i){
 //            case 1://anterior(i) atual(i1)
@@ -101,7 +104,8 @@ acrescentar numero > compilar // instalar como 2, upar 3
                 "CATEGORIA TEXT, " +
                 "DATA_INICIO TEXT, " +
                 "DATA_PREVISAO TEXT, " +//como o procedimento pode ser editavel, melhor replicar o dado
-                "NOME TEXT " +
+                "NOME TEXT, " +
+                "OBSERVACAO TEXT " +
                 //falta OBSERVACAO que poderia se chamar DESCRICAO nas duas tabelas talvez por ser tarefa tudo bem pegar por join...
                 ")";
 
@@ -128,7 +132,7 @@ acrescentar numero > compilar // instalar como 2, upar 3
         bd.insert("ESTADO", null, cv);
     }
 
-    static void insereDadosInstrucaoDia(SQLiteDatabase bd){
+     static void insereDadosInstrucaoDia(SQLiteDatabase bd){
         ContentValues cv = new ContentValues();
         cv.put("CATEGORIA", "Instrucao"); //a categoria é como se fosse um agrupamento mesmo
         cv.put("TITULO", "Protocolo de saída");
@@ -161,6 +165,40 @@ acrescentar numero > compilar // instalar como 2, upar 3
         cv.put("NOME", "Tarefa Mockada2");
         cv.put("OBSERVACAO", "Observacao Tarefa Mockada2");
         bd.insert("PROCEDIMENTO", null, cv);//procedimento sem alarme, clique concluir manual, grava em relatorio
+    }
+
+    void insereDadosNecessidadesOcorrencia(SQLiteDatabase bd){
+
+////PROCEDIMENTO: 0excluido,1ativo,2concluidoprocedimentounico(evolua pra alarme com expiração),3procedimentopararegistrosemalarme
+
+        ContentValues cv = new ContentValues();
+
+        cv.put("CATEGORIA", "Ocorrência");
+        cv.put("DATA_INICIO", "Mock data");
+        cv.put("NOME", "Dor de dente");
+        cv.put("OBSERVACAO", "Dipirona 35Gotas e massagem");
+        bd.insert("RELATORIO", null, cv);
+
+        cv = new ContentValues();
+        cv.put("CATEGORIA", "Necessidades Fisiológicas");
+        cv.put("DATA_INICIO", "Mock data");
+        cv.put("NOME", "Fezes Espontânea +---");
+        cv.put("OBSERVACAO", "Muito mole");
+        bd.insert("RELATORIO", null, cv);
+
+        cv = new ContentValues();
+        cv.put("CATEGORIA", "Necessidades Fisiológicas");
+        cv.put("DATA_INICIO", "Mock data");
+        cv.put("NOME", "Fezes Flit ++++ ");
+        bd.insert("RELATORIO", null, cv);
+
+        cv = new ContentValues();
+        cv.put("CATEGORIA", "Necessidades Fisiológicas");
+        cv.put("DATA_INICIO", "Mock data");
+        cv.put("NOME", "Urina Sondagem 200ml");
+        cv.put("OBSERVACAO", "Coloração escura");
+        bd.insert("RELATORIO", null, cv);//procedimento sem alarme, clique concluir manual, grava em relatorio
+
     }
 
     private void insereDadosProcedimento(SQLiteDatabase bd) {

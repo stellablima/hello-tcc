@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".MenuTarefaActivity">
+    tools:context=".MenuOcorrenciaActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,25 +24,20 @@
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_weight="1" />
 
             <android.widget.Button
-                android:id="@+id/btnAdicionarTarefa"
+                android:id="@+id/btnAdicionarOcorrencia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg_menu_main"
-                android:text="Adicionar Tarefa" />
+                android:text="Adicionar Ocorrencia" />
 
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -52,27 +47,21 @@
             android:orientation="vertical">
 
             <View
-                android:id="@+id/divider4"
+                android:id="@+id/divider9"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:background="?android:attr/listDivider" />
 
             <TextView
-                android:id="@+id/lblLvTarefasMenu"
+                android:id="@+id/lblLvOcorrenciasMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lblTarefas" />
+                android:text="Últimas Ocorrências" />
 
             <ListView
-                android:id="@+id/lvTarefasMenu"
+                android:id="@+id/lvOcorrenciasMenu"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-            </ListView>
-
+                android:layout_height="match_parent" />
         </LinearLayout>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,25 +30,24 @@
         android:background="@drawable/btn_bg_menu_main"
         android:onClick="btnRelatoriosOnClick"
         android:text="@string/lblRelatorios"
-        app:layout_constraintBottom_toTopOf="@+id/btnPerfil"
+        app:layout_constraintBottom_toTopOf="@+id/btnOcorrencias"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnEstoque" />
+        app:layout_constraintTop_toBottomOf="@+id/btnInstrucoes" />
 
     <android.widget.Button
-        android:id="@+id/btnConfiguracoes"
+        android:id="@+id/btnNecessidades"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg_menu_main"
         android:enabled="false"
-        android:onClick="btnProcedimentosOnClick"
-        android:text="@string/lblConfiguracoes"
+        android:text="Necessidades Consta no relatorio"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/btnOcorrencias" />
 
     <android.widget.Button
         android:id="@+id/btnVencimentos"
@@ -58,34 +57,33 @@
         android:enabled="true"
         android:onClick="btnVencimentosOnClick"
         android:text="Vencimentos"
-        app:layout_constraintBottom_toTopOf="@+id/btnEstoque"
+        app:layout_constraintBottom_toTopOf="@+id/btnInstrucoes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnAlerta" />
 
     <android.widget.Button
-        android:id="@+id/btnPerfil"
+        android:id="@+id/btnOcorrencias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg_menu_main"
         android:enabled="false"
-        android:onClick="btnProcedimentosOnClick"
-        android:text="@string/lblPerfil"
-        app:layout_constraintBottom_toTopOf="@+id/btnConfiguracoes"
+        android:text="Ocorrências Consta em relatorio"
+        app:layout_constraintBottom_toTopOf="@+id/btnNecessidades"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRelatorios" />
 
     <android.widget.Button
-        android:id="@+id/btnEstoque"
+        android:id="@+id/btnInstrucoes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg_menu_main"
-        android:enabled="false"
-        android:onClick="btnProcedimentosOnClick"
-        android:text="@string/lblEstoque"
+        android:enabled="true"
+        android:onClick="btnInstrucoesOnClick"
+        android:text="Instruções"
         app:layout_constraintBottom_toTopOf="@+id/btnRelatorios"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

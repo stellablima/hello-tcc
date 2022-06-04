@@ -41,4 +41,9 @@ public class MenuMainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MenuVencimentosActivity.class);
         startActivity(intent);
     }
+
+    public void btnInstrucoesOnClick(View view){
+        Intent intent = new Intent(this, MenuInstrucoesActivity.class);
+        startActivity(intent);
+    }
 }

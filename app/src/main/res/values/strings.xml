@@ -33,6 +33,7 @@
         <item>Medicação</item>
         <item>Higienização</item>
         <item>Tarefa</item>
+        <item>Ocorrência</item>
         <item>Outro</item>
     </string-array>
     <string-array name="periodos">

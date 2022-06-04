@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnMenuMain;
     private ImageButton btnMenuVencimentos;
     private ImageButton btnMenuInstrucoes;
+    private ImageButton btnMenuNecessidades;
+    private ImageButton btnMenuOcorrencias;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +118,24 @@ public class MainActivity extends AppCompatActivity {
                 btnMenuInstrucoesOnClick(view);
             }
         });
+
+        btnMenuNecessidades = findViewById(R.id.btnMenuAnortarNecessidades);
+        btnMenuNecessidades.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnMenuNecessidadesOnClick(view);
+            }
+        });
+
+        btnMenuOcorrencias = findViewById(R.id.btnMenuAnotarRelatorio);
+        btnMenuOcorrencias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnMenuOcorrenciasOnClick(view);
+            }
+        });
+
+
 
         txtAviso = findViewById(R.id.txtAviso);
         txtAviso.setOnClickListener(new View.OnClickListener() {
@@ -228,9 +248,6 @@ public class MainActivity extends AppCompatActivity {
         };
         runnable.run();
     }
-    private void atualizarData(){
-
-    }
 
     private void btnMenuMainOnClick(View view){
         Intent intent = new Intent(this, MenuMainActivity.class);
@@ -242,9 +259,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void btnMenuAnotarRelatorioOnClick(View view){}
+    private void btnMenuOcorrenciasOnClick(View view){
+        Intent intent = new Intent(this, MenuOcorrenciaActivity.class);
+        startActivity(intent);
+    }
 
-    private void btnMenuAnortarNecessidades(View view){}
+    private void btnMenuNecessidadesOnClick(View view){
+        Intent intent = new Intent(this, MenuNecessidadeActivity.class);
+        startActivity(intent);
+    }
 
     private void btnMenuInstrucoesOnClick(View view){
         Intent intent = new Intent(this, MenuInstrucoesActivity.class);
