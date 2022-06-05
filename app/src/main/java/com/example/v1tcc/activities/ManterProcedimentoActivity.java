@@ -33,42 +33,35 @@ import java.util.List;
 
 public class ManterProcedimentoActivity extends AppCompatActivity {
 
+    public static final String EXTRA_PROCEDIMENTO = "extraProcedimento";
+    public static final String EXTRA_ID = "idprocedimento";
+
     private EditText edtNomeProcedimento;
     private TextView txtHoraProcedimento;
     private TextView txtFrequenciaAlarme;
     private TextView txtProcedimento;
-//    private TimePicker tmpHoraAlarme;
-//    private Calendar calHoraAlarm;
-//    private String horaAtual;
-//    private String minAtual;
-//    private TimePickerDialog mTimePicker;
     private Spinner spnCategoriasAlarme;
     private Spinner spnPeriodoAlarme;
     private Spinner spnPeriodo0Alarme;
     private Spinner spnPeriodo1Alarme;
     private Switch swtRepeteAlarme;
     private Switch swtFrequenciaAlarme;
+    private Button btnManterProcedimento;
     private ListView lvRepeticaoDesproporcinalAlarme;
-    List<String> listHorarios = new ArrayList<String>(); //para uso em mais de um função, mmelhor implemmentação seria pegar do commponente na hora
-    public static final String EXTRA_PROCEDIMENTO = "extraProcedimento";
-    public static final String EXTRA_ID = "idprocedimento";
-    private TextView txt;
-//    private String s;
     private LinearLayout llAlarmeDistribuido;
+
+    private SQLiteDatabase SQLiteDatabase;
+    private SQLiteConnection SQLiteConnection;
+    private Cursor cursor;
+    private Procedimento procedimento;
     private Long idProcedimento;
 
-    private Cursor cursor;
-    private Button btnManterProcedimento;
-    private boolean flagAlterarLVBugado = false;
     private String[] dataPrevisaoSplitado;
+    private List<String> listHorarios = new ArrayList<String>(); //para uso em mais de um função, mmelhor implemmentação seria pegar do commponente na hora
+    private TextView txt;
 
-    private SQLiteConnection SQLiteConnection;
-    private SQLiteDatabase SQLiteDatabase;
+    //    private boolean flagAlterarLVBugado = false;
 
-//    private com.example.v1tcc.BDHelper.SQLiteConnection SQLiteConnection;
-//    private SQLiteDatabase bd;
-
-    private Procedimento procedimento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,64 +100,8 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
         }
     }
 
-    private Procedimento getProcedimentoActivity(){
-
-        this.procedimento = new Procedimento();
-
-        if(this.edtNomeProcedimento.getText().toString().isEmpty() == false){
-            this.procedimento.setNOME(edtNomeProcedimento.getText().toString());
-        }else return null;
-
-        this.procedimento.setCATEGORIA(spnCategoriasAlarme.getSelectedItem().toString());
-
-        this.procedimento.setFLAG("1");
-
-        if(swtRepeteAlarme.isChecked() && !swtFrequenciaAlarme.isChecked())
-            this.procedimento.setQTDDISPAROS(spnPeriodo1Alarme.getSelectedItem().toString());
-        else
-            this.procedimento.setQTDDISPAROS("1");
-
-        if(swtRepeteAlarme.isChecked())
-            this.procedimento.setFLAG_REPETICAO("1");
-        else
-            this.procedimento.setFLAG_REPETICAO("0");
-
-        if(swtFrequenciaAlarme.isChecked())
-            this.procedimento.setFLAG_REPETICAO("1");
-        else
-            this.procedimento.setFLAG_REPETICAO("0");
-
-        if(!swtRepeteAlarme.isChecked())
-            this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]");
-        else if(swtRepeteAlarme.isChecked() && swtFrequenciaAlarme.isChecked())
-            this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]"+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
-        else
-            this.procedimento.setDATA_PREVISAO(listHorarios.toString()+""+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
-
-
-        return procedimento;
-    }
-
-
-
-
-
-
-
-
-
-
-//    @Override
-//    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-//        super.onPostCreate(savedInstanceState);
-////nao sei o que ta rolando, mudar o foco, ele seta certo e depois simplesmente zera tudo
-////        if(flagAlterarLVBugado)
-////            Helpers.lvDinamico(getApplicationContext(),dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme);
-////        Toast.makeText(this, dataPrevisaoSplitado[0]+"", Toast.LENGTH_LONG);
-//    }
 
     private void configurarCampos(Boolean extraProcedimento){
-
 
         btnManterProcedimento =  findViewById(R.id.btnManterProcedimento);
         edtNomeProcedimento = findViewById(R.id.edtNomeProcedimento);
@@ -248,9 +185,6 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                         }
                     });
 
-                    //spnPeriodo0Alarme.setSelection(0); teria que respeitar o valor do 1
-                    //spnPeriodo0Alarme.setSelection(spnPeriodo1Alarme.getSelectedItemPosition());
-                    //spnPeriodo1Alarme.setSelection(0);
                     spnPeriodo1Alarme.setSelection(0);
                     spnPeriodo0Alarme.setSelection(0);
 
@@ -295,14 +229,8 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
     }
 
     private void carregaDados() {
-        /*
-        logica deletar e editar
 
-
-        pendente preecnher arrays e txt na linha 316
-        */
-
-        try { //pode ver a logica de deletar se quiser pegar os alarmes
+        try {
             idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
             //SQLiteConnection = new SQLiteConnection(this);
             SQLiteDatabase = SQLiteConnection.getReadableDatabase();
@@ -390,46 +318,6 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                         spnPeriodo0Alarme.setSelection(0);
                         spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);//ja esta zerado ai ele preenche com mais zeros
 
-                        flagAlterarLVBugado = true;
-                        //itens
-                        //porquqe nao preencheu, ele precnhe e zera logo em seguida
-                        //tentando mexer com a var global list horario
-//                        listHorarios.clear();
-//                        for (int count =0; count < (i+1); count++){
-//                            listHorarios.add("00:00");
-//                        }
-
-                        //String[] itens = new String[listHorarios.size()];
-                        //listHorarios.toArray(dataPrevisaoSplitado);
-                        //Helpers.lvDinamico(getApplicationContext(),dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme);
-
-
-
-
-
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String> ( getApplicationContext(),
-//                                android.R.layout.simple_list_item_1, dataPrevisaoSplitado );
-//
-//                        lvRepeticaoDesproporcinalAlarme.setAdapter(null);
-//                        lvRepeticaoDesproporcinalAlarme.setAdapter(adapter);
-//                        lvRepeticaoDesproporcinalAlarme.setOnItemClickListener( new AdapterView.OnItemClickListener() {
-//
-//                            @Override
-//                            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//
-//                                Helpers.lvHoraConfig(getApplicationContext(), dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme,arg2);
-//                            }
-//                        } );
-
-
-
-
-
-
-                        //Helpers.lvDinamico(context, itens, lvRepeticaoDesproporcinalAlarme);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //resetLvDesproporcional(getApplicationContext(),i);
-                        //Toast.makeText(getApplicationContext(),"dataPrevisaoSplitado:" + dataPrevisaoSplitado[0]+dataPrevisaoSplitado[1], Toast.LENGTH_SHORT).show();
                     }
                 }else
                     txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
@@ -444,8 +332,6 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
             Toast.makeText(this, "Falha no acesso ao Banco de Dados "+e, Toast.LENGTH_LONG).show();
         }
     }
-
-
 
     public void btnEditarProcedimentoOnClick(View view){
         //Toast.makeText(this,"editeiiii", Toast.LENGTH_LONG).show();
@@ -510,11 +396,11 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
 
         try {
 
+            //validação
             Helpers.preenchimentoValido(edtNomeProcedimento);
 
             Boolean swtRepete = swtRepeteAlarme.isChecked();
             Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
-            //String spnCategoria = spnCategoriasAlarme.getSelectedItem().toString();
             String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
             String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
             ArrayList<Calendar> alarmeTempo = new ArrayList<>();
@@ -527,27 +413,9 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                 cal.set(Calendar.SECOND, 0);
                 alarmeTempo.add(cal);
 
-                Toast.makeText(this, "calendario unico: "+ cal.get(0), Toast.LENGTH_LONG).show();
             }else{
-                //resgatar os elementos dos list view
-                //preencher o listarray de calendar
 
-                //fazer variavel global porque nao sei pegar escopo que o list view ta inflado, nao da global é so contador de posição, pior hipotese trazendo do helper pa ca a função e conseguir o valor semmpre atuazado
-                //String itens = (String) lvRepeticaoDesproporcinalAlarme.getSelectedItem();
-
-                // movito para listener on change para atualizer var assis que ouver alteração
-//                for (int i=0;i<lvRepeticaoDesproporcinalAlarme.getCount();i++){
-//                    listHorarios.set(i,lvRepeticaoDesproporcinalAlarme.getItemAtPosition(i).toString());
-//                }
-                for (String horarios:listHorarios) { //parece qque ele so repete o ultimo??nao proporcional
-
-
-
-                    //depois de muitos alarmes disparados parece que ta
-                    //atrasando os demais
-
-
-
+                for (String horarios:listHorarios) {
 
                     String[] txtHora =  horarios.split(":");
                     Calendar cal = Calendar.getInstance();
@@ -556,33 +424,17 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                     cal.set(Calendar.SECOND, 0);
                     alarmeTempo.add(cal);
                 }
-                //Toast.makeText(this, "itens:"+alarmeTempo.size(), Toast.LENGTH_SHORT).show();
-                //Toast.makeText(this, "itens:"+alarmeTempo.get(0).getTime()+"_"+alarmeTempo.get(1).getTime(), Toast.LENGTH_SHORT).show();
-                //return;
-                Toast.makeText(this, "calendario array", Toast.LENGTH_SHORT).show();
             }
 
-
-            //if (operacao == OP_INCLUI) {
-            //int idInserted = insereEstq(); // como nao é orientado a obj ainda, o id sera unico no banco concatenado co _n no java para identificar repetições
             long idProcedimento = insereProcedimento();
 
             if(idProcedimento == -1)
                 Toast.makeText(this, "Inclusão falhou "+"-1", Toast.LENGTH_LONG).show();
             else{
-                //Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+spnPeriodo1Alarme.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-                //Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+alarmeTempo.size(), Toast.LENGTH_SHORT).show();
-                //AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1); //endiando 1 e la pego 0?
                 AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idProcedimento, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
             }
 
-            //}
-            //else if (operacao == OP_ALTERA) {
-            //    alteraEstq();
-            //    finish();
-            //}
             finish();
-
 
         } catch (SQLiteException e) {
             Toast.makeText(this, "Inclusão falhou "+e, Toast.LENGTH_LONG).show();
@@ -592,80 +444,47 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
         }
     }
 
-//    private int insereEstq() {
-//        BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-//        SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
-//        ContentValues cvEstq = carregaCVProcedimento();
-//        return (int) bd.insert("PROCEDIMENTO", null, cvEstq);
-//    }
-
     private long insereProcedimento(){
         ProcedimentoController procedimentoController =  new ProcedimentoController(SQLiteConnection);
         return procedimentoController.createProcedimentoController(getProcedimentoActivity());
     }
 
-//    private ContentValues carregaCVProcedimento() {
-//        ContentValues cv = new ContentValues();
-//        cv.put("NOME", edtNomeProcedimento.getText().toString());
-//        cv.put("CATEGORIA", spnCategoriasAlarme.getSelectedItem().toString());
-//        cv.put("FLAG", "1");
-//
-//
-//
-//
-//        Boolean swtRepete = swtRepeteAlarme.isChecked();
-//        Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
-//        String FLAGREPETICAO;
-//        String FLAGFREQUENCIA;
-//
-//
-//        //arrumar QTDDISPAROS  > 1 so quando for swtrepete e swtfrequencia
-//        String qtdDisparos;
-//
-//        if(swtRepete && !swtFrequencia)
-//            qtdDisparos = spnPeriodo1Alarme.getSelectedItem().toString();
-//        else
-//            qtdDisparos = "1";
-//
-//        cv.put("QTDDISPAROS", qtdDisparos); //spnPeriodo1Alarme.getSelectedItem().toString()
-//
-///*?situação, salvou o layout certo mas passou horario errado horario array quando deveria ser 1 cara so?*/
-//
-//        //rever
-//        if(swtRepete)
-//            FLAGREPETICAO="1";
-//        else
-//            FLAGREPETICAO="0";
-//        if(swtFrequencia) // a frequencia pode estar em 1 mas se o repete tiver disabled de nada vale
-//            FLAGFREQUENCIA="1";//na real nao importa porque isso é um switch e vai ter valor de qqr forma
-//        else
-//            FLAGFREQUENCIA="0";
-//        cv.put("FLAG_REPETICAO", FLAGREPETICAO); //comentar ajudou no bug de limpar cache?
-//        cv.put("FLAG_FREQUENCIA", FLAGFREQUENCIA);
-//        //o que ele vai salvar no futuro no banco vai ser um alarme com uma configuração e uma peridiocidade, e o que vai
-//        //persistir no banco é quando a ação for realizada os dados mínimos para relatório, toda a mágica fora o crud
-//        //vai acontecer ali e pode ser necessário rependar melhor esse módulo, vai ser um tabelão de crescimento esponencial com indexes
-//        //mas tbm pode filtrar gerar o relatório e apagar os dados mais antigos periodicamente
-//
-//        //forlar bug aqui
-//        if(!swtRepete) { // se alarme unico
-//            cv.put("DATA_PREVISAO", "["+txtHoraProcedimento.getText().toString()+"]");
-//        }
-//        else if(swtRepete && swtFrequencia) { // aqui importa
-//            cv.put("DATA_PREVISAO", "["+txtHoraProcedimento.getText().toString()+"]"+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
-//        }
-//        else {
-//            cv.put("DATA_PREVISAO", listHorarios.toString()+""+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
-//        }
-//
-//        //cv.put("UNID", spnUnidade.getSelectedItem().toString());
-//        //cv.put("QTDE", qtde);
-//        //cv.put("PCUNIT", pcUnit);
-//        //preencher demais dados que descrevem o alarme
-//        //para recuperar na tela de edição
-//        //posterior//documentação urgente//apenas deixe começar do 0
-//        return cv;
-//    }
+    private Procedimento getProcedimentoActivity(){
+
+        this.procedimento = new Procedimento();
+
+        if(this.edtNomeProcedimento.getText().toString().isEmpty() == false)
+            this.procedimento.setNOME(edtNomeProcedimento.getText().toString());
+        //else return null;
+
+        this.procedimento.setCATEGORIA(spnCategoriasAlarme.getSelectedItem().toString());
+
+        this.procedimento.setFLAG("1");
+
+        if(swtRepeteAlarme.isChecked() && !swtFrequenciaAlarme.isChecked())
+            this.procedimento.setQTDDISPAROS(spnPeriodo1Alarme.getSelectedItem().toString());
+        else
+            this.procedimento.setQTDDISPAROS("1");
+
+        if(swtRepeteAlarme.isChecked())
+            this.procedimento.setFLAG_REPETICAO("1");
+        else
+            this.procedimento.setFLAG_REPETICAO("0");
+
+        if(swtFrequenciaAlarme.isChecked())
+            this.procedimento.setFLAG_REPETICAO("1");
+        else
+            this.procedimento.setFLAG_REPETICAO("0");
+
+        if(!swtRepeteAlarme.isChecked())
+            this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]");
+        else if(swtRepeteAlarme.isChecked() && swtFrequenciaAlarme.isChecked())
+            this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]"+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
+        else
+            this.procedimento.setDATA_PREVISAO(listHorarios.toString()+""+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
+
+        return procedimento;
+    }
 
     private void resetLvDesproporcional(Context context, int i){
         listHorarios.clear();

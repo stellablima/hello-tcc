@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.Helpers;
 import com.example.v1tcc.R;
+import com.example.v1tcc.controller.ProcedimentoController;
+import com.example.v1tcc.models.Procedimento;
 
 //trocar pra manter tarefa parece melhor
 public class ManterTarefaActivity extends AppCompatActivity {
@@ -29,14 +31,18 @@ public class ManterTarefaActivity extends AppCompatActivity {
     private EditText edtObservacaoTarefa;
     private TextView txtCadastroTarefa;
     private SQLiteConnection SQLiteConnection;
-    private SQLiteDatabase bd;
+    private SQLiteDatabase SQLiteDatabase;
     private Cursor cursor;
     private long idProcedimento;
+    private Procedimento procedimento;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_tarefa);
+
+        SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }
 
     @Override
@@ -52,22 +58,9 @@ public class ManterTarefaActivity extends AppCompatActivity {
             carregaDados();
             Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
 
-
-//
-//            configurarCampos(false);
-//            carregaDados();
-//            txtProcedimento.setText("Editar Procedimento");
-//            btnManterProcedimento.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) { btnEditarProcedimentoOnClick(view); }
-//            });
-//
-////            if(flagAlterarLVBugado)
-////                Helpers.lvDinamico(getApplicationContext(),dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme);
         }
     }
 
-    //update no salvar do editar
     private void configurarCampos(Boolean cadastrarTarefa) {
         btnSalvarTarefa = findViewById(R.id.btnSalvarTarefa);
         btnFecharSalvarTarefa = findViewById(R.id.btnFecharSalvarTarefa);
@@ -110,11 +103,10 @@ public class ManterTarefaActivity extends AppCompatActivity {
     }
 
     private void carregaDados() {
-        try { //pode ver a logica de deletar se quiser pegar os alarmes
+        try {
             idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
-            SQLiteConnection = new SQLiteConnection(this);
-            bd = SQLiteConnection.getReadableDatabase();
-            cursor = bd.query("PROCEDIMENTO",
+            SQLiteDatabase = SQLiteConnection.getReadableDatabase();
+            cursor = SQLiteDatabase.query("PROCEDIMENTO",
                     new String[]{"_id", "NOME", "OBSERVACAO"},
                     "_id = ?",
                     new String[]{Long.toString(idProcedimento)},
@@ -131,15 +123,17 @@ public class ManterTarefaActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             Toast.makeText(this, "Falha no acesso ao Banco de Dados " + e, Toast.LENGTH_LONG).show();
         }
+
+        SQLiteDatabase.close();
     }
 
-    //fazer função update ou trocar para manter
     private void btnSalvarTarefaOnClick(View view, Boolean updateRow) {
         try {
 
             Helpers.preenchimentoValido(edtNomeTarefa);
 
-            int idInserted = insereTarefa(updateRow);
+            long idInserted = insereTarefa(updateRow);
+
             if (idInserted == -1)
                 Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
             else {
@@ -159,29 +153,31 @@ public class ManterTarefaActivity extends AppCompatActivity {
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.delete("PROCEDIMENTO","_id = ?", new String[] {Long.toString(idProcedimento)});
             bd.close();
-            finish();
-        } else {
-            //ficou ridiculo o branco que da mas pra agora ta pft,
-            //replicar nos outros botões fechar, talvez colocar a classe um um helper
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }
+            //finish();
+        } //else {
+            //melhoria:tirar o piscado branco
+//            Intent intent = new Intent(this, MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(intent);
+        //}
+        finish();
     }
 
-    private int insereTarefa(Boolean updateRow) {
+    private long insereTarefa(Boolean updateRow) {
 
         if(updateRow){
             try {
                 ContentValues cv = new ContentValues();
-                //cv.put("FLAG", "4");
                 cv.put("NOME", edtNomeTarefa.getText().toString());
                 cv.put("OBSERVACAO", edtObservacaoTarefa.getText().toString());
-                //nome
-                //obs
+
                 SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-                return (int) bd.update("PROCEDIMENTO", cv, "_id = ?", new String[]{Long.toString(idProcedimento)});
+
+                int idTarefa = bd.update("PROCEDIMENTO", cv, "_id = ?", new String[]{Long.toString(idProcedimento)});
+                SQLiteDatabase.close();
+
+                return idTarefa;
 
             } catch (SQLiteException e) {
                 Toast.makeText(this, "Atualização falhou", Toast.LENGTH_LONG).show();
@@ -191,14 +187,9 @@ public class ManterTarefaActivity extends AppCompatActivity {
 
         }else {
             try {
-                SQLiteConnection = new SQLiteConnection(this);
-                bd = SQLiteConnection.getWritableDatabase();
-                ContentValues cvTarefa = new ContentValues();
-                cvTarefa.put("NOME", edtNomeTarefa.getText().toString());
-                cvTarefa.put("OBSERVACAO", edtObservacaoTarefa.getText().toString());
-                cvTarefa.put("FLAG", "3");
-                cvTarefa.put("CATEGORIA", "Tarefa");
-                return (int) bd.insert("PROCEDIMENTO", null, cvTarefa);
+
+                long idTarefa = insereProcedimento();
+                return idTarefa;
 
             } catch (SQLiteException e) {
                 Toast.makeText(this, "Criação falhou", Toast.LENGTH_LONG).show();
@@ -206,14 +197,26 @@ public class ManterTarefaActivity extends AppCompatActivity {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
+
+        SQLiteDatabase.close();
         return -1;
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent = new Intent(this, ListaPacotesActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(intent);
-//    }
+    private Procedimento getTarefaActivity(){
+
+        this.procedimento = new Procedimento();
+
+        this.procedimento.setNOME(edtNomeTarefa.getText().toString());
+        this.procedimento.setCATEGORIA("Tarefa");
+        this.procedimento.setFLAG("3");
+        this.procedimento.setOBSERVACAO(edtObservacaoTarefa.getText().toString());
+
+        return procedimento;
+    }
+
+    private long insereProcedimento(){
+        ProcedimentoController procedimentoController =  new ProcedimentoController(SQLiteConnection);
+        return procedimentoController.createProcedimentoController(getTarefaActivity());
+    }
+
 }
-///retirar action bar https://pt.stackoverflow.com/questions/86728/removendo-o-titlebar-do-app-android
