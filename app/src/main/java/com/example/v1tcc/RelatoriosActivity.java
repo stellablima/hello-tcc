@@ -2,7 +2,6 @@ package com.example.v1tcc;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -13,6 +12,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.v1tcc.BDHelper.SQLiteConnection;
 
 public class RelatoriosActivity extends AppCompatActivity {
 
@@ -65,8 +66,8 @@ public class RelatoriosActivity extends AppCompatActivity {
 
     private void setLvRelatorioAdapter(String categoria) {
         try {
-            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
                     "RELATORIO",

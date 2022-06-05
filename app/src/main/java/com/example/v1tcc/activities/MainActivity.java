@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +18,17 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.v1tcc.AlertaActivity;
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.MenuInstrucoesActivity;
+import com.example.v1tcc.MenuMainActivity;
+import com.example.v1tcc.MenuNecessidadeActivity;
+import com.example.v1tcc.MenuOcorrenciaActivity;
+import com.example.v1tcc.MenuVencimentosActivity;
+import com.example.v1tcc.ProcedimentosActivity;
+import com.example.v1tcc.R;
+import com.example.v1tcc.TarefaActivity;
 
 import java.util.Calendar;
 
@@ -49,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //BDRotinaHelper SQLiteConection = BDRotinaHelper.getInstanciaConexao(this);
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); para manter tela sempre acesa no app
     }
 
@@ -199,8 +211,8 @@ public class MainActivity extends AppCompatActivity {
         int valor; //txtHoraProcedimento
         try {
             int idAlertaDia = 1 ;
-            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
             Cursor cursor = bd.query("ESTADO",
                     new String[] {"_id", "TITULO", "TEXTO"},
                     "_id = ?",//CATEGORIA="Alerta" FLAG="1" (ATIVO)
@@ -276,8 +288,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setLvRotinaMainAdapter() {
         try {
-            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
                     "PROCEDIMENTO",
@@ -304,8 +316,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setLvTarefasMainAdapter() {
         try {
-            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
                     "PROCEDIMENTO",

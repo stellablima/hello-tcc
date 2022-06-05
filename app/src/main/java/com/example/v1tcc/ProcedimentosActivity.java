@@ -2,22 +2,20 @@ package com.example.v1tcc;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.AlarmClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.activities.ManterProcedimentoActivity;
 
 public class ProcedimentosActivity extends AppCompatActivity {
 
@@ -29,7 +27,7 @@ public class ProcedimentosActivity extends AppCompatActivity {
     private TextView txtHoraProcedimento;
     private TextView txtCategoriaProcedimento;
     private Long idProcedimento;
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private Button btnEditarProcedimento;
@@ -59,12 +57,12 @@ public class ProcedimentosActivity extends AppCompatActivity {
 
             ContentValues cv = new ContentValues();
             cv.put("FLAG", "0");
-            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
 
             //recuperar tamanho do alarme
-            bd = bdRotinaHelper.getReadableDatabase();
+            bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("PROCEDIMENTO",
                     new String[] {"_id", "QTDDISPAROS"},
                     "_id = ?",
@@ -80,7 +78,7 @@ public class ProcedimentosActivity extends AppCompatActivity {
                 Toast.makeText(this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
 
             AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
-            //finish();
+            finish();
 
         } catch (SQLiteException e) {
             Toast.makeText(this, "Deleção falhou", Toast.LENGTH_LONG).show();
@@ -95,10 +93,10 @@ public class ProcedimentosActivity extends AppCompatActivity {
         Toast.makeText(this, "idProcedimento:"+(idProcedimento).intValue(), Toast.LENGTH_SHORT).show();
 
         //futuramente preparar e passar flag para usar a mesma interface do cadastro
-        Intent intent = new Intent(this, AdicionarProcedimentoActivity.class);
+        Intent intent = new Intent(this, ManterProcedimentoActivity.class);
         //intent.putExtra(ProcedimentosActivity.EXTRA_ID, (idProcedimento).longValue()); //mandar valor pra activity destino
-        intent.putExtra(AdicionarProcedimentoActivity.EXTRA_ID, (idProcedimento).longValue());
-        intent.putExtra(AdicionarProcedimentoActivity.EXTRA_PROCEDIMENTO, "EDITAR_PROCEDIMENTO");
+        intent.putExtra(ManterProcedimentoActivity.EXTRA_ID, (idProcedimento).longValue());
+        intent.putExtra(ManterProcedimentoActivity.EXTRA_PROCEDIMENTO, "EDITAR_PROCEDIMENTO");
         startActivity(intent);
 
         /******************************************************/
@@ -178,8 +176,8 @@ public class ProcedimentosActivity extends AppCompatActivity {
         int valor; //txtHoraProcedimento
         try {
             idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
             // Podemos criar o cursor com rawQuery()
 //            //cursor = bd.rawQuery("select _id, CODIGO, NOME, UNID, QTDE, PCUNIT from ESTOQUE where _id = ?",
 //            // new String[] {Long.toString(idEstq)} );

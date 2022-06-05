@@ -3,7 +3,6 @@ package com.example.v1tcc;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -13,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.v1tcc.BDHelper.SQLiteConnection;
 
 public class AdicionarInstrucaoActivity extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
     private EditText edtTituloInstrucao;
     private EditText edtTextoInstrucao;
     private TextView txtCadastroInstrucao;
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private long idEstado;
@@ -105,8 +106,8 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
     private void carregaDados() {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idEstado = getIntent().getExtras().getLong(EXTRA_ID);
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("ESTADO",
                     new String[]{"_id", "TITULO", "TEXTO"},
                     "_id = ?",
@@ -150,7 +151,7 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
     }
 
     private void btnExcluirInstrucaoOnClick(View view) {
-        BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+        SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
         SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
         bd.delete("ESTADO","_id = ?", new String[] {Long.toString(idEstado)});
         bd.close();
@@ -165,7 +166,7 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
                 //cv.put("FLAG", "4");
                 cv.put("TITULO", edtTituloInstrucao.getText().toString());
                 cv.put("TEXTO", edtTextoInstrucao.getText().toString());
-                BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
                 return (int) bd.update("ESTADO", cv, "_id = ?", new String[]{Long.toString(idEstado)});
 
@@ -177,8 +178,8 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
 
         }else {
             try {
-                bdRotinaHelper = new BDRotinaHelper(this);
-                bd = bdRotinaHelper.getWritableDatabase();
+                SQLiteConnection = new SQLiteConnection(this);
+                bd = SQLiteConnection.getWritableDatabase();
                 ContentValues cvTarefa = new ContentValues();
                 cvTarefa.put("TITULO", edtTituloInstrucao.getText().toString());
                 cvTarefa.put("TEXTO", edtTextoInstrucao.getText().toString());

@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+
 public class MenuVencimentosActivity extends AppCompatActivity {
 
     private ListView lvVencimentosMenu;
@@ -68,8 +70,8 @@ public class MenuVencimentosActivity extends AppCompatActivity {
 
     private void setLvVencimentosMenuAdapter() {
         try {
-            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
                     "ESTADO",

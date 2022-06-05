@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+
 public class AdicionarOcorrenciaActivity extends AppCompatActivity {
 
     public static final String EXTRA_OCORRENCIA = "extraocorrencia";
@@ -23,7 +25,7 @@ public class AdicionarOcorrenciaActivity extends AppCompatActivity {
     private EditText edtNomeOcorrencia;
     private EditText edtObservacaoOcorrencia;
     private TextView txtCadastroOcorrencia;
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private long idRelatorio;
@@ -103,8 +105,8 @@ public class AdicionarOcorrenciaActivity extends AppCompatActivity {
     private void carregaDados() {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idRelatorio = getIntent().getExtras().getLong(EXTRA_ID);
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("RELATORIO",
                     new String[]{"_id", "NOME", "OBSERVACAO", "DATA_INICIO"},
                     "_id = ?",
@@ -148,7 +150,7 @@ public class AdicionarOcorrenciaActivity extends AppCompatActivity {
     }
 
     private void btnExcluirOcorrenciaOnClick(View view) {
-        BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+        SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
         SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
         bd.delete("RELATORIO","_id = ?", new String[] {Long.toString(idRelatorio)});
         bd.close();
@@ -164,7 +166,7 @@ public class AdicionarOcorrenciaActivity extends AppCompatActivity {
                 cv.put("NOME", edtNomeOcorrencia.getText().toString());
                 cv.put("OBSERVACAO", edtObservacaoOcorrencia.getText().toString());
                 cv.put("DATA_INICIO", txtDataInicioOcorrencia.getText().toString());
-                BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
                 return (int) bd.update("RELATORIO", cv, "_id = ?", new String[]{Long.toString(idRelatorio)});
 
@@ -176,8 +178,8 @@ public class AdicionarOcorrenciaActivity extends AppCompatActivity {
 
         }else {
             try {
-                bdRotinaHelper = new BDRotinaHelper(this);
-                bd = bdRotinaHelper.getWritableDatabase();
+                SQLiteConnection = new SQLiteConnection(this);
+                bd = SQLiteConnection.getWritableDatabase();
                 ContentValues cv = new ContentValues();
                 cv.put("NOME", edtNomeOcorrencia.getText().toString());
                 cv.put("OBSERVACAO", edtObservacaoOcorrencia.getText().toString());

@@ -13,6 +13,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -32,7 +34,7 @@ public class TarefaActivity extends AppCompatActivity {
     private TextView txtNomeTarefa;
     private TextView txtObservacaoTarefa;
     private Long idProcedimento;
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private Button btnManterTarefa;
@@ -55,8 +57,8 @@ public class TarefaActivity extends AppCompatActivity {
         int valor; //txtHoraProcedimento
         try {
             idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("PROCEDIMENTO",
                     new String[] {"_id", "NOME", "OBSERVACAO"},
                     "_id = ?",
@@ -109,8 +111,8 @@ public class TarefaActivity extends AppCompatActivity {
             cv = new ContentValues();
             cv.put("FLAG", "4");
 
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getWritableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getWritableDatabase();
 
             bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
 
@@ -131,8 +133,8 @@ public class TarefaActivity extends AppCompatActivity {
             cv.put("NOME", txtNomeTarefa.getText().toString());
             //cv.put("OBSERVACAO", txtObservacaoTarefa.getText().toString());
 
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getWritableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getWritableDatabase();
             int idInserted = (int) bd.insert("RELATORIO", null, cv);
 
             if(idInserted > 1)

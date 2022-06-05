@@ -14,6 +14,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.activities.ManterTarefaActivity;
+
 public class MenuTarefaActivity extends AppCompatActivity {
 
     private ListView lvTarefasMenu;
@@ -49,27 +52,27 @@ public class MenuTarefaActivity extends AppCompatActivity {
         lvTarefasMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuTarefaActivity.this, AdicionarTarefaActivity.class);
+                Intent intent = new Intent(MenuTarefaActivity.this, ManterTarefaActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(AdicionarTarefaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(AdicionarTarefaActivity.EXTRA_TAREFA, "EDITAR_TAREFA");
+                intent.putExtra(ManterTarefaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                intent.putExtra(ManterTarefaActivity.EXTRA_TAREFA, "EDITAR_TAREFA");
                 startActivity(intent);
             }
         });
     }
 
     private void btnAdicionarTarefaOnClick(View view){
-        Intent intent = new Intent(this, AdicionarTarefaActivity.class);
-        intent.putExtra(AdicionarTarefaActivity.EXTRA_TAREFA, "ADICIONAR_TAREFA");
+        Intent intent = new Intent(this, ManterTarefaActivity.class);
+        intent.putExtra(ManterTarefaActivity.EXTRA_TAREFA, "ADICIONAR_TAREFA");
         startActivity(intent);
 
     }
 
     private void setLvTarefasMenuAdapter() {
         try {
-            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
                     "PROCEDIMENTO",

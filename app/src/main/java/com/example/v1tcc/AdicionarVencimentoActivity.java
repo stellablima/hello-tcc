@@ -3,7 +3,6 @@ package com.example.v1tcc;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -11,12 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import com.example.v1tcc.BDHelper.SQLiteConnection;
 
 public class AdicionarVencimentoActivity extends AppCompatActivity {
 
@@ -28,7 +25,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
     private EditText edtTituloVencimento;
     private EditText edtTextoVencimento;
     private long idEstado;
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private Button btnSalvarVencimento;
@@ -79,7 +76,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
 
 //        if(deleteRow){
 //
-            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.delete("ESTADO","_id = ?", new String[] {Long.toString(idEstado)});
             bd.close();
@@ -105,7 +102,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
                 cv.put("TITULO", edtTituloVencimento.getText().toString());
                 cv.put("TEXTO", edtTextoVencimento.getText().toString());
                 cv.put("DATA_ULTIMA_OCORRENCIA", txtDataUltimaOcorrencia.getText().toString());
-                BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
                 return (int) bd.update("ESTADO", cv, "_id = ?", new String[]{Long.toString(idEstado)});
 
@@ -126,7 +123,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
                 cv.put("CATEGORIA", "Vencimento");
                 //nome
                 //obs
-                BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
                 return (int) bd.insert("ESTADO", null, cv);
 
@@ -191,8 +188,8 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
     private void carregaDados() {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idEstado = getIntent().getExtras().getLong(EXTRA_ID);
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("ESTADO",
                     new String[]{"_id", "TITULO", "TEXTO", "DATA_ULTIMA_OCORRENCIA"},
                     "_id = ?",

@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,10 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.Helpers;
+import com.example.v1tcc.R;
+
 //trocar pra manter tarefa parece melhor
-public class AdicionarTarefaActivity extends AppCompatActivity {
+public class ManterTarefaActivity extends AppCompatActivity {
 
     public static final String EXTRA_TAREFA = "extratarefa";
     public static final String EXTRA_ID = "idTarefa";
@@ -26,7 +28,7 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
     private EditText edtNomeTarefa;
     private EditText edtObservacaoTarefa;
     private TextView txtCadastroTarefa;
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private long idProcedimento;
@@ -110,8 +112,8 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
     private void carregaDados() {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("PROCEDIMENTO",
                     new String[]{"_id", "NOME", "OBSERVACAO"},
                     "_id = ?",
@@ -153,7 +155,7 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 
         if(deleteRow){
 
-            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.delete("PROCEDIMENTO","_id = ?", new String[] {Long.toString(idProcedimento)});
             bd.close();
@@ -177,7 +179,7 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
                 cv.put("OBSERVACAO", edtObservacaoTarefa.getText().toString());
                 //nome
                 //obs
-                BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
                 return (int) bd.update("PROCEDIMENTO", cv, "_id = ?", new String[]{Long.toString(idProcedimento)});
 
@@ -189,8 +191,8 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 
         }else {
             try {
-                bdRotinaHelper = new BDRotinaHelper(this);
-                bd = bdRotinaHelper.getWritableDatabase();
+                SQLiteConnection = new SQLiteConnection(this);
+                bd = SQLiteConnection.getWritableDatabase();
                 ContentValues cvTarefa = new ContentValues();
                 cvTarefa.put("NOME", edtNomeTarefa.getText().toString());
                 cvTarefa.put("OBSERVACAO", edtObservacaoTarefa.getText().toString());

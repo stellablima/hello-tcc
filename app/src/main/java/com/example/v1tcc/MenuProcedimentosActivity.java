@@ -14,6 +14,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.activities.ManterProcedimentoActivity;
+
 public class MenuProcedimentosActivity extends AppCompatActivity {
 
     private ListView lvProcedimentosMenu;
@@ -35,16 +38,16 @@ public class MenuProcedimentosActivity extends AppCompatActivity {
     }
 
     private void btnAdicionarProcedimentoOnClick(View view){
-        Intent intent = new Intent(this, AdicionarProcedimentoActivity.class);
-        intent.putExtra(AdicionarProcedimentoActivity.EXTRA_PROCEDIMENTO, "ADICIONAR_PROCEDIMENTO");
+        Intent intent = new Intent(this, ManterProcedimentoActivity.class);
+        intent.putExtra(ManterProcedimentoActivity.EXTRA_PROCEDIMENTO, "ADICIONAR_PROCEDIMENTO");
         startActivity(intent);
 
     }
 
     private void setLvProcedimentosMenuAdapter() {
         try {
-            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
                     "PROCEDIMENTO",

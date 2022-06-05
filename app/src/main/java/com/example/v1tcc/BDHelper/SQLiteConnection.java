@@ -1,22 +1,26 @@
-package com.example.v1tcc;
+package com.example.v1tcc.BDHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
+public class SQLiteConnection extends SQLiteOpenHelper {
 
-import java.util.Calendar;
-import java.util.Date;
-
-public class BDRotinaHelper extends SQLiteOpenHelper {
-
+    private static SQLiteConnection INSTANCIA_CONEXAO;
     private static final String NOMEDB = "rotina";
     private static final int VERSAOBD = 7;
 
-    public BDRotinaHelper(Context context) {
+    public SQLiteConnection(Context context) {
         super(context, NOMEDB, null, VERSAOBD);
+    }
+
+    //https://www.youtube.com/watch?v=raYR3Mc6m2M
+    public static SQLiteConnection getInstanciaConexao(Context context) {
+        if (INSTANCIA_CONEXAO == null)
+            INSTANCIA_CONEXAO = new SQLiteConnection(context);
+
+        return INSTANCIA_CONEXAO;
     }
 
     @Override
@@ -80,25 +84,25 @@ acrescentar numero > compilar // instalar como 2, upar 3
 
     private void criaBdRotina(SQLiteDatabase bd) {
         String sql;
-        sql = "CREATE TABLE PROCEDIMENTO (" +
+        sql = "CREATE TABLE IF NOT EXISTS PROCEDIMENTO (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "CATEGORIA TEXT, " +
-                "DATA_INICIO NUMERIC, " +
+                "DATA_INICIO NUMERIC, " + //nao cabe no escopo
                 "DATA_PREVISAO NUMERIC, " +
-                "DEBITO_ESTOQUE TEXT, " +
-                "DEBITO_FISIOLOGICO TEXT, " +
+                "DEBITO_ESTOQUE TEXT, " + //nao cabe no escopo
+                "DEBITO_FISIOLOGICO TEXT, " + //nao cabe no escopo
                 "FLAG TEXT, " +
-                "FLAG_FREQUENCIA TEXT, " + //SOCRR??
-                "FLAG_REPETICAO TEXT, " + //SOCRR??
-                "QTDDISPAROS TEXT, " + //SOCRR??
+                "FLAG_FREQUENCIA TEXT, " +
+                "FLAG_REPETICAO TEXT, " +
+                "QTDDISPAROS TEXT, " +
                 "NOME TEXT, " +
-                "OBSERVACAO TEXT, " +
-                "TEMPO_PREVISAO NUMERIC " +
+                "OBSERVACAO TEXT, " + //apenas tarefas usam por enquanto
+                "TEMPO_PREVISAO NUMERIC " + //nao cabe no escopo
                 ")";
 
         bd.execSQL(sql);
 
-        sql = "CREATE TABLE RELATORIO (" +
+        sql = "CREATE TABLE IF NOT EXISTS RELATORIO (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "_id_PROCEDIMENTO NUMERIC, " +
                 "CATEGORIA TEXT, " +
@@ -111,7 +115,7 @@ acrescentar numero > compilar // instalar como 2, upar 3
 
         bd.execSQL(sql);
 
-        sql = "CREATE TABLE ESTADO (" +
+        sql = "CREATE TABLE IF NOT EXISTS ESTADO (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "TITULO TEXT, " +
                 "DATA_ULTIMA_OCORRENCIA TEXT," +

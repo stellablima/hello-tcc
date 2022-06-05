@@ -92,7 +92,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
     }
 
-    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, int reqcod, Boolean swtRepete, Boolean swtFrequencia, String  spnPeriodo, String spnPeriodo0){
+    public static void startAlarmProcedimento(Context context, ArrayList<Calendar> c, long reqcod, Boolean swtRepete, Boolean swtFrequencia, String  spnPeriodo, String spnPeriodo0){
 
 
 

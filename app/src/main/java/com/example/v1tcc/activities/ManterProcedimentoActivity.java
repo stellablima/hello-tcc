@@ -1,9 +1,7 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,7 +10,6 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -21,27 +18,30 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.v1tcc.AlarmReceiver;
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.Helpers;
+import com.example.v1tcc.R;
+import com.example.v1tcc.controller.ProcedimentoController;
+import com.example.v1tcc.models.Procedimento;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class AdicionarProcedimentoActivity extends AppCompatActivity {
+public class ManterProcedimentoActivity extends AppCompatActivity {
 
     private EditText edtNomeProcedimento;
     private TextView txtHoraProcedimento;
     private TextView txtFrequenciaAlarme;
     private TextView txtProcedimento;
-    private TimePicker tmpHoraAlarme;
-    private Calendar calHoraAlarm;
-    private String horaAtual;
-    private String minAtual;
-    private TimePickerDialog mTimePicker;
+//    private TimePicker tmpHoraAlarme;
+//    private Calendar calHoraAlarm;
+//    private String horaAtual;
+//    private String minAtual;
+//    private TimePickerDialog mTimePicker;
     private Spinner spnCategoriasAlarme;
     private Spinner spnPeriodoAlarme;
     private Spinner spnPeriodo0Alarme;
@@ -53,22 +53,29 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
     public static final String EXTRA_PROCEDIMENTO = "extraProcedimento";
     public static final String EXTRA_ID = "idprocedimento";
     private TextView txt;
-    private String s;
+//    private String s;
     private LinearLayout llAlarmeDistribuido;
     private Long idProcedimento;
-    private BDRotinaHelper bdRotinaHelper;
-    private SQLiteDatabase bd;
+
     private Cursor cursor;
     private Button btnManterProcedimento;
     private boolean flagAlterarLVBugado = false;
     private String[] dataPrevisaoSplitado;
 
-    /*DEFINIR AQUI QUANDO CADASTRO QUANDO EDIÇÃO E OTIMIZAR O CODIGO, E RETIRAR BUG SWT DE REPETICAO*/
+    private SQLiteConnection SQLiteConnection;
+    private SQLiteDatabase SQLiteDatabase;
+
+//    private com.example.v1tcc.BDHelper.SQLiteConnection SQLiteConnection;
+//    private SQLiteDatabase bd;
+
+    private Procedimento procedimento;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_procedimento);
 
+        SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }
 
     @Override
@@ -99,6 +106,50 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 //                Helpers.lvDinamico(getApplicationContext(),dataPrevisaoSplitado, lvRepeticaoDesproporcinalAlarme);
         }
     }
+
+    private Procedimento getProcedimentoActivity(){
+
+        this.procedimento = new Procedimento();
+
+        if(this.edtNomeProcedimento.getText().toString().isEmpty() == false){
+            this.procedimento.setNOME(edtNomeProcedimento.getText().toString());
+        }else return null;
+
+        this.procedimento.setCATEGORIA(spnCategoriasAlarme.getSelectedItem().toString());
+
+        this.procedimento.setFLAG("1");
+
+        if(swtRepeteAlarme.isChecked() && !swtFrequenciaAlarme.isChecked())
+            this.procedimento.setQTDDISPAROS(spnPeriodo1Alarme.getSelectedItem().toString());
+        else
+            this.procedimento.setQTDDISPAROS("1");
+
+        if(swtRepeteAlarme.isChecked())
+            this.procedimento.setFLAG_REPETICAO("1");
+        else
+            this.procedimento.setFLAG_REPETICAO("0");
+
+        if(swtFrequenciaAlarme.isChecked())
+            this.procedimento.setFLAG_REPETICAO("1");
+        else
+            this.procedimento.setFLAG_REPETICAO("0");
+
+        if(!swtRepeteAlarme.isChecked())
+            this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]");
+        else if(swtRepeteAlarme.isChecked() && swtFrequenciaAlarme.isChecked())
+            this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]"+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
+        else
+            this.procedimento.setDATA_PREVISAO(listHorarios.toString()+""+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
+
+
+        return procedimento;
+    }
+
+
+
+
+
+
 
 
 
@@ -253,9 +304,9 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
-            cursor = bd.query("PROCEDIMENTO",
+            //SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase = SQLiteConnection.getReadableDatabase();
+            cursor = SQLiteDatabase.query("PROCEDIMENTO",
                     new String[] {"_id", "NOME", "DATA_PREVISAO", "CATEGORIA", "QTDDISPAROS", "FLAG_REPETICAO", "FLAG_FREQUENCIA"},
                     "_id = ?",
                     new String[] {Long.toString(idProcedimento)},
@@ -385,6 +436,9 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
             }
             else
                 Toast.makeText(this, "Procedimento não encontrado", Toast.LENGTH_SHORT).show();
+
+            SQLiteDatabase.close();
+            //SQLiteConnection.close();
         }
         catch (SQLiteException e){
             Toast.makeText(this, "Falha no acesso ao Banco de Dados "+e, Toast.LENGTH_LONG).show();
@@ -394,7 +448,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
 
     public void btnEditarProcedimentoOnClick(View view){
-        Toast.makeText(this,"editeiiii", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"editeiiii", Toast.LENGTH_LONG).show();
         //excluir alarmes
         btnDeletarProcedimentoOnClick(view);
         //salvar um novo alarme
@@ -415,13 +469,14 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
             ContentValues cv = new ContentValues();
             cv.put("FLAG", "0");
-            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-            bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
+            //SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
+            SQLiteDatabase = SQLiteConnection.getWritableDatabase();
+            SQLiteDatabase.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
 
+            SQLiteDatabase.close();
             //recuperar tamanho do alarme
-            bd = bdRotinaHelper.getReadableDatabase();
-            cursor = bd.query("PROCEDIMENTO",
+            SQLiteDatabase = SQLiteConnection.getReadableDatabase();
+            cursor = SQLiteDatabase.query("PROCEDIMENTO",
                     new String[] {"_id", "QTDDISPAROS"},
                     "_id = ?",
                     new String[] {Long.toString(idProcedimento)},
@@ -437,10 +492,10 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
                 //tem que dar exeption, provavelmente o sql de?
             }
             //new
-            bd.close();
+            SQLiteDatabase.close();
 
             AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
-            //finish();
+            finish();
 
         } catch (SQLiteException e) {
             Toast.makeText(this, "Deleção falhou", Toast.LENGTH_LONG).show();
@@ -459,7 +514,7 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
             Boolean swtRepete = swtRepeteAlarme.isChecked();
             Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
-            String spnCategoria = spnCategoriasAlarme.getSelectedItem().toString();
+            //String spnCategoria = spnCategoriasAlarme.getSelectedItem().toString();
             String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
             String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
             ArrayList<Calendar> alarmeTempo = new ArrayList<>();
@@ -509,13 +564,16 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
 
 
             //if (operacao == OP_INCLUI) {
-            int idInserted = insereEstq(); // como nao é orientado a obj ainda, o id sera unico no banco concatenado co _n no java para identificar repetições
-            if(idInserted == -1)
+            //int idInserted = insereEstq(); // como nao é orientado a obj ainda, o id sera unico no banco concatenado co _n no java para identificar repetições
+            long idProcedimento = insereProcedimento();
+
+            if(idProcedimento == -1)
                 Toast.makeText(this, "Inclusão falhou "+"-1", Toast.LENGTH_LONG).show();
             else{
                 //Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+spnPeriodo1Alarme.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+alarmeTempo.size(), Toast.LENGTH_SHORT).show();
-                AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1); //endiando 1 e la pego 0?
+                //Toast.makeText(this, "Id inserido:"+idInserted+"_qtd:"+alarmeTempo.size(), Toast.LENGTH_SHORT).show();
+                //AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idInserted, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1); //endiando 1 e la pego 0?
+                AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idProcedimento, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
             }
 
             //}
@@ -534,75 +592,80 @@ public class AdicionarProcedimentoActivity extends AppCompatActivity {
         }
     }
 
-    private int insereEstq() {
-        BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-        SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
-        ContentValues cvEstq = carregaCVProcedimento();
-        return (int) bd.insert("PROCEDIMENTO", null, cvEstq);
+//    private int insereEstq() {
+//        BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
+//        SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
+//        ContentValues cvEstq = carregaCVProcedimento();
+//        return (int) bd.insert("PROCEDIMENTO", null, cvEstq);
+//    }
+
+    private long insereProcedimento(){
+        ProcedimentoController procedimentoController =  new ProcedimentoController(SQLiteConnection);
+        return procedimentoController.createProcedimentoController(getProcedimentoActivity());
     }
 
-    private ContentValues carregaCVProcedimento() {
-        ContentValues cv = new ContentValues();
-        cv.put("NOME", edtNomeProcedimento.getText().toString());
-        cv.put("CATEGORIA", spnCategoriasAlarme.getSelectedItem().toString());
-        cv.put("FLAG", "1");
-
-
-
-
-        Boolean swtRepete = swtRepeteAlarme.isChecked();
-        Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
-        String FLAGREPETICAO;
-        String FLAGFREQUENCIA;
-
-
-        //arrumar QTDDISPAROS  > 1 so quando for swtrepete e swtfrequencia
-        String qtdDisparos;
-
-        if(swtRepete && !swtFrequencia)
-            qtdDisparos = spnPeriodo1Alarme.getSelectedItem().toString();
-        else
-            qtdDisparos = "1";
-
-        cv.put("QTDDISPAROS", qtdDisparos); //spnPeriodo1Alarme.getSelectedItem().toString()
-
-/*?situação, salvou o layout certo mas passou horario errado horario array quando deveria ser 1 cara so?*/
-
-        //rever
-        if(swtRepete)
-            FLAGREPETICAO="1";
-        else
-            FLAGREPETICAO="0";
-        if(swtFrequencia) // a frequencia pode estar em 1 mas se o repete tiver disabled de nada vale
-            FLAGFREQUENCIA="1";//na real nao importa porque isso é um switch e vai ter valor de qqr forma
-        else
-            FLAGFREQUENCIA="0";
-        cv.put("FLAG_REPETICAO", FLAGREPETICAO); //comentar ajudou no bug de limpar cache?
-        cv.put("FLAG_FREQUENCIA", FLAGFREQUENCIA);
-        //o que ele vai salvar no futuro no banco vai ser um alarme com uma configuração e uma peridiocidade, e o que vai
-        //persistir no banco é quando a ação for realizada os dados mínimos para relatório, toda a mágica fora o crud
-        //vai acontecer ali e pode ser necessário rependar melhor esse módulo, vai ser um tabelão de crescimento esponencial com indexes
-        //mas tbm pode filtrar gerar o relatório e apagar os dados mais antigos periodicamente
-
-        //forlar bug aqui
-        if(!swtRepete) { // se alarme unico
-            cv.put("DATA_PREVISAO", "["+txtHoraProcedimento.getText().toString()+"]");
-        }
-        else if(swtRepete && swtFrequencia) { // aqui importa
-            cv.put("DATA_PREVISAO", "["+txtHoraProcedimento.getText().toString()+"]"+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
-        }
-        else {
-            cv.put("DATA_PREVISAO", listHorarios.toString()+""+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
-        }
-
-        //cv.put("UNID", spnUnidade.getSelectedItem().toString());
-        //cv.put("QTDE", qtde);
-        //cv.put("PCUNIT", pcUnit);
-        //preencher demais dados que descrevem o alarme
-        //para recuperar na tela de edição
-        //posterior//documentação urgente//apenas deixe começar do 0
-        return cv;
-    }
+//    private ContentValues carregaCVProcedimento() {
+//        ContentValues cv = new ContentValues();
+//        cv.put("NOME", edtNomeProcedimento.getText().toString());
+//        cv.put("CATEGORIA", spnCategoriasAlarme.getSelectedItem().toString());
+//        cv.put("FLAG", "1");
+//
+//
+//
+//
+//        Boolean swtRepete = swtRepeteAlarme.isChecked();
+//        Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
+//        String FLAGREPETICAO;
+//        String FLAGFREQUENCIA;
+//
+//
+//        //arrumar QTDDISPAROS  > 1 so quando for swtrepete e swtfrequencia
+//        String qtdDisparos;
+//
+//        if(swtRepete && !swtFrequencia)
+//            qtdDisparos = spnPeriodo1Alarme.getSelectedItem().toString();
+//        else
+//            qtdDisparos = "1";
+//
+//        cv.put("QTDDISPAROS", qtdDisparos); //spnPeriodo1Alarme.getSelectedItem().toString()
+//
+///*?situação, salvou o layout certo mas passou horario errado horario array quando deveria ser 1 cara so?*/
+//
+//        //rever
+//        if(swtRepete)
+//            FLAGREPETICAO="1";
+//        else
+//            FLAGREPETICAO="0";
+//        if(swtFrequencia) // a frequencia pode estar em 1 mas se o repete tiver disabled de nada vale
+//            FLAGFREQUENCIA="1";//na real nao importa porque isso é um switch e vai ter valor de qqr forma
+//        else
+//            FLAGFREQUENCIA="0";
+//        cv.put("FLAG_REPETICAO", FLAGREPETICAO); //comentar ajudou no bug de limpar cache?
+//        cv.put("FLAG_FREQUENCIA", FLAGFREQUENCIA);
+//        //o que ele vai salvar no futuro no banco vai ser um alarme com uma configuração e uma peridiocidade, e o que vai
+//        //persistir no banco é quando a ação for realizada os dados mínimos para relatório, toda a mágica fora o crud
+//        //vai acontecer ali e pode ser necessário rependar melhor esse módulo, vai ser um tabelão de crescimento esponencial com indexes
+//        //mas tbm pode filtrar gerar o relatório e apagar os dados mais antigos periodicamente
+//
+//        //forlar bug aqui
+//        if(!swtRepete) { // se alarme unico
+//            cv.put("DATA_PREVISAO", "["+txtHoraProcedimento.getText().toString()+"]");
+//        }
+//        else if(swtRepete && swtFrequencia) { // aqui importa
+//            cv.put("DATA_PREVISAO", "["+txtHoraProcedimento.getText().toString()+"]"+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
+//        }
+//        else {
+//            cv.put("DATA_PREVISAO", listHorarios.toString()+""+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
+//        }
+//
+//        //cv.put("UNID", spnUnidade.getSelectedItem().toString());
+//        //cv.put("QTDE", qtde);
+//        //cv.put("PCUNIT", pcUnit);
+//        //preencher demais dados que descrevem o alarme
+//        //para recuperar na tela de edição
+//        //posterior//documentação urgente//apenas deixe começar do 0
+//        return cv;
+//    }
 
     private void resetLvDesproporcional(Context context, int i){
         listHorarios.clear();

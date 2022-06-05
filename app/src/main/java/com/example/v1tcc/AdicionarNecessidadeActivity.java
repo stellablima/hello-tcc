@@ -9,11 +9,12 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.v1tcc.BDHelper.SQLiteConnection;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -32,7 +33,7 @@ public class AdicionarNecessidadeActivity extends AppCompatActivity {
     private RadioButton rbNecessidade2;
     private EditText edtObservacaoNecessidade;
     private TextView txtCadastroNecessidade;
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private long idRelatorio;
@@ -116,8 +117,8 @@ public class AdicionarNecessidadeActivity extends AppCompatActivity {
     private void carregaDados() {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idRelatorio = getIntent().getExtras().getLong(EXTRA_ID);
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("RELATORIO",
                     new String[]{"_id", "NOME", "OBSERVACAO", "DATA_INICIO"},
                     "_id = ?",
@@ -162,7 +163,7 @@ public class AdicionarNecessidadeActivity extends AppCompatActivity {
     }
 
     private void btnExcluirNecessidadeOnClick(View view) {
-        BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+        SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
         SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
         bd.delete("RELATORIO","_id = ?", new String[] {Long.toString(idRelatorio)});
         bd.close();
@@ -195,7 +196,7 @@ public class AdicionarNecessidadeActivity extends AppCompatActivity {
                 //pegar data atual
                 //cv.put("DATA_INICIO", Calendar.getInstance(Locale.getDefault()).getTime().toString());
 
-                BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
                 return (int) bd.update("RELATORIO", cv, "_id = ?", new String[]{Long.toString(idRelatorio)});
 
@@ -207,8 +208,8 @@ public class AdicionarNecessidadeActivity extends AppCompatActivity {
 
         }else {
             try {
-                bdRotinaHelper = new BDRotinaHelper(this);
-                bd = bdRotinaHelper.getWritableDatabase();
+                SQLiteConnection = new SQLiteConnection(this);
+                bd = SQLiteConnection.getWritableDatabase();
                 ContentValues cv = new ContentValues();
                 cv.put("NOME", nomeNecessidade);
                 cv.put("OBSERVACAO", edtObservacaoNecessidade.getText().toString());

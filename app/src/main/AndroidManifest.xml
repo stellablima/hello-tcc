@@ -41,7 +41,7 @@
             android:name=".AlertaActivity"
             android:exported="true" />
         <activity
-            android:name=".AdicionarTarefaActivity"
+            android:name=".activities.ManterTarefaActivity"
             android:exported="true" />
         <activity
             android:name=".MenuTarefaActivity"
@@ -84,10 +84,10 @@
             android:name=".MenuMainActivity"
             android:exported="true" />
         <activity
-            android:name=".AdicionarProcedimentoActivity"
+            android:name=".activities.ManterProcedimentoActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

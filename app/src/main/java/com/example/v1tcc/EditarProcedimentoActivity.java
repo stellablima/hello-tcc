@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.v1tcc.BDHelper.SQLiteConnection;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -30,7 +32,7 @@ public class EditarProcedimentoActivity extends AppCompatActivity {
     private EditText edtNomeProcedimento;
     private TextView txtHoraProcedimento;
     private Long idProcedimento;
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private Calendar calHoraAlarm;
@@ -74,8 +76,8 @@ public class EditarProcedimentoActivity extends AppCompatActivity {
         try {
             idProcedimento = getIntent().getExtras().getLong(EXTRA_ID);
 //            Toast.makeText(this, "idProcedimento:"+idProcedimento, Toast.LENGTH_SHORT).show();
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
 //            // Podemos criar o cursor com rawQuery()
 ////            //cursor = bd.rawQuery("select _id, CODIGO, NOME, UNID, QTDE, PCUNIT from ESTOQUE where _id = ?",
 ////            // new String[] {Long.toString(idEstq)} );
@@ -141,7 +143,7 @@ public class EditarProcedimentoActivity extends AppCompatActivity {
             ContentValues cv = new ContentValues();
             cv.put("NOME", edtNomeProcedimento.getText().toString());
             //cv.put("DATA_PREVISAO", txtHoraProcedimento.getText().toString());
-            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
             //AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue()); //atualizar a hora que vai tocar

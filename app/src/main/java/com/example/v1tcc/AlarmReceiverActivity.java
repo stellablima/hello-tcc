@@ -1,24 +1,20 @@
 package com.example.v1tcc;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.v1tcc.BDHelper.SQLiteConnection;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +25,7 @@ public class AlarmReceiverActivity extends AppCompatActivity {
     private MediaPlayer mp;
     public static final String EXTRA_ID_PROCEDIMENTO = "idprocedimento";
     public static final String EXTRA_ID_ALARME = "idalarme";
-    private BDRotinaHelper bdRotinaHelper;
+    private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
     private Cursor cursor;
     private int idProcedimento;
@@ -153,8 +149,8 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
 
         try {
 
-            bdRotinaHelper = new BDRotinaHelper(this);
-            bd = bdRotinaHelper.getReadableDatabase();
+            SQLiteConnection = new SQLiteConnection(this);
+            bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("PROCEDIMENTO",
                     //new String[] {"_id", "", "", , "QTDDISPAROS", "FLAG_REPETICAO", "FLAG_FREQUENCIA"},
                     new String[] {"_id", "NOME", "CATEGORIA", "DATA_PREVISAO", "QTDDISPAROS", "FLAG_REPETICAO", "FLAG_FREQUENCIA"},
@@ -222,7 +218,7 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
 
             ContentValues cv = new ContentValues();
             cv.put("FLAG", "2");//0excluido,1ativo,2concluidoprocedimentounico(evolua pra alarme com expiração),3procedimentopararegistrosemalarme
-            BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
+            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
             bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
 
@@ -240,8 +236,8 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
     public void preencherRelatorio(View view){
         try {
 
-            BDRotinaHelper bdRotinaHelper = new BDRotinaHelper(this);
-            SQLiteDatabase bd = bdRotinaHelper.getWritableDatabase();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
+            SQLiteDatabase bd = SQLiteConnection.getWritableDatabase();
             ContentValues cvEstq = carregaCVProcedimento();
             int idInserted = (int) bd.insert("RELATORIO", null, cvEstq);
 
