@@ -5,18 +5,13 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.provider.AlarmClock;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
+import com.example.v1tcc.activities.AlarmReceiverProcedimentoActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 //https://thestreamliners.in/blog/implement-alarm-manager/
 /*
@@ -38,15 +33,15 @@ public class AlarmReceiver extends BroadcastReceiver {
         /*
          Minha ideia-> defina o alarme para todos os dias, verifique a condição do seu dia no receptor de alarme.
          */
-        Intent intent2 = new Intent(context, AlarmReceiverActivity.class);
+        Intent intent2 = new Intent(context, AlarmReceiverProcedimentoActivity.class);
         intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent2.putExtra(AlarmReceiverActivity.EXTRA_ID_ALARME, intent.getExtras().getInt(EXTRA_ID_ALARME));
+        intent2.putExtra(AlarmReceiverProcedimentoActivity.EXTRA_ID_ALARME, intent.getExtras().getInt(EXTRA_ID_ALARME));
         //intent2.putExtra(ProcedimentosActivity.EXTRA_ID_ALARME, intent.getExtras().getInt(EXTRA_ID)); //get extra dias da semana decide aciona ou nao
 //  String dataPrevisaoSplitadoTxt = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("[")+1, dataPrevisaoAlarme.indexOf("]"));
 
         String idProcedimentoProvisorio = Integer.toString(intent.getExtras().getInt(EXTRA_ID_ALARME));
         idProcedimentoProvisorio = idProcedimentoProvisorio.substring(0,idProcedimentoProvisorio.length() -1);
-        intent2.putExtra(AlarmReceiverActivity.EXTRA_ID_PROCEDIMENTO, Integer.parseInt(idProcedimentoProvisorio)); //passando uma string pra long pq??
+        intent2.putExtra(AlarmReceiverProcedimentoActivity.EXTRA_ID_PROCEDIMENTO, Integer.parseInt(idProcedimentoProvisorio)); //passando uma string pra long pq??
 
         context.startActivity(intent2);
     }

@@ -6,7 +6,7 @@ public class Relatorio {
     private long _id_PROCEDIMENTO;
     private String CATEGORIA;
     private String DATA_INICIO;
-    //"DATA_PREVISAO TEXT, " +//como o procedimento pode ser editavel, melhor replicar o dado
+    private String DATA_PREVISAO;//"DATA_PREVISAO TEXT, " +//como o procedimento pode ser editavel, melhor replicar o dado
     private String NOME;
     private String OBSERVACAO;
 
@@ -61,6 +61,14 @@ public class Relatorio {
         this.OBSERVACAO = OBSERVACAO;
     }
 
+    public String getDATA_PREVISAO() {
+        return DATA_PREVISAO;
+    }
+
+    public void setDATA_PREVISAO(String DATA_PREVISAO) {
+        this.DATA_PREVISAO = DATA_PREVISAO;
+    }
+
     @Override
     public String toString() {
         return "Relatorio{" +
@@ -68,6 +76,7 @@ public class Relatorio {
                 ", _id_PROCEDIMENTO=" + _id_PROCEDIMENTO +
                 ", CATEGORIA='" + CATEGORIA + '\'' +
                 ", DATA_INICIO='" + DATA_INICIO + '\'' +
+                ", DATA_PREVISAO='" + DATA_PREVISAO + '\'' +
                 ", NOME='" + NOME + '\'' +
                 ", OBSERVACAO='" + OBSERVACAO + '\'' +
                 '}';

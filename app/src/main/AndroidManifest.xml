@@ -59,7 +59,7 @@
             android:name=".EditarProcedimentoActivity"
             android:exported="true" />
         <activity
-            android:name=".AlarmReceiverActivity"
+            android:name=".activities.AlarmReceiverProcedimentoActivity"
             android:exported="true" />
 
         <receiver

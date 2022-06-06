@@ -10,7 +10,6 @@ public class ProcedimentoDAO {
 
     private final SQLiteConnection sqlConnection;
 
-
     public ProcedimentoDAO(SQLiteConnection sqlConnection) {
         this.sqlConnection = sqlConnection;
     }
