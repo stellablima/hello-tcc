@@ -42,6 +42,8 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_instrucao);
+
+        SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
     private void carregaDados() {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idEstado = getIntent().getExtras().getLong(EXTRA_ID);
-            SQLiteConnection = new SQLiteConnection(this);
+            //SQLiteConnection = new SQLiteConnection(this);
             SQLiteDatabase = SQLiteConnection.getReadableDatabase();
             cursor = SQLiteDatabase.query("ESTADO",
                     new String[]{"_id", "TITULO", "TEXTO"},
@@ -130,9 +132,14 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
                 edtTextoInstrucao.setText(cursor.getString(cursor.getColumnIndexOrThrow("TEXTO")));
             } else
                 Toast.makeText(this, "Tarefa não encontrada", Toast.LENGTH_SHORT).show();
+
+            SQLiteDatabase.close();
+
         } catch (SQLiteException e) {
             Toast.makeText(this, "Falha no acesso ao Banco de Dados " + e, Toast.LENGTH_LONG).show();
         }
+
+
     }
 
     private void btnSalvarInstrucaoOnClick(View view, Boolean updateRow){
@@ -140,7 +147,7 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
 
             Helpers.preenchimentoValido(edtTituloInstrucao);
 
-            int idInserted = insereInstrucao(updateRow);
+            long idInserted = insereInstrucao(updateRow);
             if (idInserted == -1)
                 Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
             else {
@@ -159,14 +166,14 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
     }
 
     private void btnExcluirInstrucaoOnClick(View view) {
-        SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
+        SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);//?close? SQLiteDatabase.close();
         SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
         bd.delete("ESTADO","_id = ?", new String[] {Long.toString(idEstado)});
         bd.close();
         finish();
     }
 
-    private int insereInstrucao(Boolean updateRow) {
+    private long insereInstrucao(Boolean updateRow) {
 
         if(updateRow){
             try {
@@ -176,7 +183,7 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
                 cv.put("TEXTO", edtTextoInstrucao.getText().toString());
                 SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-                return (int) bd.update("ESTADO", cv, "_id = ?", new String[]{Long.toString(idEstado)});
+                return (long) bd.update("ESTADO", cv, "_id = ?", new String[]{Long.toString(idEstado)});
 
             } catch (SQLiteException e) {
                 Toast.makeText(this, "Atualização falhou", Toast.LENGTH_LONG).show();
@@ -186,15 +193,15 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
 
         }else {
             try {
-                SQLiteConnection = new SQLiteConnection(this);
-                SQLiteDatabase = SQLiteConnection.getWritableDatabase();
-                ContentValues cvTarefa = new ContentValues();
-                cvTarefa.put("TITULO", edtTituloInstrucao.getText().toString());
-                cvTarefa.put("TEXTO", edtTextoInstrucao.getText().toString());
-                cvTarefa.put("FLAG", "1");
-                cvTarefa.put("CATEGORIA", "Instrucao");
-                return (int) SQLiteDatabase.insert("ESTADO", null, cvTarefa);
-
+//                SQLiteConnection = new SQLiteConnection(this);
+//                SQLiteDatabase = SQLiteConnection.getWritableDatabase();
+//                ContentValues cvTarefa = new ContentValues();
+//                cvTarefa.put("TITULO", edtTituloInstrucao.getText().toString());
+//                cvTarefa.put("TEXTO", edtTextoInstrucao.getText().toString());
+//                cvTarefa.put("FLAG", "1");
+//                cvTarefa.put("CATEGORIA", "Instrucao");
+//                return (int) SQLiteDatabase.insert("ESTADO", null, cvTarefa);
+                return insereEstado();
             } catch (SQLiteException e) {
                 Toast.makeText(this, "Criação falhou", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
