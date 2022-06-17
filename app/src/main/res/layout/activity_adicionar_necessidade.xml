@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".AdicionarNecessidadeActivity">
+    tools:context=".activities.AdicionarNecessidadeActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -48,6 +48,31 @@
         app:layout_constraintTop_toBottomOf="@+id/txtCadastroNecessidade">
 
         <RadioGroup
+            android:id="@+id/rbgTipoNecessidade"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checkedButton="@id/rbNecessidade1">
+
+            <RadioButton
+                android:id="@+id/rbNecessidade1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Urina" />
+
+            <RadioButton
+                android:id="@+id/rbNecessidade2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fezes" />
+        </RadioGroup>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <RadioGroup
             android:id="@+id/rbgNecessidadeEspontanea"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -67,30 +92,6 @@
                 android:text="Sondagem/Flit" />
         </RadioGroup>
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <RadioGroup
-            android:id="@+id/rbgTipoNecessidade"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checkedButton="@id/rbNecessidade1">
-
-            <RadioButton
-                android:id="@+id/rbNecessidade1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Urina" />
-
-            <RadioButton
-                android:id="@+id/rbNecessidade2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fezes" />
-        </RadioGroup>
     </LinearLayout>
 
     <EditText

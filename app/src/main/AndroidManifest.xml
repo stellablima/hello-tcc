@@ -23,7 +23,7 @@
             android:name=".AdicionarOcorrenciaActivity"
             android:exported="true" />
         <activity
-            android:name=".AdicionarNecessidadeActivity"
+            android:name=".activities.AdicionarNecessidadeActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ManterInstrucaoActivity"
