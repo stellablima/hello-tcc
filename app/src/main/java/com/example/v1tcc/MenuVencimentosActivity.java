@@ -15,6 +15,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.activities.AdicionarVencimentoActivity;
 
 public class MenuVencimentosActivity extends AppCompatActivity {
 

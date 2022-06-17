@@ -32,7 +32,7 @@
             android:name=".MenuInstrucoesActivity"
             android:exported="true" />
         <activity
-            android:name=".AdicionarVencimentoActivity"
+            android:name=".activities.AdicionarVencimentoActivity"
             android:exported="true" />
         <activity
             android:name=".MenuVencimentosActivity"

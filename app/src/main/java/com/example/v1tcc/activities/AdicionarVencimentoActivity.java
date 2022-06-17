@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.Helpers;
+import com.example.v1tcc.R;
+import com.example.v1tcc.controller.EstadoController;
+import com.example.v1tcc.controller.RelatorioController;
+import com.example.v1tcc.models.Estado;
+import com.example.v1tcc.models.Relatorio;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AdicionarVencimentoActivity extends AppCompatActivity {
 
@@ -27,15 +36,19 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
     private long idEstado;
     private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase bd;
+    private SQLiteDatabase SQLiteDatabase;
     private Cursor cursor;
     private Button btnSalvarVencimento;
     private Button btnFecharSalvarVencimento;
     private Button btnExcluirVencimento;
+    private Estado estado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_vencimento);
+
+        SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }
 
     @Override
@@ -60,7 +73,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
 
             Helpers.preenchimentoValido(edtTituloVencimento);
 
-            int idInserted = insereVencimento(updateRow);
+            long idInserted = insereVencimento(updateRow);
             if (idInserted == -1)
                 Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
             else {
@@ -94,7 +107,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
         finish();
     }
 
-    private int insereVencimento(Boolean updateRow) {
+    private long insereVencimento(Boolean updateRow) {
 
         if(updateRow){
             try {
@@ -104,7 +117,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
                 cv.put("DATA_ULTIMA_OCORRENCIA", txtDataUltimaOcorrencia.getText().toString());
                 SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-                return (int) bd.update("ESTADO", cv, "_id = ?", new String[]{Long.toString(idEstado)});
+                return bd.update("ESTADO", cv, "_id = ?", new String[]{Long.toString(idEstado)});
 
             } catch (SQLiteException e) {
                 Toast.makeText(this, "Atualização falhou", Toast.LENGTH_LONG).show();
@@ -114,18 +127,21 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
 
         }else {
             try {
-                ContentValues cv = new ContentValues();
-                //cv.put("FLAG", "4");
-                cv.put("TITULO", edtTituloVencimento.getText().toString());
-                cv.put("TEXTO", edtTextoVencimento.getText().toString());
-                cv.put("DATA_ULTIMA_OCORRENCIA", txtDataUltimaOcorrencia.getText().toString());
-                cv.put("FLAG", "1");
-                cv.put("CATEGORIA", "Vencimento");
-                //nome
-                //obs
-                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-                SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-                return (int) bd.insert("ESTADO", null, cv);
+//                ContentValues cv = new ContentValues();
+//                //cv.put("FLAG", "4");
+//                cv.put("TITULO", edtTituloVencimento.getText().toString());
+//                cv.put("TEXTO", edtTextoVencimento.getText().toString());
+//                cv.put("DATA_ULTIMA_OCORRENCIA", txtDataUltimaOcorrencia.getText().toString());
+//                cv.put("FLAG", "1");
+//                cv.put("CATEGORIA", "Vencimento");
+//                //nome
+//                //obs
+//                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
+//                SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+//                return (int) bd.insert("ESTADO", null, cv);
+
+                long idVencimento = insereEstado();
+                return idVencimento;
 
             } catch (SQLiteException e) {
                 Toast.makeText(this, "Inserção falhou", Toast.LENGTH_LONG).show();
@@ -135,6 +151,26 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
         }
         return -1;
     }
+
+    private Estado getVencimentoActivity(){
+
+        this.estado = new Estado();
+
+        this.estado.setTITULO(edtTituloVencimento.getText().toString());
+        this.estado.setTEXTO(edtTextoVencimento.getText().toString());
+        this.estado.setDATA_ULTIMA_OCORRENCIA(txtDataUltimaOcorrencia.getText().toString());
+        this.estado.setFLAG("1");
+        this.estado.setCATEGORIA("Vencimento");
+
+        return estado;
+    }
+
+    private long insereEstado(){
+        EstadoController estadoController =  new EstadoController(SQLiteConnection);
+        return estadoController.createEstadoController(getVencimentoActivity());
+    }
+
+
 
     private void configurarCampos(Boolean cadastrarVencimento) {
         txtDataUltimaOcorrencia = findViewById(R.id.txtDataUltimaOcorrencia);
@@ -188,7 +224,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
     private void carregaDados() {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idEstado = getIntent().getExtras().getLong(EXTRA_ID);
-            SQLiteConnection = new SQLiteConnection(this);
+            //SQLiteConnection = new SQLiteConnection(this);
             bd = SQLiteConnection.getReadableDatabase();
             cursor = bd.query("ESTADO",
                     new String[]{"_id", "TITULO", "TEXTO", "DATA_ULTIMA_OCORRENCIA"},
@@ -204,6 +240,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
                 txtDataUltimaOcorrencia.setText(cursor.getString(cursor.getColumnIndexOrThrow("DATA_ULTIMA_OCORRENCIA")));
             } else
                 Toast.makeText(this, "Vencimento não encontrado", Toast.LENGTH_SHORT).show();
+            bd.close();
         } catch (SQLiteException e) {
             Toast.makeText(this, "Falha no acesso ao Banco de Dados " + e, Toast.LENGTH_LONG).show();
         }
