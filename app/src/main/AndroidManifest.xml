@@ -20,7 +20,7 @@
             android:name=".MenuOcorrenciaActivity"
             android:exported="true" />
         <activity
-            android:name=".AdicionarOcorrenciaActivity"
+            android:name=".activities.AdicionarOcorrenciaActivity"
             android:exported="true" />
         <activity
             android:name=".activities.AdicionarNecessidadeActivity"
