@@ -8,9 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="bg_main">#AEB9D6</color>
+    <color name="bg_main">#EEDFD6</color>
 
-    <color name="btn_main_1">#FF6DCA</color>
-    <color name="btn_main_2">#FFB2B2</color>
-    <color name="btn_main_3">#A86E80</color>
+    <color name="btn_main_3">#8D6DFF</color>
+    <color name="btn_main_2">#B2B6FF</color>
+    <color name="btn_main_1">#A86E80</color>
 </resources>

@@ -64,6 +64,8 @@ public class ManterTarefaActivity extends AppCompatActivity {
     private void configurarCampos(Boolean cadastrarTarefa) {
         btnSalvarTarefa = findViewById(R.id.btnSalvarTarefa);
         btnFecharSalvarTarefa = findViewById(R.id.btnFecharSalvarTarefa);
+        edtNomeTarefa = findViewById(R.id.edtNomeTarefa);
+        edtObservacaoTarefa = findViewById(R.id.edtObservacaoTarefa);
         if (cadastrarTarefa) {
 
 
@@ -80,8 +82,8 @@ public class ManterTarefaActivity extends AppCompatActivity {
                 }
             });
         } else {
-            edtNomeTarefa = findViewById(R.id.edtNomeTarefa);
-            edtObservacaoTarefa = findViewById(R.id.edtObservacaoTarefa);
+            //edtNomeTarefa = findViewById(R.id.edtNomeTarefa);
+            //edtObservacaoTarefa = findViewById(R.id.edtObservacaoTarefa);
 
             txtCadastroTarefa = findViewById(R.id.txtCadastroTarefa);
             txtCadastroTarefa.setText("Editar Tarefa");

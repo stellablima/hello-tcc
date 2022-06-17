@@ -7,141 +7,181 @@
     android:background="@color/bg_main"
     tools:context=".activities.ManterProcedimentoActivity">
 
+    <TextView
+        android:id="@+id/txtProcedimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/lblCadastroProcedimento"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/edtNomeProcedimento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtNomeProcedimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="Nome do Procedimento"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/spnCategoriasAlarme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtProcedimento" />
+
+    <Spinner
+        android:id="@+id/spnCategoriasAlarme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/swtRepeteAlarme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtNomeProcedimento" />
+
+    <Switch
+        android:id="@+id/swtRepeteAlarme"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:checked="false"
+        android:layoutDirection="rtl"
+        android:showText="false"
+        android:text="Repetição"
+        android:textIsSelectable="false"
+        app:layout_constraintBottom_toTopOf="@+id/swtFrequenciaAlarme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spnCategoriasAlarme" />
+
+    <Switch
+        android:id="@+id/swtFrequenciaAlarme"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:checked="false"
+        android:enabled="false"
+        android:layoutDirection="rtl"
+        android:text="Frequência(Proporcional/Distribuída)"
+        android:textOff="Proporcional"
+        android:textOn="Distribuída"
+        app:layout_constraintBottom_toTopOf="@+id/txtHoraProcedimento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swtRepeteAlarme"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/txtHoraProcedimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="00:00"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/llAlarmeDistribuido"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swtFrequenciaAlarme" />
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/txtProcedimento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/lblCadastroProcedimento"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-        <EditText
-            android:id="@+id/edtNomeProcedimento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="Nome do Procedimento"
-            android:inputType="textPersonName" />
+        android:id="@+id/llAlarmeDistribuido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtHoraProcedimento">
 
         <Spinner
-            android:id="@+id/spnCategoriasAlarme"
+            android:id="@+id/spnPeriodo1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1" />
-
-        <Switch
-            android:id="@+id/swtRepeteAlarme"
-            android:layout_width="411dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:checked="false"
-            android:layoutDirection="rtl"
-            android:showText="false"
-            android:text="Repetição"
-            android:textIsSelectable="false" />
-
-        <Switch
-            android:id="@+id/swtFrequenciaAlarme"
-            android:layout_width="411dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:checked="false"
-            android:enabled="false"
-            android:layoutDirection="rtl"
-            android:text="Frequência(Proporcional/Distribuída)"
-            android:textOff="Proporcional"
-            android:textOn="Distribuída"
-            tools:visibility="visible" />
+            android:visibility="visible" />
 
         <TextView
-            android:id="@+id/txtHoraProcedimento"
+            android:id="@+id/txtFrequencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="00:00"
-            android:textSize="48sp" />
+            android:text="EM"
+            android:visibility="visible" />
 
-        <LinearLayout
-            android:id="@+id/llAlarmeDistribuido"
+        <Spinner
+            android:id="@+id/spnPeriodo0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:visibility="visible" />
 
-            <Spinner
-                android:id="@+id/spnPeriodo1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible" />
-
-            <TextView
-                android:id="@+id/txtFrequencia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="EM"
-                android:visibility="visible" />
-
-            <Spinner
-                android:id="@+id/spnPeriodo0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible" />
-
-            <Spinner
-                android:id="@+id/spnPeriodoAlarme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
+        <Spinner
+            android:id="@+id/spnPeriodoAlarme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:visibility="visible" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ListView
-                android:id="@+id/lvRepeticaoDesproporcinal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:visibility="gone" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnManterProcedimento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/btnSalvar" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btnManterProcedimento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llAlarmeDistribuido">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ListView
+            android:id="@+id/lvRepeticaoDesproporcinal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <android.widget.Button
+        android:id="@+id/btnManterProcedimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_bg_menu_main"
+        android:text="@string/btnSalvar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

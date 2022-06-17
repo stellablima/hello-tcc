@@ -54,7 +54,8 @@
                     android:layout_margin="2dp"
                     android:background="@drawable/ic_launcher_background"
                     android:clickable="false"
-                    android:src="@drawable/btn_icon_main_food" />
+                    android:src="@drawable/btn_icon_main_food"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/btnMenuAnortarNecessidades"
@@ -142,6 +143,7 @@
                     android:layout_margin="2dp"
                     android:background="@drawable/ic_launcher_background"
                     android:clickable="false"
+                    android:visibility="gone"
                     app:srcCompat="@android:drawable/ic_popup_sync" />
 
                 <ImageButton
@@ -159,7 +161,7 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="?android:attr/listDivider" />
+            android:background="@color/btn_main_1" />
 
         <TextView
             android:id="@+id/txtAviso"
@@ -173,7 +175,7 @@
             android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="?android:attr/listDivider" />
+            android:background="@color/btn_main_2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -199,7 +201,7 @@
                 android:id="@+id/divider3"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:background="?android:attr/listDivider" />
+                android:background="@color/btn_main_3" />
 
             <TextView
                 android:id="@+id/lblLvTarefasMain"

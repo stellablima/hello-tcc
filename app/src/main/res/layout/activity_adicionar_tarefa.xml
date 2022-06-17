@@ -67,8 +67,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnSalvarTarefa"
+            android:background="@drawable/btn_bg_menu_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -79,8 +80,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnFecharSalvarTarefa"
+            android:background="@drawable/btn_bg_menu_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

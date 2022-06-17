@@ -1,8 +1,9 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -14,8 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.Helpers;
+import com.example.v1tcc.R;
+import com.example.v1tcc.controller.EstadoController;
+import com.example.v1tcc.controller.ProcedimentoController;
+import com.example.v1tcc.models.Estado;
+import com.example.v1tcc.models.Procedimento;
 
-public class AdicionarInstrucaoActivity extends AppCompatActivity {
+public class ManterInstrucaoActivity extends AppCompatActivity {
 
     public static final String EXTRA_ESTADO = "extraestado";
     public static final String EXTRA_ID = "idestado";
@@ -26,9 +33,10 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
     private EditText edtTextoInstrucao;
     private TextView txtCadastroInstrucao;
     private SQLiteConnection SQLiteConnection;
-    private SQLiteDatabase bd;
+    private SQLiteDatabase SQLiteDatabase;
     private Cursor cursor;
     private long idEstado;
+    private Estado estado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +115,8 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
         try { //pode ver a logica de deletar se quiser pegar os alarmes
             idEstado = getIntent().getExtras().getLong(EXTRA_ID);
             SQLiteConnection = new SQLiteConnection(this);
-            bd = SQLiteConnection.getReadableDatabase();
-            cursor = bd.query("ESTADO",
+            SQLiteDatabase = SQLiteConnection.getReadableDatabase();
+            cursor = SQLiteDatabase.query("ESTADO",
                     new String[]{"_id", "TITULO", "TEXTO"},
                     "_id = ?",
                     new String[]{Long.toString(idEstado)},
@@ -179,13 +187,13 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
         }else {
             try {
                 SQLiteConnection = new SQLiteConnection(this);
-                bd = SQLiteConnection.getWritableDatabase();
+                SQLiteDatabase = SQLiteConnection.getWritableDatabase();
                 ContentValues cvTarefa = new ContentValues();
                 cvTarefa.put("TITULO", edtTituloInstrucao.getText().toString());
                 cvTarefa.put("TEXTO", edtTextoInstrucao.getText().toString());
                 cvTarefa.put("FLAG", "1");
                 cvTarefa.put("CATEGORIA", "Instrucao");
-                return (int) bd.insert("ESTADO", null, cvTarefa);
+                return (int) SQLiteDatabase.insert("ESTADO", null, cvTarefa);
 
             } catch (SQLiteException e) {
                 Toast.makeText(this, "Criação falhou", Toast.LENGTH_LONG).show();
@@ -195,4 +203,26 @@ public class AdicionarInstrucaoActivity extends AppCompatActivity {
         }
         return -1;
     }
+
+    private long insereEstado(){
+        EstadoController estadoController =  new EstadoController(SQLiteConnection);
+        return estadoController.createEstadoController(getInstrucaoActivity());
+    }
+
+    private Estado getInstrucaoActivity(){
+
+        this.estado = new Estado();
+
+        //if(this.edtTituloInstrucao.toString().isEmpty() == false)
+        this.estado.setTITULO(edtTituloInstrucao.getText().toString());
+        //else return null;
+
+        this.estado.setCATEGORIA("Instrucao");
+        this.estado.setFLAG("1");
+        this.estado.setTEXTO(edtTextoInstrucao.getText().toString());
+
+        return estado;
+    }
+
+
 }

@@ -35,32 +35,51 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OBS TAREFA"
-        app:layout_constraintBottom_toTopOf="@+id/btnManterTarefa"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNomeTarefa" />
 
-    <Button
-        android:id="@+id/btnManterTarefa"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="btnEditarProcedimentoOnClick"
-        android:text="Concluir"
-        app:layout_constraintBottom_toTopOf="@+id/btnFecharTarefa"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtObservacaoTarefa" />
-
-    <Button
-        android:id="@+id/btnFecharTarefa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fechar"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnManterTarefa" />
+        app:layout_constraintTop_toBottomOf="@+id/txtObservacaoTarefa">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <android.widget.Button
+            android:id="@+id/btnFecharTarefa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg_menu_main"
+            android:text="Fechar" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <android.widget.Button
+            android:id="@+id/btnManterTarefa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg_menu_main"
+            android:onClick="btnEditarProcedimentoOnClick"
+            android:text="Concluir" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

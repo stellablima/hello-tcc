@@ -15,6 +15,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.activities.ManterInstrucaoActivity;
 
 public class MenuInstrucoesActivity extends AppCompatActivity {
 
@@ -66,19 +67,19 @@ public class MenuInstrucoesActivity extends AppCompatActivity {
         lvInstrucoesMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuInstrucoesActivity.this, AdicionarInstrucaoActivity.class);
+                Intent intent = new Intent(MenuInstrucoesActivity.this, ManterInstrucaoActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(AdicionarInstrucaoActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(AdicionarInstrucaoActivity.EXTRA_ESTADO, "EDITAR_INSTRUCAO");
+                intent.putExtra(ManterInstrucaoActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                intent.putExtra(ManterInstrucaoActivity.EXTRA_ESTADO, "EDITAR_INSTRUCAO");
                 startActivity(intent);
             }
         });
     }
 
     private void btnAdicionarInstrucaoOnClick(View view){
-        Intent intent = new Intent(this, AdicionarInstrucaoActivity.class);
-        intent.putExtra(AdicionarInstrucaoActivity.EXTRA_ESTADO, "ADICIONAR_INSTRUCAO");
+        Intent intent = new Intent(this, ManterInstrucaoActivity.class);
+        intent.putExtra(ManterInstrucaoActivity.EXTRA_ESTADO, "ADICIONAR_INSTRUCAO");
         startActivity(intent);
     }
 

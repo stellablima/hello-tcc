@@ -18,10 +18,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtProcedimento2" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btnAtrasarAlarme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
         android:onClick="btnAtrasarAlarmeOnClick"
         android:text="Atrasar"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,10 +58,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCategoria" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btnFecharAlarme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
         android:onClick="btnFecharAlarmeOnClick"
         android:text="Concluir"
         app:layout_constraintBottom_toBottomOf="parent"
