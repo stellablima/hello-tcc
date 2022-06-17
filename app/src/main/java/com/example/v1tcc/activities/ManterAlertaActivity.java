@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,8 +13,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.Helpers;
+import com.example.v1tcc.R;
+import com.example.v1tcc.controller.EstadoController;
+import com.example.v1tcc.models.Estado;
 
-public class AlertaActivity extends AppCompatActivity {
+public class ManterAlertaActivity extends AppCompatActivity {
 
     //public static final String EXTRA_ALERTA = "extratarefa";
     //public static final String EXTRA_ID = "idTarefa";
@@ -25,10 +29,16 @@ public class AlertaActivity extends AppCompatActivity {
     private EditText edtObservacaoAlerta;
     private long idProcedimento = 1;
 
+    private SQLiteConnection SQLiteConnection;
+    private SQLiteDatabase SQLiteDatabase;
+    private Estado estado;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alerta);
+        setContentView(R.layout.activity_manter_alerta);
+
+        SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }
 
     @Override
@@ -150,5 +160,20 @@ public class AlertaActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private Estado getVencimentoActivity(){
+
+        this.estado = new Estado();
+
+//        this.estado.setTITULO(edtTituloVencimento.getText().toString());
+//        this.estado.setTEXTO(edtTextoVencimento.getText().toString());
+//update
+        return estado;
+    }
+
+    private long updateEstado(){ //update
+        EstadoController estadoController =  new EstadoController(SQLiteConnection);
+        return estadoController.createEstadoController(getVencimentoActivity());
     }
 }

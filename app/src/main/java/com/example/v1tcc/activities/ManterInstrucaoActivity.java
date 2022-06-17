@@ -3,7 +3,6 @@ package com.example.v1tcc.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -18,9 +17,7 @@ import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.Helpers;
 import com.example.v1tcc.R;
 import com.example.v1tcc.controller.EstadoController;
-import com.example.v1tcc.controller.ProcedimentoController;
 import com.example.v1tcc.models.Estado;
-import com.example.v1tcc.models.Procedimento;
 
 public class ManterInstrucaoActivity extends AppCompatActivity {
 
@@ -41,7 +38,7 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adicionar_instrucao);
+        setContentView(R.layout.activity_manter_instrucao);
 
         SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }

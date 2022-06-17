@@ -66,7 +66,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adicionar_procedimento);
+        setContentView(R.layout.activity_manter_procedimento);
 
         SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }
@@ -472,9 +472,9 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
             this.procedimento.setFLAG_REPETICAO("0");
 
         if(swtFrequenciaAlarme.isChecked())
-            this.procedimento.setFLAG_REPETICAO("1");
+            this.procedimento.setFLAG_FREQUENCIA("1");
         else
-            this.procedimento.setFLAG_REPETICAO("0");
+            this.procedimento.setFLAG_FREQUENCIA("0");
 
         if(!swtRepeteAlarme.isChecked())
             this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]");

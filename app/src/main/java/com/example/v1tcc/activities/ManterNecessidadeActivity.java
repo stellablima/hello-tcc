@@ -17,15 +17,13 @@ import android.widget.Toast;
 import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.Helpers;
 import com.example.v1tcc.R;
-import com.example.v1tcc.controller.ProcedimentoController;
 import com.example.v1tcc.controller.RelatorioController;
-import com.example.v1tcc.models.Procedimento;
 import com.example.v1tcc.models.Relatorio;
 
 import java.util.Calendar;
 import java.util.Locale;
 
-public class AdicionarNecessidadeActivity extends AppCompatActivity {
+public class ManterNecessidadeActivity extends AppCompatActivity {
 
     public static final String EXTRA_NECESSIDADE = "extranecessidade";
     public static final String EXTRA_ID = "idnecessidade";
@@ -50,7 +48,7 @@ public class AdicionarNecessidadeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adicionar_necessidade);
+        setContentView(R.layout.activity_manter_necessidade);
 
         SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }

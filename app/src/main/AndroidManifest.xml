@@ -20,10 +20,10 @@
             android:name=".MenuOcorrenciaActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.AdicionarOcorrenciaActivity"
+            android:name=".activities.ManterOcorrenciaActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.AdicionarNecessidadeActivity"
+            android:name=".activities.ManterNecessidadeActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ManterInstrucaoActivity"
@@ -32,13 +32,13 @@
             android:name=".MenuInstrucoesActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.AdicionarVencimentoActivity"
+            android:name=".activities.ManterVencimentoActivity"
             android:exported="true" />
         <activity
             android:name=".MenuVencimentosActivity"
             android:exported="true" />
         <activity
-            android:name=".AlertaActivity"
+            android:name=".activities.ManterAlertaActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ManterTarefaActivity"
@@ -54,9 +54,6 @@
             android:exported="true" />
         <activity
             android:name=".RelatoriosActivity"
-            android:exported="true" />
-        <activity
-            android:name=".EditarProcedimentoActivity"
             android:exported="true" />
         <activity
             android:name=".activities.AlarmReceiverProcedimentoActivity"

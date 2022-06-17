@@ -15,7 +15,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.activities.AdicionarNecessidadeActivity;
+import com.example.v1tcc.activities.ManterNecessidadeActivity;
 
 public class MenuNecessidadeActivity extends AppCompatActivity {
 
@@ -51,19 +51,19 @@ public class MenuNecessidadeActivity extends AppCompatActivity {
         lvNecessidadesMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuNecessidadeActivity.this, AdicionarNecessidadeActivity.class);
+                Intent intent = new Intent(MenuNecessidadeActivity.this, ManterNecessidadeActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(AdicionarNecessidadeActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(AdicionarNecessidadeActivity.EXTRA_NECESSIDADE, "EDITAR_NECESSIDADE");
+                intent.putExtra(ManterNecessidadeActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "EDITAR_NECESSIDADE");
                 startActivity(intent);
             }
         });
     }
 
     private void btnAdicionarNecessidadeOnClick(View view){
-        Intent intent = new Intent(this, AdicionarNecessidadeActivity.class);
-        intent.putExtra(AdicionarNecessidadeActivity.EXTRA_NECESSIDADE, "ADICIONAR_NECESSIDADE");
+        Intent intent = new Intent(this, ManterNecessidadeActivity.class);
+        intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "ADICIONAR_NECESSIDADE");
         startActivity(intent);
 
     }

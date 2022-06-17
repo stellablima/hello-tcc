@@ -17,14 +17,9 @@ import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.Helpers;
 import com.example.v1tcc.R;
 import com.example.v1tcc.controller.EstadoController;
-import com.example.v1tcc.controller.RelatorioController;
 import com.example.v1tcc.models.Estado;
-import com.example.v1tcc.models.Relatorio;
 
-import java.util.Calendar;
-import java.util.Locale;
-
-public class AdicionarVencimentoActivity extends AppCompatActivity {
+public class ManterVencimentoActivity extends AppCompatActivity {
 
 
     public static final String EXTRA_VENCIMENTO = "extravencimento";
@@ -46,7 +41,7 @@ public class AdicionarVencimentoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adicionar_vencimento);
+        setContentView(R.layout.activity_manter_vencimento);
 
         SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }

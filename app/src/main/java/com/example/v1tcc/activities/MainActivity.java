@@ -19,7 +19,6 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.v1tcc.AlertaActivity;
 import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.MenuInstrucoesActivity;
 import com.example.v1tcc.MenuMainActivity;
@@ -167,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                                 //fecha modal
                                 //abre activit de editar alerta do dia
                                 //ou tentar mudar no proprio alerta
-                                Intent intent = new Intent(MainActivity.this, AlertaActivity.class);
+                                Intent intent = new Intent(MainActivity.this, ManterAlertaActivity.class);
                                 startActivity(intent);
                             }
                         })

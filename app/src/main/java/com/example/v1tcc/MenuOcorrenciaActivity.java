@@ -15,7 +15,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.activities.AdicionarOcorrenciaActivity;
+import com.example.v1tcc.activities.ManterOcorrenciaActivity;
 
 public class MenuOcorrenciaActivity extends AppCompatActivity {
 
@@ -51,19 +51,19 @@ public class MenuOcorrenciaActivity extends AppCompatActivity {
         lvOcorrenciasMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuOcorrenciaActivity.this, AdicionarOcorrenciaActivity.class);
+                Intent intent = new Intent(MenuOcorrenciaActivity.this, ManterOcorrenciaActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(AdicionarOcorrenciaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(AdicionarOcorrenciaActivity.EXTRA_OCORRENCIA, "EDITAR_OCORRENCIA");
+                intent.putExtra(ManterOcorrenciaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "EDITAR_OCORRENCIA");
                 startActivity(intent);
             }
         });
     }
 
     private void btnAdicionarOcorrenciaOnClick(View view){
-        Intent intent = new Intent(this, AdicionarOcorrenciaActivity.class);
-        intent.putExtra(AdicionarOcorrenciaActivity.EXTRA_OCORRENCIA, "ADICIONAR_OCORRENCIA");
+        Intent intent = new Intent(this, ManterOcorrenciaActivity.class);
+        intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "ADICIONAR_OCORRENCIA");
         startActivity(intent);
 
     }

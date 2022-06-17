@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.v1tcc.activities.ManterAlertaActivity;
+
 public class MenuMainActivity extends AppCompatActivity {
 
 
@@ -33,7 +35,7 @@ public class MenuMainActivity extends AppCompatActivity {
     }
 
     public void btnAlertaOnClickOnClick(View view){
-        Intent intent = new Intent(this, AlertaActivity.class);
+        Intent intent = new Intent(this, ManterAlertaActivity.class);
         startActivity(intent);
     }
 

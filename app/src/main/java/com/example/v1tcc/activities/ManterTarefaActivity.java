@@ -3,7 +3,6 @@ package com.example.v1tcc.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -40,7 +39,7 @@ public class ManterTarefaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adicionar_tarefa);
+        setContentView(R.layout.activity_manter_tarefa);
 
         SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }

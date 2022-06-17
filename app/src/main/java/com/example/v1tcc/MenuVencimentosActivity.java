@@ -15,7 +15,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.activities.AdicionarVencimentoActivity;
+import com.example.v1tcc.activities.ManterVencimentoActivity;
 
 public class MenuVencimentosActivity extends AppCompatActivity {
 
@@ -52,19 +52,19 @@ public class MenuVencimentosActivity extends AppCompatActivity {
         lvVencimentosMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuVencimentosActivity.this, AdicionarVencimentoActivity.class);
+                Intent intent = new Intent(MenuVencimentosActivity.this, ManterVencimentoActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(AdicionarVencimentoActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(AdicionarVencimentoActivity.EXTRA_VENCIMENTO, "EDITAR_VENCIMENTO");
+                intent.putExtra(ManterVencimentoActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                intent.putExtra(ManterVencimentoActivity.EXTRA_VENCIMENTO, "EDITAR_VENCIMENTO");
                 startActivity(intent);
             }
         });
     }
 
     private void btnAdicionarVencimentoOnClick(View view){
-        Intent intent = new Intent(this, AdicionarVencimentoActivity.class);
-        intent.putExtra(AdicionarVencimentoActivity.EXTRA_VENCIMENTO, "ADICIONAR_VENCIMENTO");
+        Intent intent = new Intent(this, ManterVencimentoActivity.class);
+        intent.putExtra(ManterVencimentoActivity.EXTRA_VENCIMENTO, "ADICIONAR_VENCIMENTO");
         startActivity(intent);
 
     }

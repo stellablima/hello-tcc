@@ -17,13 +17,9 @@ import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.Helpers;
 import com.example.v1tcc.R;
 import com.example.v1tcc.controller.RelatorioController;
-import com.example.v1tcc.models.Procedimento;
 import com.example.v1tcc.models.Relatorio;
 
-import java.util.Calendar;
-import java.util.Locale;
-
-public class AdicionarOcorrenciaActivity extends AppCompatActivity {
+public class ManterOcorrenciaActivity extends AppCompatActivity {
 
     public static final String EXTRA_OCORRENCIA = "extraocorrencia";
     public static final String EXTRA_ID = "idocorrencia";
@@ -46,7 +42,7 @@ public class AdicionarOcorrenciaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adicionar_ocorrencia);
+        setContentView(R.layout.activity_manter_ocorrencia);
 
         SQLiteConnection = SQLiteConnection.getInstanciaConexao(this);
     }
