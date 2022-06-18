@@ -140,6 +140,38 @@ public class Helpers {
             }
         });
     }
+
+    public static String decoderHorario(String strHorario){
+        String dataPrevisaoTxt = strHorario.substring(strHorario.indexOf("[")+1, strHorario.indexOf("]"));
+        //List<String> dataPrevisaoSplitado = new ArrayList<String>();
+        //String [] dataPrevisaoSplitado = dataPrevisaoSplitadoTxt.split(", ");
+
+
+
+
+        if(strHorario.contains("X") || strHorario.contains("EM")) {
+            String textoParenteses = strHorario.substring(strHorario.indexOf("(") + 1, strHorario.lastIndexOf(")"));
+            String nVezes = strHorario.substring(strHorario.indexOf("]")+1, strHorario.lastIndexOf("]")+2);
+
+
+//            switch (textoParenteses){
+//                case "DIA":
+//                    textoParenteses =  "dia"
+//                    break;
+//                default:
+//                    textoParenteses = textoParenteses;
+//                    break;
+//            }
+
+
+            if (strHorario.contains("X")) {
+                dataPrevisaoTxt = dataPrevisaoTxt + "\n" + nVezes + " vez(es) por " + textoParenteses.toLowerCase();
+            } else if (strHorario.contains("EM")) {
+                dataPrevisaoTxt = dataPrevisaoTxt + " de " + nVezes + " em " + nVezes + " " + textoParenteses.toLowerCase() + "(s)";
+            }
+        }
+        return dataPrevisaoTxt;
+    }
 }
     /*getInt()  Integer.parseInt() .intValue()*/
 //    public void txtHoraProcedimentoOnClick(View view){

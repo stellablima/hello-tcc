@@ -47,6 +47,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
     private Switch swtRepeteAlarme;
     private Switch swtFrequenciaAlarme;
     private Button btnManterProcedimento;
+    private Button btnFecharManterProcedimento;
     private ListView lvRepeticaoDesproporcinalAlarme;
     private LinearLayout llAlarmeDistribuido;
 
@@ -104,6 +105,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
     private void configurarCampos(Boolean extraProcedimento){
 
         btnManterProcedimento =  findViewById(R.id.btnManterProcedimento);
+        btnFecharManterProcedimento = findViewById(R.id.btnFecharManterProcedimento);
         edtNomeProcedimento = findViewById(R.id.edtNomeProcedimento);
         txtHoraProcedimento = findViewById(R.id.txtHoraProcedimento);
         txtFrequenciaAlarme = findViewById(R.id.txtFrequencia);
@@ -117,6 +119,13 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
         lvRepeticaoDesproporcinalAlarme = findViewById(R.id.lvRepeticaoDesproporcinal);
         txt = findViewById(R.id.txtFrequencia);
         llAlarmeDistribuido = findViewById(R.id.llAlarmeDistribuido);
+
+        btnFecharManterProcedimento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         spnPeriodo1Alarme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

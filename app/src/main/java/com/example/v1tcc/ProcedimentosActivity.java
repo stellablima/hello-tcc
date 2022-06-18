@@ -1,5 +1,7 @@
 package com.example.v1tcc;
 
+import static com.example.v1tcc.Helpers.decoderHorario;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -194,7 +196,8 @@ public class ProcedimentosActivity extends AppCompatActivity {
                 txt = findViewById(R.id.txtNomeProcedimento);
                 txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("NOME")));
                 txt = findViewById(R.id.txtHoraProcedimento);
-                txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO")));
+                //txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO")));
+                txt.setText(decoderHorario(cursor.getString(cursor.getColumnIndexOrThrow("DATA_PREVISAO"))));
                 txt = txtCategoriaProcedimento;
                 txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("CATEGORIA")));
 

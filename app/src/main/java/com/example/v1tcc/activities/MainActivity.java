@@ -1,5 +1,7 @@
 package com.example.v1tcc.activities;
 
+import static com.example.v1tcc.Helpers.decoderHorario;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;

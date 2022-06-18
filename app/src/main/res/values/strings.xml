@@ -13,6 +13,7 @@
     <string name="lblConfiguracoes">Configurações</string>
     <string name="btnSalvar">Salvar</string>
     <string name="lblEstoque">Estoque</string>
+    <string name="lblCancelarOperacao">Fechar</string>
     <string-array name="numeros">
         <item>1</item>
         <item>2</item>
