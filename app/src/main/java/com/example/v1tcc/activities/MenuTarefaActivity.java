@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,18 +15,19 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.activities.ManterNecessidadeActivity;
+import com.example.v1tcc.R;
 
-public class MenuNecessidadeActivity extends AppCompatActivity {
+public class MenuTarefaActivity extends AppCompatActivity {
 
-    private ListView lvNecessidadesMenu;
+    private ListView lvTarefasMenu;
     private SimpleCursorAdapter cursorAdapter;
-    private Button btnAdicionarNecessidade;
+    private Button btnAdicionarTarefa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_necessidade);
+        setContentView(R.layout.activity_menu_tarefa);
+
     }
 
     @Override
@@ -34,50 +35,50 @@ public class MenuNecessidadeActivity extends AppCompatActivity {
         super.onStart();
 
         configurarCampos();
-        setLvNecessidadesMenuAdapter();
+        setLvTarefasMenuAdapter();
     }
 
     private void configurarCampos(){
 
-        btnAdicionarNecessidade = findViewById(R.id.btnAdicionarNecessidade);
-        btnAdicionarNecessidade.setOnClickListener(new View.OnClickListener() {
+        btnAdicionarTarefa = findViewById(R.id.btnAdicionarTarefa);
+        btnAdicionarTarefa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnAdicionarNecessidadeOnClick(view);
+                btnAdicionarTarefaOnClick(view);
             }
         });
 
-        lvNecessidadesMenu = findViewById(R.id.lvNecessidadesMenu);
-        lvNecessidadesMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvTarefasMenu = findViewById(R.id.lvTarefasMenu);
+        lvTarefasMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuNecessidadeActivity.this, ManterNecessidadeActivity.class);
+                Intent intent = new Intent(MenuTarefaActivity.this, ManterTarefaActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(ManterNecessidadeActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "EDITAR_NECESSIDADE");
+                intent.putExtra(ManterTarefaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                intent.putExtra(ManterTarefaActivity.EXTRA_TAREFA, "EDITAR_TAREFA");
                 startActivity(intent);
             }
         });
     }
 
-    private void btnAdicionarNecessidadeOnClick(View view){
-        Intent intent = new Intent(this, ManterNecessidadeActivity.class);
-        intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "ADICIONAR_NECESSIDADE");
+    private void btnAdicionarTarefaOnClick(View view){
+        Intent intent = new Intent(this, ManterTarefaActivity.class);
+        intent.putExtra(ManterTarefaActivity.EXTRA_TAREFA, "ADICIONAR_TAREFA");
         startActivity(intent);
 
     }
 
-    private void setLvNecessidadesMenuAdapter() {
+    private void setLvTarefasMenuAdapter() {
         try {
             SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
             SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
-                    "RELATORIO",
-                new String[]{"_id", "NOME","OBSERVACAO","CATEGORIA", "DATA_INICIO"},
-                    "CATEGORIA = ?",
-                    new String[]{"Necessidades Fisiológicas"},
+                    "PROCEDIMENTO",
+                    new String[]{"_id", "NOME","OBSERVACAO","FLAG"},
+                    "FLAG = ?",
+                    new String[]{"3"},
                     null,
                     null,
                     "_id DESC"
@@ -86,12 +87,11 @@ public class MenuNecessidadeActivity extends AppCompatActivity {
                     this,
                     android.R.layout.simple_list_item_2,
                     cursor,
-                    new String[]{"NOME", "DATA_INICIO"},
+                    new String[]{"NOME", "OBSERVACAO"},
                     new int[]{android.R.id.text1, android.R.id.text2},
                     0
             );
-            lvNecessidadesMenu.setAdapter(cursorAdapter);
-            bd.close();
+            lvTarefasMenu.setAdapter(cursorAdapter);
         } catch (SQLiteException e) {
             Toast.makeText(this, "Erro: " + e, Toast.LENGTH_LONG).show();
         }

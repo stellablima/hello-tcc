@@ -3,11 +3,14 @@ package com.example.v1tcc.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -20,11 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.MenuInstrucoesActivity;
-import com.example.v1tcc.MenuMainActivity;
-import com.example.v1tcc.MenuNecessidadeActivity;
-import com.example.v1tcc.MenuOcorrenciaActivity;
-import com.example.v1tcc.MenuVencimentosActivity;
 import com.example.v1tcc.ProcedimentosActivity;
 import com.example.v1tcc.R;
 import com.example.v1tcc.TarefaActivity;
@@ -54,13 +52,32 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnMenuNecessidades;
     private ImageButton btnMenuOcorrencias;
 
+    public static final String CHANNEL_ID = "ALARM_CHANNEL_NOTIFICATION";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //BDRotinaHelper SQLiteConection = BDRotinaHelper.getInstanciaConexao(this);
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); para manter tela sempre acesa no app
+
+        createNotificationChannel();
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Alarm Channel Notification",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            // channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     @Override
@@ -341,3 +358,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
+/*
+Vai ser um caderninho
+vai ter os defaults, o ideal seria unina alimentação, decubito ec
+mas vai ter que deixar pra depois ainda sim fazer pensando nisso
+ainda nos defaults vai ter os de expiração pra datas de aparelho
+
+
+CATEGORIAS: defaults, expiração, toDos (protocolos de saida por ex e nao lembretes)
+
+anotar e ver a melhor forma de compilar a principio
+um caderno com os estados e filtro por categoria, como o relatorio
+podendo clicar e expandir para edição
+
+interface pra adicionar
+> primeiro seleciona categoria confirma esconde tudo e abre a tela pra edição
+> ao editar nao é possivel trocar a categoria/tipo de indicação de estado
+> alguns estados default podem ser fixados na tela inicial, a principio o escopo
+> iria cobrir os defaults mas agora pensar em que fixar...
+> ajudaria abrir uma tela de registro no caso a os botoes default seria pra inclusão manual
+> nos registros, adicionar trocar de fralda manualmente e registra no registro, adicionando categoria
+> de higiene especifica talvez... tipo urina: e grava no relatorio a ultima fralda, mas como
+> seria a sinalização e interação com a tela principal?
+*/

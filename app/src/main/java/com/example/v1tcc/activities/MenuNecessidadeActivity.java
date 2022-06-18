@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,18 +15,18 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.activities.ManterOcorrenciaActivity;
+import com.example.v1tcc.R;
 
-public class MenuOcorrenciaActivity extends AppCompatActivity {
+public class MenuNecessidadeActivity extends AppCompatActivity {
 
-    private ListView lvOcorrenciasMenu;
+    private ListView lvNecessidadesMenu;
     private SimpleCursorAdapter cursorAdapter;
-    private Button btnAdicionarOcorrencia;
+    private Button btnAdicionarNecessidade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_ocorrencia);
+        setContentView(R.layout.activity_menu_necessidade);
     }
 
     @Override
@@ -34,50 +34,50 @@ public class MenuOcorrenciaActivity extends AppCompatActivity {
         super.onStart();
 
         configurarCampos();
-        setLvOcorrenciasMenuAdapter();
+        setLvNecessidadesMenuAdapter();
     }
 
     private void configurarCampos(){
 
-        btnAdicionarOcorrencia = findViewById(R.id.btnAdicionarOcorrencia);
-        btnAdicionarOcorrencia.setOnClickListener(new View.OnClickListener() {
+        btnAdicionarNecessidade = findViewById(R.id.btnAdicionarNecessidade);
+        btnAdicionarNecessidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnAdicionarOcorrenciaOnClick(view);
+                btnAdicionarNecessidadeOnClick(view);
             }
         });
 
-        lvOcorrenciasMenu = findViewById(R.id.lvOcorrenciasMenu);
-        lvOcorrenciasMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvNecessidadesMenu = findViewById(R.id.lvNecessidadesMenu);
+        lvNecessidadesMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuOcorrenciaActivity.this, ManterOcorrenciaActivity.class);
+                Intent intent = new Intent(MenuNecessidadeActivity.this, ManterNecessidadeActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(ManterOcorrenciaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "EDITAR_OCORRENCIA");
+                intent.putExtra(ManterNecessidadeActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "EDITAR_NECESSIDADE");
                 startActivity(intent);
             }
         });
     }
 
-    private void btnAdicionarOcorrenciaOnClick(View view){
-        Intent intent = new Intent(this, ManterOcorrenciaActivity.class);
-        intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "ADICIONAR_OCORRENCIA");
+    private void btnAdicionarNecessidadeOnClick(View view){
+        Intent intent = new Intent(this, ManterNecessidadeActivity.class);
+        intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "ADICIONAR_NECESSIDADE");
         startActivity(intent);
 
     }
 
-    private void setLvOcorrenciasMenuAdapter() {
+    private void setLvNecessidadesMenuAdapter() {
         try {
             SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
             SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
                     "RELATORIO",
-                    new String[]{"_id", "NOME","OBSERVACAO","CATEGORIA", "DATA_INICIO"},
+                new String[]{"_id", "NOME","OBSERVACAO","CATEGORIA", "DATA_INICIO"},
                     "CATEGORIA = ?",
-                    new String[]{"Ocorrência"},
+                    new String[]{"Necessidades Fisiológicas"},
                     null,
                     null,
                     "_id DESC"
@@ -90,7 +90,7 @@ public class MenuOcorrenciaActivity extends AppCompatActivity {
                     new int[]{android.R.id.text1, android.R.id.text2},
                     0
             );
-            lvOcorrenciasMenu.setAdapter(cursorAdapter);
+            lvNecessidadesMenu.setAdapter(cursorAdapter);
             bd.close();
         } catch (SQLiteException e) {
             Toast.makeText(this, "Erro: " + e, Toast.LENGTH_LONG).show();

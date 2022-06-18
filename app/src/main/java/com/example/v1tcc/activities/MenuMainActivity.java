@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.v1tcc.activities.ManterAlertaActivity;
+import com.example.v1tcc.R;
+import com.example.v1tcc.RelatoriosActivity;
 
 public class MenuMainActivity extends AppCompatActivity {
 
@@ -48,4 +49,15 @@ public class MenuMainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MenuInstrucoesActivity.class);
         startActivity(intent);
     }
+
+    public void btnOcorrenciasOnClick(View view){
+        Intent intent = new Intent(this, MenuOcorrenciaActivity.class);
+        startActivity(intent);
+    }
+
+    public void btnNecessidadesOnClick(View view){
+        Intent intent = new Intent(this, MenuOcorrenciaActivity.class);
+        startActivity(intent);
+    }
+
 }

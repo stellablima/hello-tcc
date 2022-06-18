@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,19 +15,18 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.activities.ManterVencimentoActivity;
+import com.example.v1tcc.R;
 
-public class MenuVencimentosActivity extends AppCompatActivity {
+public class MenuOcorrenciaActivity extends AppCompatActivity {
 
-    private ListView lvVencimentosMenu;
+    private ListView lvOcorrenciasMenu;
     private SimpleCursorAdapter cursorAdapter;
-    private Button btnAdicionarVencimento;
+    private Button btnAdicionarOcorrencia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_vencimentos);
-
+        setContentView(R.layout.activity_menu_ocorrencia);
     }
 
     @Override
@@ -35,50 +34,50 @@ public class MenuVencimentosActivity extends AppCompatActivity {
         super.onStart();
 
         configurarCampos();
-        setLvVencimentosMenuAdapter();
+        setLvOcorrenciasMenuAdapter();
     }
 
     private void configurarCampos(){
 
-        btnAdicionarVencimento = findViewById(R.id.btnAdicionarVencimento);
-        btnAdicionarVencimento.setOnClickListener(new View.OnClickListener() {
+        btnAdicionarOcorrencia = findViewById(R.id.btnAdicionarOcorrencia);
+        btnAdicionarOcorrencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnAdicionarVencimentoOnClick(view);
+                btnAdicionarOcorrenciaOnClick(view);
             }
         });
 
-        lvVencimentosMenu = findViewById(R.id.lvVencimentosMenu);
-        lvVencimentosMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvOcorrenciasMenu = findViewById(R.id.lvOcorrenciasMenu);
+        lvOcorrenciasMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuVencimentosActivity.this, ManterVencimentoActivity.class);
+                Intent intent = new Intent(MenuOcorrenciaActivity.this, ManterOcorrenciaActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-                intent.putExtra(ManterVencimentoActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(ManterVencimentoActivity.EXTRA_VENCIMENTO, "EDITAR_VENCIMENTO");
+                intent.putExtra(ManterOcorrenciaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
+                intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "EDITAR_OCORRENCIA");
                 startActivity(intent);
             }
         });
     }
 
-    private void btnAdicionarVencimentoOnClick(View view){
-        Intent intent = new Intent(this, ManterVencimentoActivity.class);
-        intent.putExtra(ManterVencimentoActivity.EXTRA_VENCIMENTO, "ADICIONAR_VENCIMENTO");
+    private void btnAdicionarOcorrenciaOnClick(View view){
+        Intent intent = new Intent(this, ManterOcorrenciaActivity.class);
+        intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "ADICIONAR_OCORRENCIA");
         startActivity(intent);
 
     }
 
-    private void setLvVencimentosMenuAdapter() {
+    private void setLvOcorrenciasMenuAdapter() {
         try {
             SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
             SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
             Cursor cursor = bd.query(
-                    "ESTADO",
-                    new String[]{"_id", "TITULO","TEXTO","DATA_ULTIMA_OCORRENCIA","FLAG"},
-                    "Categoria = ?",
-                    new String[]{"Vencimento"},
+                    "RELATORIO",
+                    new String[]{"_id", "NOME","OBSERVACAO","CATEGORIA", "DATA_INICIO"},
+                    "CATEGORIA = ?",
+                    new String[]{"Ocorrência"},
                     null,
                     null,
                     "_id DESC"
@@ -87,11 +86,12 @@ public class MenuVencimentosActivity extends AppCompatActivity {
                     this,
                     android.R.layout.simple_list_item_2,
                     cursor,
-                    new String[]{"TITULO", "DATA_ULTIMA_OCORRENCIA"},
+                    new String[]{"NOME", "DATA_INICIO"},
                     new int[]{android.R.id.text1, android.R.id.text2},
                     0
             );
-            lvVencimentosMenu.setAdapter(cursorAdapter);
+            lvOcorrenciasMenu.setAdapter(cursorAdapter);
+            bd.close();
         } catch (SQLiteException e) {
             Toast.makeText(this, "Erro: " + e, Toast.LENGTH_LONG).show();
         }

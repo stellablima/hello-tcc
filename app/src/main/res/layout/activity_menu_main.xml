@@ -5,9 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
-    tools:context=".MenuMainActivity"
+    tools:context=".activities.MenuMainActivity"
     tools:layout_editor_absoluteX="15dp"
     tools:layout_editor_absoluteY="-95dp">
+
+    <TextView
+        android:id="@+id/lblMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/btnProcedimento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.widget.Button
+        android:id="@+id/btnProcedimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnProcedimentosOnClick"
+        android:text="@string/lblProcedimentos"
+        app:layout_constraintBottom_toTopOf="@+id/btnTarefa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblMenu" />
 
     <android.widget.Button
         android:id="@+id/btnTarefa"
@@ -21,76 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAdicionarProcedimento" />
-
-    <android.widget.Button
-        android:id="@+id/btnRelatorios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_menu_main"
-        android:onClick="btnRelatoriosOnClick"
-        android:text="@string/lblRelatorios"
-        app:layout_constraintBottom_toTopOf="@+id/btnOcorrencias"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnInstrucoes" />
-
-    <android.widget.Button
-        android:id="@+id/btnNecessidades"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_menu_main"
-        android:enabled="true"
-        android:text="Necessidades"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOcorrencias" />
-
-    <android.widget.Button
-        android:id="@+id/btnVencimentos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_menu_main"
-        android:enabled="true"
-        android:onClick="btnVencimentosOnClick"
-        android:text="Vencimentos"
-        app:layout_constraintBottom_toTopOf="@+id/btnInstrucoes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAlerta" />
-
-    <android.widget.Button
-        android:id="@+id/btnOcorrencias"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_menu_main"
-        android:enabled="true"
-        android:text="Ocorrências"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/btnNecessidades"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRelatorios" />
-
-    <android.widget.Button
-        android:id="@+id/btnInstrucoes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_menu_main"
-        android:enabled="true"
-        android:onClick="btnInstrucoesOnClick"
-        android:text="Instruções"
-        app:layout_constraintBottom_toTopOf="@+id/btnRelatorios"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnVencimentos" />
+        app:layout_constraintTop_toBottomOf="@+id/btnProcedimento" />
 
     <android.widget.Button
         android:id="@+id/btnAlerta"
@@ -107,28 +63,74 @@
         app:layout_constraintTop_toBottomOf="@+id/btnTarefa" />
 
     <android.widget.Button
-        android:id="@+id/btnAdicionarProcedimento"
+        android:id="@+id/btnVencimentos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg_menu_main"
-        android:onClick="btnProcedimentosOnClick"
-        android:text="@string/lblProcedimentos"
-        app:layout_constraintBottom_toTopOf="@+id/btnTarefa"
+        android:enabled="true"
+        android:onClick="btnVencimentosOnClick"
+        android:text="Vencimentos"
+        app:layout_constraintBottom_toTopOf="@+id/btnInstrucoes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblMenu" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAlerta" />
 
-    <TextView
-        android:id="@+id/lblMenu"
+    <android.widget.Button
+        android:id="@+id/btnInstrucoes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Menu"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/btnAdicionarProcedimento"
+        android:background="@drawable/btn_bg_menu_main"
+        android:enabled="true"
+        android:onClick="btnInstrucoesOnClick"
+        android:text="Instruções"
+        app:layout_constraintBottom_toTopOf="@+id/btnOcorrencias"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnVencimentos" />
+
+    <android.widget.Button
+        android:id="@+id/btnOcorrencias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:enabled="true"
+        android:onClick="btnOcorrenciasOnClick"
+        android:text="Ocorrências"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/btnNecessidades"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnInstrucoes" />
+
+    <android.widget.Button
+        android:id="@+id/btnNecessidades"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:enabled="true"
+        android:onClick="btnNecessidadesOnClick"
+        android:text="Necessidades"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/btnRelatorios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnOcorrencias" />
+
+    <android.widget.Button
+        android:id="@+id/btnRelatorios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_menu_main"
+        android:onClick="btnRelatoriosOnClick"
+        android:text="@string/lblRelatorios"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNecessidades" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

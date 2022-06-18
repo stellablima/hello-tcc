@@ -1,17 +1,30 @@
 package com.example.v1tcc;
 
+import static com.example.v1tcc.activities.MainActivity.CHANNEL_ID;
+
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.legacy.content.WakefulBroadcastReceiver;
+
 import com.example.v1tcc.activities.AlarmReceiverProcedimentoActivity;
+import com.example.v1tcc.application.ChecarSegundoPlano;
+import com.example.v1tcc.service.JobAlarm;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 //https://thestreamliners.in/blog/implement-alarm-manager/
 /*
@@ -30,6 +43,58 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override // ao encerrar o app ou reiniciar o celular o que irá acontecer ao abrir de novo? ira mantar os alarmes que estão no banco?
     public void onReceive(Context context, Intent intent) {
 
+
+        //verificar se é worth mandar o chamamento da actity para o job que é responsavel pelo service notificacao
+        boolean foregroud = false;
+        try {
+            foregroud = new ChecarSegundoPlano().execute(context).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(foregroud)
+            createActivity(context,intent);
+        else
+            createNotification(context,intent);
+
+    }
+
+    private void createNotification(Context context, Intent intent){
+
+
+        String idProcedimentoProvisorio = Integer.toString(intent.getExtras().getInt(EXTRA_ID_ALARME));
+        idProcedimentoProvisorio = idProcedimentoProvisorio.substring(0,idProcedimentoProvisorio.length() -1);
+
+        Intent intent2 = new Intent(context, AlarmReceiverProcedimentoActivity.class);
+        intent2.putExtra(AlarmReceiverProcedimentoActivity.EXTRA_ID_ALARME, intent.getExtras().getInt(EXTRA_ID_ALARME));
+        intent2.putExtra(AlarmReceiverProcedimentoActivity.EXTRA_ID_PROCEDIMENTO, Integer.parseInt(idProcedimentoProvisorio)); //passando uma string pra long pq??
+        intent2.putExtra(AlarmReceiverProcedimentoActivity.EXTRA_CANTAR, "NAO_CANTAR");
+        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, intent.getExtras().getInt(EXTRA_ID_ALARME), intent2, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.icon_2_main)
+                .setContentTitle("Alarme!")
+                .setContentText("Ring Ring .. Ring Ring")
+//                .setStyle(new NotificationCompat.BigTextStyle()
+//                        .bigText("Much longer text that cannot fit one line..."))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        //.build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(intent.getExtras().getInt(EXTRA_ID_ALARME), builder.build());
+
+//        MediaPlayer mp = MediaPlayer.create(context, Settings.System.DEFAULT_ALARM_ALERT_URI);
+//        mp.start(); //quando stop?
+    }
+
+    private void createActivity(Context context, Intent intent){
         /*
          Minha ideia-> defina o alarme para todos os dias, verifique a condição do seu dia no receptor de alarme.
          */
@@ -38,12 +103,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         intent2.putExtra(AlarmReceiverProcedimentoActivity.EXTRA_ID_ALARME, intent.getExtras().getInt(EXTRA_ID_ALARME));
         //intent2.putExtra(ProcedimentosActivity.EXTRA_ID_ALARME, intent.getExtras().getInt(EXTRA_ID)); //get extra dias da semana decide aciona ou nao
 //  String dataPrevisaoSplitadoTxt = dataPrevisaoAlarme.substring(dataPrevisaoAlarme.indexOf("[")+1, dataPrevisaoAlarme.indexOf("]"));
-
+        intent2.putExtra(AlarmReceiverProcedimentoActivity.EXTRA_CANTAR, "CANTAR");
         String idProcedimentoProvisorio = Integer.toString(intent.getExtras().getInt(EXTRA_ID_ALARME));
         idProcedimentoProvisorio = idProcedimentoProvisorio.substring(0,idProcedimentoProvisorio.length() -1);
         intent2.putExtra(AlarmReceiverProcedimentoActivity.EXTRA_ID_PROCEDIMENTO, Integer.parseInt(idProcedimentoProvisorio)); //passando uma string pra long pq??
 
-        context.startActivity(intent2);
+        context.startActivity(intent2); //
     }
 
     public static void updateAlarmProcedimento(Context context, Calendar c, int reqcod){
@@ -305,6 +370,16 @@ public class AlarmReceiver extends BroadcastReceiver {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+""+i), intent, 0);
             Toast.makeText(context, "alarme consumido, id: "+reqcod+""+i, Toast.LENGTH_SHORT).show();
             alarmManager.cancel(pendingIntent);
+        }
+    }
+
+    private void startAlarmJob(Context context, Intent intent) {
+        Intent intentJob = new Intent(context, JobAlarm.class);
+        //intentJob.putExtra(TITLE, intent.getStringExtra(TITLE));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intentJob);
+        } else {
+            context.startService(intentJob);
         }
     }
 }

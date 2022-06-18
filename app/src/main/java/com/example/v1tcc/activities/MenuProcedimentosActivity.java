@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +15,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.activities.ManterProcedimentoActivity;
+import com.example.v1tcc.ProcedimentosActivity;
+import com.example.v1tcc.R;
 
 public class MenuProcedimentosActivity extends AppCompatActivity {
 
@@ -74,7 +75,7 @@ public class MenuProcedimentosActivity extends AppCompatActivity {
 
     private void configurarCampos(){
 
-        btnAdicionarProcedimento = findViewById(R.id.btnAdicionarProcedimento);
+        btnAdicionarProcedimento = findViewById(R.id.btnProcedimento);
         btnAdicionarProcedimento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

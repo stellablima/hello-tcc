@@ -1,7 +1,14 @@
 package com.example.v1tcc.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.example.v1tcc.activities.MainActivity.CHANNEL_ID;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+
+import android.app.Notification;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,16 +26,17 @@ import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.R;
 import com.example.v1tcc.controller.RelatorioController;
 import com.example.v1tcc.models.Relatorio;
-
+import com.example.v1tcc.application.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class AlarmReceiverProcedimentoActivity extends AppCompatActivity {
+public class AlarmReceiverProcedimentoActivity extends AppCompatActivity{
 
     private MediaPlayer mp;
     public static final String EXTRA_ID_PROCEDIMENTO = "idprocedimento";
     public static final String EXTRA_ID_ALARME = "idalarme";
+    public static final String EXTRA_CANTAR = "cantarprocedimento";
     private Cursor cursor;
     private int idProcedimento;
     private int idAlarme;
@@ -39,6 +47,7 @@ public class AlarmReceiverProcedimentoActivity extends AppCompatActivity {
     private String flagFrequenciaAlarme;
     private String dataPrevisaoTxt;
     private Relatorio relatorio;
+
 /*Os alarmes não são acionados quando o dispositivo está inativo no modo Soneca.
 Todos os alarmes programados serão adiados até que o dispositivo saia do modo Soneca.
 Várias opções estão disponíveis se você precisa garantir que seu trabalho seja concluído
@@ -49,11 +58,22 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_alarm_receiver);
         carregaDados();
 
-        mp=MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI);
-        mp.start();
+
+//        if (getIntent().getExtras().getString(EXTRA_CANTAR).equals("NAO_CANTAR")) {
+////            mp=MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI);
+////            mp.start();
+//
+//        } else
+        if (getIntent().getExtras().getString(EXTRA_CANTAR).equals("CANTAR")) {
+            mp=MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI);
+            mp.start();
+        }
+
+
 
         String txt = "EXTRA_ID_ALARME:"+ (getIntent().getExtras().getInt(EXTRA_ID_ALARME)) + "\nflagRepeticaoAlarme:" + flagRepeticaoAlarme;
         Toast.makeText(this, txt, Toast.LENGTH_LONG).show();
@@ -63,8 +83,13 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mp.stop();
+
+        if (getIntent().getExtras().getString(EXTRA_CANTAR).equals("CANTAR")) {
+            mp.stop();
+        }
     }
+
+
 
     public void btnFecharAlarmeOnClick(View view){
 
