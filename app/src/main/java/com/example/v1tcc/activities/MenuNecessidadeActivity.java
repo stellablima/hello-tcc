@@ -22,6 +22,7 @@ public class MenuNecessidadeActivity extends AppCompatActivity {
     private ListView lvNecessidadesMenu;
     private SimpleCursorAdapter cursorAdapter;
     private Button btnAdicionarNecessidade;
+    public static final String EXTRA_ORIGEM_NECESSIDADE = "extraorigemnecessidade";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,12 @@ public class MenuNecessidadeActivity extends AppCompatActivity {
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
                 intent.putExtra(ManterNecessidadeActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "EDITAR_NECESSIDADE");
+
+                if (getIntent().getExtras().getString(EXTRA_ORIGEM_NECESSIDADE).equals("MAIN"))
+                    intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "CONSULTAR_NECESSIDADE");
+                else
+                    intent.putExtra(ManterNecessidadeActivity.EXTRA_NECESSIDADE, "EDITAR_NECESSIDADE");
+
                 startActivity(intent);
             }
         });

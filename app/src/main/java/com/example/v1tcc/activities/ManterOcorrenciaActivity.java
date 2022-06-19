@@ -52,20 +52,22 @@ public class ManterOcorrenciaActivity extends AppCompatActivity {
         super.onStart();
 
         if (getIntent().getExtras().getString(EXTRA_OCORRENCIA).equals("ADICIONAR_OCORRENCIA")) {
-            configurarCampos(true);
+            configurarCampos(true, false);
 
         } else if (getIntent().getExtras().getString(EXTRA_OCORRENCIA).equals("EDITAR_OCORRENCIA")) {
 
-            configurarCampos(false);
+            configurarCampos(false, false);
             carregaDados();
-            Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
-
+            //Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
+        } else { //if (getIntent().getExtras().getString(EXTRA_ESTADO).equals("CONSULTAR_OCORRENCIA"))
+            configurarCampos(false, true);
+            carregaDados();
         }
     }
 
-    private void configurarCampos(Boolean cadastrarOcorrencia) {
+    private void configurarCampos(Boolean cadastrarOcorrencia, Boolean soConsulta) {
         txtDataInicioOcorrencia = findViewById(R.id.txtDataInicioOcorrencia);
-        Helpers.txtDataConfig(this, txtDataInicioOcorrencia,true);
+        //Helpers.txtDataConfig(this, txtDataInicioOcorrencia,true);
         btnSalvarOcorrencia = findViewById(R.id.btnSalvarOcorrencia);
         btnFecharSalvarOcorrencia = findViewById(R.id.btnFecharSalvarOcorrencia);
         //btnExcluirInstrucaoOnClick
@@ -82,7 +84,7 @@ public class ManterOcorrenciaActivity extends AppCompatActivity {
         });
 
         if (cadastrarOcorrencia) {
-
+            Helpers.txtDataConfig(this, txtDataInicioOcorrencia,true);
             btnSalvarOcorrencia.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -93,7 +95,22 @@ public class ManterOcorrenciaActivity extends AppCompatActivity {
             findViewById(R.id.spcbtnExcluirOcorrencia).setVisibility(View.GONE);
             btnExcluirOcorrencia.setVisibility(View.GONE);
 
-        } else {
+        } else if(soConsulta){
+
+            txtCadastroOcorrencia = findViewById(R.id.txtCadastroOcorrencia);
+            txtCadastroOcorrencia.setText("Ocorrência");
+
+            findViewById(R.id.spcbtnExcluirOcorrencia).setVisibility(View.GONE);
+            findViewById(R.id.spcBtnSalvarOcorrencia).setVisibility(View.GONE);
+
+            btnSalvarOcorrencia.setVisibility(View.GONE);
+            btnExcluirOcorrencia.setVisibility(View.GONE);
+
+            edtNomeOcorrencia.setKeyListener(null);
+            edtObservacaoOcorrencia.setKeyListener(null);
+
+        }else {
+            Helpers.txtDataConfig(this, txtDataInicioOcorrencia,true);
             txtCadastroOcorrencia = findViewById(R.id.txtCadastroOcorrencia);
             txtCadastroOcorrencia.setText("Editar Ocorrência");
 

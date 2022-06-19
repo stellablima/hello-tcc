@@ -137,11 +137,10 @@
             android:layout_weight="1" />
 
         <android.widget.Button
-            android:background="@drawable/btn_bg_menu_main"
             android:id="@+id/btnSalvarNecessidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="@string/btnSalvar" />
 
         <Space
@@ -151,24 +150,23 @@
             android:layout_weight="1" />
 
         <android.widget.Button
-            android:background="@drawable/btn_bg_menu_main"
             android:id="@+id/btnExcluirNecessidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="Excluir" />
 
         <Space
+            android:id="@+id/spcBtnFecharSalvarNecessidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <android.widget.Button
-            android:background="@drawable/btn_bg_menu_main"
             android:id="@+id/btnFecharSalvarNecessidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="Fechar" />
 
         <Space

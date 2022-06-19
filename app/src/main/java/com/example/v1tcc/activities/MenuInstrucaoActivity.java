@@ -17,11 +17,13 @@ import android.widget.Toast;
 import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.R;
 
-public class MenuInstrucoesActivity extends AppCompatActivity {
+public class MenuInstrucaoActivity extends AppCompatActivity {
 
     private ListView lvInstrucoesMenu;
     private SimpleCursorAdapter cursorAdapter;
     private Button btnAdicionarInstrucao;
+    public static final String EXTRA_ORIGEM_INSTRUCAO = "extraorigeminstrucao";
+
 
     /*um alerta é uma linha de estado de instrução que fica fixado na tela principal*/
 
@@ -35,7 +37,12 @@ public class MenuInstrucoesActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        configurarCampos();
+        if (getIntent().getExtras().getString(EXTRA_ORIGEM_INSTRUCAO).equals("MAIN")) {
+            configurarCampos(false);
+        }else{ //getIntent().getExtras().getString(EXTRA_ORIGEM_INSTRUCAO).equals("MENU MAIN")
+            configurarCampos(true);
+        }
+
         setLvInstrucoesMenuAdapter();
 
 //        BDRotinaHelper bdEstoqueHelper = new BDRotinaHelper(this);
@@ -53,25 +60,34 @@ public class MenuInstrucoesActivity extends AppCompatActivity {
 
     }
 
-    private void configurarCampos(){
+    private void configurarCampos(Boolean origemMenuMain){
 
         btnAdicionarInstrucao = findViewById(R.id.btnAdicionarInstrucao);
-        btnAdicionarInstrucao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnAdicionarInstrucaoOnClick(view);
-            }
-        });
+        if(origemMenuMain){
+            btnAdicionarInstrucao.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btnAdicionarInstrucaoOnClick(view);
+                }
+            });
+        }else {
+            btnAdicionarInstrucao.setVisibility(View.GONE);
+        }
 
         lvInstrucoesMenu = findViewById(R.id.lvInstrucoesMenu);
         lvInstrucoesMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuInstrucoesActivity.this, ManterInstrucaoActivity.class);
+                Intent intent = new Intent(MenuInstrucaoActivity.this, ManterInstrucaoActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
                 intent.putExtra(ManterInstrucaoActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(ManterInstrucaoActivity.EXTRA_ESTADO, "EDITAR_INSTRUCAO");
+
+                if (getIntent().getExtras().getString(EXTRA_ORIGEM_INSTRUCAO).equals("MAIN"))
+                    intent.putExtra(ManterInstrucaoActivity.EXTRA_ESTADO, "CONSULTAR_INSTRUCAO");
+                else
+                    intent.putExtra(ManterInstrucaoActivity.EXTRA_ESTADO, "EDITAR_INSTRUCAO");
+
                 startActivity(intent);
             }
         });

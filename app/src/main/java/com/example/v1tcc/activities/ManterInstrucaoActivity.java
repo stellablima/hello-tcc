@@ -48,18 +48,20 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
         super.onStart();
 
         if (getIntent().getExtras().getString(EXTRA_ESTADO).equals("ADICIONAR_INSTRUCAO")) {
-            configurarCampos(true);
+            configurarCampos(true, false);
 
         } else if (getIntent().getExtras().getString(EXTRA_ESTADO).equals("EDITAR_INSTRUCAO")) {
 
-            configurarCampos(false);
+            configurarCampos(false, false);
             carregaDados();
-            Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
-
+            //Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
+        } else { //if (getIntent().getExtras().getString(EXTRA_ESTADO).equals("CONSULTAR_INSTRUCAO"))
+            configurarCampos(false, true);
+            carregaDados();
         }
     }
 
-    private void configurarCampos(Boolean cadastrarInstrucao) {
+    private void configurarCampos(Boolean cadastrarInstrucao, Boolean soConsulta) {
         btnSalvarInstrucao = findViewById(R.id.btnSalvarInstrucao);
         btnFecharSalvarInstrucao = findViewById(R.id.btnFecharSalvarInstrucao);
         //btnExcluirInstrucaoOnClick
@@ -84,16 +86,28 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
                 }
             });
 
-            findViewById(R.id.spcbtnExcluirInstrucao).setVisibility(View.GONE);
+            findViewById(R.id.spcBtnExcluirInstrucao).setVisibility(View.GONE);
             btnExcluirInstrucao.setVisibility(View.GONE);
 
-        } else {
-//            edtTituloInstrucao = findViewById(R.id.edtTituloInstrucao);
-//            edtTextoInstrucao = findViewById(R.id.edtTextoInstrucao);
+        } else if(soConsulta){
+
+            txtCadastroInstrucao = findViewById(R.id.txtCadastroInstrucao);
+            txtCadastroInstrucao.setText("Instrução");
+
+            findViewById(R.id.spcBtnExcluirInstrucao).setVisibility(View.GONE);
+            findViewById(R.id.spcBtnFecharSalvarInstrucao).setVisibility(View.GONE);
+
+            btnSalvarInstrucao.setVisibility(View.GONE);
+            btnExcluirInstrucao.setVisibility(View.GONE);
+
+            //edtTituloInstrucao.setEnabled(false);
+            edtTituloInstrucao.setKeyListener(null);
+            edtTextoInstrucao.setKeyListener(null);
+
+        } else{
 
             txtCadastroInstrucao = findViewById(R.id.txtCadastroInstrucao);
             txtCadastroInstrucao.setText("Editar Instrução");
-
 
             btnSalvarInstrucao.setOnClickListener(new View.OnClickListener() {
                 @Override

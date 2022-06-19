@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +14,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.R;
 
-public class RelatoriosActivity extends AppCompatActivity {
+public class MenuRelatorioActivity extends AppCompatActivity {
 
     private ListView lvRelatorio;
     private SimpleCursorAdapter cursorAdapter;

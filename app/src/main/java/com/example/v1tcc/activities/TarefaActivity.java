@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.R;
 
 import java.util.Calendar;
 import java.util.Locale;

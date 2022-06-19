@@ -15,10 +15,9 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.ProcedimentosActivity;
 import com.example.v1tcc.R;
 
-public class MenuProcedimentosActivity extends AppCompatActivity {
+public class MenuProcedimentoActivity extends AppCompatActivity {
 
     private ListView lvProcedimentosMenu;
     private SimpleCursorAdapter cursorAdapter;
@@ -87,7 +86,7 @@ public class MenuProcedimentosActivity extends AppCompatActivity {
         lvProcedimentosMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuProcedimentosActivity.this, ProcedimentosActivity.class);
+                Intent intent = new Intent(MenuProcedimentoActivity.this, ProcedimentosActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
                 intent.putExtra(ProcedimentosActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));

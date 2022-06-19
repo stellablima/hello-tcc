@@ -1,4 +1,4 @@
-package com.example.v1tcc;
+package com.example.v1tcc.activities;
 
 import static com.example.v1tcc.Helpers.decoderHorario;
 
@@ -16,7 +16,9 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.v1tcc.AlarmReceiver;
 import com.example.v1tcc.BDHelper.SQLiteConnection;
+import com.example.v1tcc.R;
 import com.example.v1tcc.activities.ManterProcedimentoActivity;
 
 public class ProcedimentosActivity extends AppCompatActivity {
@@ -169,6 +171,12 @@ public class ProcedimentosActivity extends AppCompatActivity {
 //            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 //        }
         /******************************************************/
+
+    }
+
+    public void btnFecharProcedimentoOnClick(View view){
+
+        finish();
 
     }
 

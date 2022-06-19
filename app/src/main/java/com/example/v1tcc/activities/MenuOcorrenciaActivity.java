@@ -22,6 +22,7 @@ public class MenuOcorrenciaActivity extends AppCompatActivity {
     private ListView lvOcorrenciasMenu;
     private SimpleCursorAdapter cursorAdapter;
     private Button btnAdicionarOcorrencia;
+    public static final String EXTRA_ORIGEM_OCORRENCIA = "extraorigemnocorrencia";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,12 @@ public class MenuOcorrenciaActivity extends AppCompatActivity {
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
                 intent.putExtra(ManterOcorrenciaActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "EDITAR_OCORRENCIA");
+
+                if (getIntent().getExtras().getString(EXTRA_ORIGEM_OCORRENCIA).equals("MAIN"))
+                    intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "CONSULTAR_OCORRENCIA");
+                else
+                    intent.putExtra(ManterOcorrenciaActivity.EXTRA_OCORRENCIA, "EDITAR_OCORRENCIA");
+
                 startActivity(intent);
             }
         });

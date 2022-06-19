@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.v1tcc.R;
-import com.example.v1tcc.RelatoriosActivity;
 
 public class MenuMainActivity extends AppCompatActivity {
 
@@ -21,12 +20,12 @@ public class MenuMainActivity extends AppCompatActivity {
     }
 
     public void btnProcedimentosOnClick(View view){
-        Intent intent = new Intent(this, MenuProcedimentosActivity.class);
+        Intent intent = new Intent(this, MenuProcedimentoActivity.class);
         startActivity(intent);
     }
 
     public void btnRelatoriosOnClick(View view){
-        Intent intent = new Intent(this, RelatoriosActivity.class);
+        Intent intent = new Intent(this, MenuRelatorioActivity.class);
         startActivity(intent);
     }
 
@@ -41,22 +40,26 @@ public class MenuMainActivity extends AppCompatActivity {
     }
 
     public void btnVencimentosOnClick(View view){
-        Intent intent = new Intent(this, MenuVencimentosActivity.class);
+        Intent intent = new Intent(this, MenuVencimentoActivity.class);
+        intent.putExtra(MenuVencimentoActivity.EXTRA_ORIGEM_VENCIMENTO, "MENU MAIN");
         startActivity(intent);
     }
 
     public void btnInstrucoesOnClick(View view){
-        Intent intent = new Intent(this, MenuInstrucoesActivity.class);
+        Intent intent = new Intent(this, MenuInstrucaoActivity.class);
+        intent.putExtra(MenuInstrucaoActivity.EXTRA_ORIGEM_INSTRUCAO, "MENU MAIN");
         startActivity(intent);
     }
 
     public void btnOcorrenciasOnClick(View view){
         Intent intent = new Intent(this, MenuOcorrenciaActivity.class);
+        intent.putExtra(MenuOcorrenciaActivity.EXTRA_ORIGEM_OCORRENCIA, "MENU MAIN");
         startActivity(intent);
     }
 
     public void btnNecessidadesOnClick(View view){
-        Intent intent = new Intent(this, MenuOcorrenciaActivity.class);
+        Intent intent = new Intent(this, MenuNecessidadeActivity.class);
+        intent.putExtra(MenuNecessidadeActivity.EXTRA_ORIGEM_NECESSIDADE, "MENU MAIN");
         startActivity(intent);
     }
 

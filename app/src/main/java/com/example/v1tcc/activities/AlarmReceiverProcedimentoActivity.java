@@ -111,7 +111,7 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
             ArrayList<Calendar> alarmeTempo = new ArrayList<>();
 
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.MINUTE, 1);//1min//expandir pra mais com opção de escolha
+            cal.add(Calendar.MINUTE, 5);//5min//expandir pra mais com opção de escolha
             alarmeTempo.add(cal);
 
             AlarmReceiver.snoozeAlarmProcedimento(this, alarmeTempo, idAlarme, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);

@@ -89,16 +89,16 @@
         app:layout_constraintTop_toBottomOf="@+id/txtDataUltimaOcorrencia">
 
         <Space
+            android:id="@+id/spcBtnSalvarVencimento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <android.widget.Button
             android:id="@+id/btnSalvarVencimento"
-            android:background="@drawable/btn_bg_menu_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="@string/btnSalvar" />
 
         <Space
@@ -109,10 +109,9 @@
 
         <android.widget.Button
             android:id="@+id/btnExcluirVencimento"
-            android:background="@drawable/btn_bg_menu_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="Excluir" />
 
         <Space
@@ -122,10 +121,9 @@
 
         <android.widget.Button
             android:id="@+id/btnFecharSalvarVencimento"
-            android:background="@drawable/btn_bg_menu_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="Fechar" />
 
         <Space

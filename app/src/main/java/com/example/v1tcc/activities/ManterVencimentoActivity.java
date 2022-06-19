@@ -52,13 +52,16 @@ public class ManterVencimentoActivity extends AppCompatActivity {
 
 
         if (getIntent().getExtras().getString(EXTRA_VENCIMENTO).equals("ADICIONAR_VENCIMENTO")) {
-            configurarCampos(true);
+            configurarCampos(true, false);
 
         } else if (getIntent().getExtras().getString(EXTRA_VENCIMENTO).equals("EDITAR_VENCIMENTO")) {
 
-            configurarCampos(false);
+            configurarCampos(false, false);
             carregaDados();
-            Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
+        }else{ //if (getIntent().getExtras().getString(EXTRA_ESTADO).equals("CONSULTAR_VENCIMENTO"))
+            configurarCampos(false, true);
+            carregaDados();
         }
     }
 
@@ -167,9 +170,9 @@ public class ManterVencimentoActivity extends AppCompatActivity {
 
 
 
-    private void configurarCampos(Boolean cadastrarVencimento) {
+    private void configurarCampos(Boolean cadastrarVencimento, Boolean soConsulta) {
         txtDataUltimaOcorrencia = findViewById(R.id.txtDataUltimaOcorrencia);
-        Helpers.txtDataConfig(this, txtDataUltimaOcorrencia,true);
+        //Helpers.txtDataConfig(this, txtDataUltimaOcorrencia,true);
         edtTituloVencimento = findViewById(R.id.edtTituloVencimento);
         edtTextoVencimento = findViewById(R.id.edtTextoVencimento);
         btnSalvarVencimento = findViewById(R.id.btnSalvarVencimento);
@@ -185,7 +188,7 @@ public class ManterVencimentoActivity extends AppCompatActivity {
         });
 
         if (cadastrarVencimento) {
-
+            Helpers.txtDataConfig(this, txtDataUltimaOcorrencia,true);
             btnSalvarVencimento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -196,8 +199,22 @@ public class ManterVencimentoActivity extends AppCompatActivity {
             findViewById(R.id.spcBtnExcluirVencimento).setVisibility(View.GONE);
             btnExcluirVencimento.setVisibility(View.GONE);
 
-        } else {
+        } else if(soConsulta){
 
+            txtCadastroVencimento.setText("Vencimento");
+
+            findViewById(R.id.spcBtnExcluirVencimento).setVisibility(View.GONE);
+            findViewById(R.id.spcBtnSalvarVencimento).setVisibility(View.GONE);
+
+            btnSalvarVencimento.setVisibility(View.GONE);
+            btnExcluirVencimento.setVisibility(View.GONE);
+
+            edtTituloVencimento.setKeyListener(null);
+            edtTextoVencimento.setKeyListener(null);
+            //txtDataUltimaOcorrencia.setKeyListener(null);
+
+        } else {
+            Helpers.txtDataConfig(this, txtDataUltimaOcorrencia,true);
             txtCadastroVencimento.setText("Editar Vencimento");
 
             btnSalvarVencimento.setOnClickListener(new View.OnClickListener() {

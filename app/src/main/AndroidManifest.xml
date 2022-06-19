@@ -31,13 +31,13 @@
             android:name=".activities.ManterInstrucaoActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuInstrucoesActivity"
+            android:name=".activities.MenuInstrucaoActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ManterVencimentoActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuVencimentosActivity"
+            android:name=".activities.MenuVencimentoActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ManterAlertaActivity"
@@ -49,10 +49,10 @@
             android:name=".activities.MenuTarefaActivity"
             android:exported="true" />
         <activity
-            android:name=".TarefaActivity"
+            android:name=".activities.TarefaActivity"
             android:exported="true" />
         <activity
-            android:name=".RelatoriosActivity"
+            android:name=".activities.MenuRelatorioActivity"
             android:exported="true" />
         <activity
             android:name=".activities.AlarmReceiverProcedimentoActivity"
@@ -72,10 +72,10 @@
 
 
         <activity
-            android:name=".ProcedimentosActivity"
+            android:name=".activities.ProcedimentosActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuProcedimentosActivity"
+            android:name=".activities.MenuProcedimentoActivity"
             android:exported="true" />
         <activity
             android:name=".activities.MenuMainActivity"

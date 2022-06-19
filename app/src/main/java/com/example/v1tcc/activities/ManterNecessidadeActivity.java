@@ -58,18 +58,20 @@ public class ManterNecessidadeActivity extends AppCompatActivity {
         super.onStart();
 
         if (getIntent().getExtras().getString(EXTRA_NECESSIDADE).equals("ADICIONAR_NECESSIDADE")) {
-            configurarCampos(true);
+            configurarCampos(true, false);
 
         } else if (getIntent().getExtras().getString(EXTRA_NECESSIDADE).equals("EDITAR_NECESSIDADE")) {
 
-            configurarCampos(false);
+            configurarCampos(false, false);
             carregaDados();
-            Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
-
+            //Toast.makeText(this, "EXTRA_ID" + getIntent().getExtras().getLong(EXTRA_ID), Toast.LENGTH_SHORT).show();
+        } else { //if (getIntent().getExtras().getString(EXTRA_ESTADO).equals("CONSULTAR_NECESSIDADE"))
+            configurarCampos(false, true);
+            carregaDados();
         }
     }
 
-    private void configurarCampos(Boolean cadastrarOcorrencia) {
+    private void configurarCampos(Boolean cadastrarOcorrencia, Boolean soConsulta) {
         txtDataInicioNecessidade = findViewById(R.id.txtDataInicioNecessidade);
         Helpers.txtDataConfig(this, txtDataInicioNecessidade,true);
         btnSalvarNecessidade = findViewById(R.id.btnSalvarNecessidade);
@@ -102,6 +104,23 @@ public class ManterNecessidadeActivity extends AppCompatActivity {
 
             findViewById(R.id.spcbtnExcluirNecessidade).setVisibility(View.GONE);
             btnExcluirNecessidade.setVisibility(View.GONE);
+
+        } else if(soConsulta){
+
+            txtCadastroNecessidade = findViewById(R.id.txtCadastroNecessidade);
+            txtCadastroNecessidade.setText("Necessidade");
+
+            findViewById(R.id.spcbtnExcluirNecessidade).setVisibility(View.GONE);
+            findViewById(R.id.spcBtnFecharSalvarNecessidade).setVisibility(View.GONE);
+
+            btnSalvarNecessidade.setVisibility(View.GONE);
+            btnExcluirNecessidade.setVisibility(View.GONE);
+
+            rbNecessidade1.setKeyListener(null);
+            rbNecessidade2.setKeyListener(null);
+            rbNecessiadeEspontanea.setKeyListener(null);
+            rbNecessidadeNaoEspontanea.setKeyListener(null);
+            edtObservacaoNecessidade.setKeyListener(null);
 
         } else {
             txtCadastroNecessidade = findViewById(R.id.txtCadastroNecessidade);

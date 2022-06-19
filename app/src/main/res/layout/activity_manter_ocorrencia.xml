@@ -88,16 +88,16 @@
         app:layout_constraintTop_toBottomOf="@+id/txtDataInicioOcorrencia">
 
         <Space
+            android:id="@+id/spcBtnSalvarOcorrencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <android.widget.Button
-            android:background="@drawable/btn_bg_menu_main"
             android:id="@+id/btnSalvarOcorrencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="@string/btnSalvar" />
 
         <Space
@@ -107,11 +107,10 @@
             android:layout_weight="1" />
 
         <android.widget.Button
-            android:background="@drawable/btn_bg_menu_main"
             android:id="@+id/btnExcluirOcorrencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="Excluir" />
 
         <Space
@@ -120,11 +119,10 @@
             android:layout_weight="1" />
 
         <android.widget.Button
-            android:background="@drawable/btn_bg_menu_main"
             android:id="@+id/btnFecharSalvarOcorrencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/btn_bg_menu_main"
             android:text="Fechar" />
 
         <Space

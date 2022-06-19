@@ -1,7 +1,5 @@
 package com.example.v1tcc.activities;
 
-import static com.example.v1tcc.Helpers.decoderHorario;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -25,9 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
-import com.example.v1tcc.ProcedimentosActivity;
 import com.example.v1tcc.R;
-import com.example.v1tcc.TarefaActivity;
 
 import java.util.Calendar;
 
@@ -232,9 +228,9 @@ public class MainActivity extends AppCompatActivity {
             SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
             SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
             Cursor cursor = bd.query("ESTADO",
-                    new String[] {"_id", "TITULO", "TEXTO"},
-                    "_id = ?",//CATEGORIA="Alerta" FLAG="1" (ATIVO)
-                    new String[] {Long.toString(idAlertaDia)},
+                    new String[] {"_id", "TITULO", "TEXTO", "CATEGORIA"},
+                    "CATEGORIA = ?",//CATEGORIA="Destaque" FLAG="1" (ATIVO)
+                    new String[] {"Destaque"},
                     null,
                     null,
                     null
@@ -242,9 +238,16 @@ public class MainActivity extends AppCompatActivity {
             if (cursor.moveToFirst()) {
                 alertaDiaTitulo = cursor.getString(cursor.getColumnIndexOrThrow("TITULO"));
                 alertaDiaTexto = cursor.getString(cursor.getColumnIndexOrThrow("TEXTO"));
-                txt = findViewById(R.id.txtAviso);
-                txt.setText(alertaDiaTitulo);
 
+                ///Clique em editar para adicionar
+                ///Adicionar alerta
+                txt = findViewById(R.id.txtAviso);
+                if(alertaDiaTitulo == "")
+                    alertaDiaTitulo = "Adicionar alerta";
+                if(alertaDiaTexto == "")
+                    alertaDiaTexto = "Clique em editar para adicionar";
+
+                txt.setText(alertaDiaTitulo);
             }
             else
                 Toast.makeText(this, "Alerta não encontrado", Toast.LENGTH_SHORT).show();
@@ -285,22 +288,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void btnMenuVencimentosOnClick(View view){
-        Intent intent = new Intent(this, MenuVencimentosActivity.class);
+        Intent intent = new Intent(this, MenuVencimentoActivity.class);
+        intent.putExtra(MenuVencimentoActivity.EXTRA_ORIGEM_VENCIMENTO, "MAIN");
         startActivity(intent);
     }
 
     private void btnMenuOcorrenciasOnClick(View view){
         Intent intent = new Intent(this, MenuOcorrenciaActivity.class);
+        intent.putExtra(MenuOcorrenciaActivity.EXTRA_ORIGEM_OCORRENCIA, "MAIN");
         startActivity(intent);
     }
 
     private void btnMenuNecessidadesOnClick(View view){
         Intent intent = new Intent(this, MenuNecessidadeActivity.class);
+        intent.putExtra(MenuNecessidadeActivity.EXTRA_ORIGEM_NECESSIDADE, "MAIN");
         startActivity(intent);
     }
 
     private void btnMenuInstrucoesOnClick(View view){
-        Intent intent = new Intent(this, MenuInstrucoesActivity.class);
+        Intent intent = new Intent(this, MenuInstrucaoActivity.class);
+        intent.putExtra(MenuInstrucaoActivity.EXTRA_ORIGEM_INSTRUCAO, "MAIN");
         startActivity(intent);
     }
 

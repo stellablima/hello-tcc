@@ -17,11 +17,12 @@ import android.widget.Toast;
 import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.R;
 
-public class MenuVencimentosActivity extends AppCompatActivity {
+public class MenuVencimentoActivity extends AppCompatActivity {
 
     private ListView lvVencimentosMenu;
     private SimpleCursorAdapter cursorAdapter;
     private Button btnAdicionarVencimento;
+    public static final String EXTRA_ORIGEM_VENCIMENTO = "extraorigemvencimento";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,29 +35,44 @@ public class MenuVencimentosActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        configurarCampos();
+        if (getIntent().getExtras().getString(EXTRA_ORIGEM_VENCIMENTO).equals("MAIN")) {
+            configurarCampos(false);
+        }else{ //getIntent().getExtras().getString(EXTRA_ORIGEM_INSTRUCAO).equals("MENU MAIN")
+            configurarCampos(true);
+        }
+
         setLvVencimentosMenuAdapter();
     }
 
-    private void configurarCampos(){
+    private void configurarCampos(Boolean origemMenuMain){
 
         btnAdicionarVencimento = findViewById(R.id.btnAdicionarVencimento);
-        btnAdicionarVencimento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnAdicionarVencimentoOnClick(view);
-            }
-        });
+        if(origemMenuMain){
+            btnAdicionarVencimento.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btnAdicionarVencimentoOnClick(view);
+                }
+            });
+        }else {
+            btnAdicionarVencimento.setVisibility(View.GONE);
+        }
+
 
         lvVencimentosMenu = findViewById(R.id.lvVencimentosMenu);
         lvVencimentosMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(MenuVencimentosActivity.this, ManterVencimentoActivity.class);
+                Intent intent = new Intent(MenuVencimentoActivity.this, ManterVencimentoActivity.class);
 
                 Cursor cursor = (Cursor) cursorAdapter.getItem(position);
                 intent.putExtra(ManterVencimentoActivity.EXTRA_ID,cursor.getLong(cursor.getColumnIndex("_id")));
-                intent.putExtra(ManterVencimentoActivity.EXTRA_VENCIMENTO, "EDITAR_VENCIMENTO");
+
+                if (getIntent().getExtras().getString(EXTRA_ORIGEM_VENCIMENTO).equals("MAIN"))
+                    intent.putExtra(ManterVencimentoActivity.EXTRA_VENCIMENTO, "CONSULTAR_VENCIMENTO");
+                else
+                    intent.putExtra(ManterVencimentoActivity.EXTRA_VENCIMENTO, "EDITAR_VENCIMENTO");
+
                 startActivity(intent);
             }
         });

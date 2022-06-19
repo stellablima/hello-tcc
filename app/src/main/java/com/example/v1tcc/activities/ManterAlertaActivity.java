@@ -27,7 +27,8 @@ public class ManterAlertaActivity extends AppCompatActivity {
     private Button btnFecharAlerta;
     private EditText edtNomeAlerta;
     private EditText edtObservacaoAlerta;
-    private long idProcedimento = 1;
+    //private long idProcedimento = 1;
+    private long idEstado;
 
     private SQLiteConnection SQLiteConnection;
     private SQLiteDatabase SQLiteDatabase;
@@ -92,20 +93,21 @@ public class ManterAlertaActivity extends AppCompatActivity {
             SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
             SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
             Cursor cursor = bd.query("ESTADO",
-                    new String[]{"_id", "TITULO", "TEXTO"},
-                    "_id = ?",
-                    new String[]{Long.toString(idProcedimento)},
+                    new String[]{"_id", "TITULO", "TEXTO", "CATEGORIA"},
+                    "CATEGORIA = ?",
+                    new String[]{"Destaque"},
                     null,
                     null,
                     null
             );
             if (cursor.moveToFirst()) {
-
                 edtNomeAlerta.setText(cursor.getString(cursor.getColumnIndexOrThrow("TITULO")));
                 edtObservacaoAlerta.setText(cursor.getString(cursor.getColumnIndexOrThrow("TEXTO")));
-
-            } else
-                Toast.makeText(this, "Tarefa não encontrada", Toast.LENGTH_SHORT).show();
+                idEstado = Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("_id")));
+            } else {
+                idEstado = 0;
+                Toast.makeText(this, "Destaque não encontrado", Toast.LENGTH_SHORT).show();
+            }
         } catch (SQLiteException e) {
             Toast.makeText(this, "Falha no acesso ao Banco de Dados " + e, Toast.LENGTH_LONG).show();
         }
@@ -119,10 +121,15 @@ public class ManterAlertaActivity extends AppCompatActivity {
             ContentValues cv = new ContentValues();
             cv.put("TITULO", edtNomeAlerta.getText().toString());
             cv.put("TEXTO", edtObservacaoAlerta.getText().toString());
+            cv.put("CATEGORIA", "Destaque");
 
             SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-            bd.update("ESTADO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
+
+            if (idEstado == 0)
+                bd.insert("ESTADO", null,cv);
+            else
+                bd.update("ESTADO", cv, "_id = ?", new String[] {Long.toString(idEstado)});
             bd.close();
             finish();
         } catch (Exception e){
@@ -147,11 +154,11 @@ public class ManterAlertaActivity extends AppCompatActivity {
         try {
 
             ContentValues cv = new ContentValues();
-            cv.put("TITULO", "Adicionar aleta");
-            cv.put("TEXTO", "Clique em editar para adicionar");
+            cv.put("TITULO", "");
+            cv.put("TEXTO", "");
             SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
             SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-            bd.update("ESTADO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
+            bd.update("ESTADO", cv, "_id = ?", new String[] {Long.toString(idEstado)});
             bd.close();
             finish();
 
