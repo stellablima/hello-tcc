@@ -39,7 +39,7 @@ public class Helpers {
 
         lv.setAdapter(null); // adapter tem que resetar mesmo
         lv.setAdapter(adapter);
-        //lv.setOnItemClickListener(null); evento ele sobrescreve
+        //lv.setOnItemClickListener(null); //evento ele sobrescreve
         lv.setOnItemClickListener( new AdapterView.OnItemClickListener() {
 
             @Override
@@ -133,7 +133,11 @@ public class Helpers {
                 DatePickerDialog dPickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+                        //if() se data selecionada < data de hoje e flag pedir conferencia
+                        //verificar como isso iria interagir com a hora tambem, aparentemente se a data for retroativa ele ignora e elarma
                         txtDataProcedimento.setText(String.format("%02d",i2) + "/" + String.format("%02d",i1+1) + "/" + String.format("%02d",i));
+
                     }
                 }, anoAtual, mesAtual-1, diaAtual);
                 dPickerDialog.show();

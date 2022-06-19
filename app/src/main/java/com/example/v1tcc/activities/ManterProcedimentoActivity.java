@@ -37,9 +37,10 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
     public static final String EXTRA_ID = "idprocedimento";
 
     private EditText edtNomeProcedimento;
-    private TextView txtHoraProcedimento;
     private TextView txtFrequenciaAlarme;
     private TextView txtProcedimento;
+    private TextView txtHoraProcedimento;
+    private TextView txtDiaInicioProcedimento;
     private Spinner spnCategoriasAlarme;
     private Spinner spnPeriodoAlarme;
     private Spinner spnPeriodo0Alarme;
@@ -108,6 +109,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
         btnFecharManterProcedimento = findViewById(R.id.btnFecharManterProcedimento);
         edtNomeProcedimento = findViewById(R.id.edtNomeProcedimento);
         txtHoraProcedimento = findViewById(R.id.txtHoraProcedimento);
+        txtDiaInicioProcedimento =  findViewById(R.id.txtDiaInicioProcedimento);
         txtFrequenciaAlarme = findViewById(R.id.txtFrequencia);
         txtProcedimento = findViewById(R.id.txtProcedimento);
         spnCategoriasAlarme = findViewById(R.id.spnCategoriasAlarme);
@@ -148,11 +150,13 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
 
                     if(swtFrequenciaAlarme.isChecked()) {
                         txtHoraProcedimento.setVisibility(View.VISIBLE);
+                        txtDiaInicioProcedimento.setVisibility(View.VISIBLE);
                         lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
                         spnPeriodoAlarme.setEnabled(true);
                         txt.setText("EM");
                     }else{
                         txtHoraProcedimento.setVisibility(View.GONE);
+                        txtDiaInicioProcedimento.setVisibility(View.VISIBLE);//(View.GONE);
                         lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
                         spnPeriodoAlarme.setSelection(3);
                         spnPeriodo0Alarme.setSelection(0);
@@ -164,6 +168,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                     txtFrequenciaAlarme.setVisibility(View.GONE);
                     llAlarmeDistribuido.setVisibility(View.GONE);
                     txtHoraProcedimento.setVisibility(View.VISIBLE);
+                    txtDiaInicioProcedimento.setVisibility(View.VISIBLE);
                     lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
                 }
             }
@@ -177,6 +182,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                     txt.setText("EM");
 
                     txtHoraProcedimento.setVisibility(View.VISIBLE);
+                    txtDiaInicioProcedimento.setVisibility(View.VISIBLE);
                     lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
 
                     spnPeriodoAlarme.setEnabled(true);
@@ -202,6 +208,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                     txt.setText("X");
 
                     txtHoraProcedimento.setVisibility(View.GONE);
+                    txtDiaInicioProcedimento.setVisibility(View.VISIBLE);//(View.GONE);
                     lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
                     spnPeriodoAlarme.setSelection(3);
                     spnPeriodoAlarme.setEnabled(false);
@@ -217,7 +224,8 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
 
                         }
                     });
-                    resetLvDesproporcional(getApplicationContext(),0);
+                    //resetLvDesproporcional(getApplicationContext(),0); <- ERRADO ele perde o contexto
+                    resetLvDesproporcional(ManterProcedimentoActivity.this,0);
                     spnPeriodo1Alarme.setSelection(0);
                 }
             }
@@ -228,6 +236,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
         Helpers.spinnerNumero(this, R.array.categorias, spnCategoriasAlarme);
         Helpers.spinnerNumero(this, R.array.periodos, spnPeriodoAlarme);
         Helpers.txtHoraConfig(this, txtHoraProcedimento,extraProcedimento);
+        Helpers.txtDataConfig(this, txtDiaInicioProcedimento, true);
         lvRepeticaoDesproporcinalAlarme.setVisibility(View.GONE);
         llAlarmeDistribuido.setVisibility(View.GONE);
         spnPeriodo0Alarme.setSelection(0);
@@ -319,8 +328,11 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                         spnPeriodo1Alarme.setSelection(intSpnPeriodo1Alarme);
                         spnPeriodo0Alarme.setSelection(spnPeriodo1Alarme.getSelectedItemPosition());
                         txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
+                        //txtDiaInicioProcedimento.setText(":3 começou quando mesmo?, so dar gone");
+                        //txtDiaInicioProcedimento.setVisibility(View.GONE);
                     }else{
                         txtHoraProcedimento.setVisibility(View.GONE);
+                        txtDiaInicioProcedimento.setVisibility(View.VISIBLE);//(View.GONE);
                         lvRepeticaoDesproporcinalAlarme.setVisibility(View.VISIBLE);
                         spnPeriodoAlarme.setEnabled(false);
                         txt.setText("X");
@@ -330,6 +342,9 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                     }
                 }else
                     txtHoraProcedimento.setText(dataPrevisaoSplitado[0]);
+                    //txtDiaInicioProcedimento.setText(":3 começou quando mesmo?, so dar gone");
+                    //coloquei: sempre edite a data de hoje*
+                    //txtDiaInicioProcedimento.setVisibility(View.GONE);
             }
             else
                 Toast.makeText(this, "Procedimento não encontrado", Toast.LENGTH_SHORT).show();
@@ -416,14 +431,21 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
 
             if(!swtRepete || (swtRepete && swtFrequencia)){
                 String[] txtHora =  txtHoraProcedimento.getText().toString().split(":");
+                String[] txtDia =  txtDiaInicioProcedimento.getText().toString().split("/");
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
                 cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));
                 cal.set(Calendar.SECOND, 0);
+
+                //somar um mes, nao permitir agendar data passada
+                cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(txtDia[0]));
+                cal.set(Calendar.MONTH, Integer.parseInt(txtDia[1])-1);
+                cal.set(Calendar.YEAR, Integer.parseInt(txtDia[2]));
                 alarmeTempo.add(cal);
 
             }else{
 
+                String[] txtDia =  txtDiaInicioProcedimento.getText().toString().split("/");
                 for (String horarios:listHorarios) {
 
                     String[] txtHora =  horarios.split(":");
@@ -431,6 +453,10 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                     cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
                     cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));
                     cal.set(Calendar.SECOND, 0);
+
+                    cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(txtDia[0]));
+                    cal.set(Calendar.MONTH, Integer.parseInt(txtDia[1])-1);
+                    cal.set(Calendar.YEAR, Integer.parseInt(txtDia[2]));
                     alarmeTempo.add(cal);
                 }
             }
@@ -485,7 +511,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
         else
             this.procedimento.setFLAG_FREQUENCIA("0");
 
-        if(!swtRepeteAlarme.isChecked())
+        if(!swtRepeteAlarme.isChecked()) //caso registrar data inicio seria aqui, spoiler: atualmente desnecessario, melhor criar um campo pra isso?
             this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]");
         else if(swtRepeteAlarme.isChecked() && swtFrequenciaAlarme.isChecked())
             this.procedimento.setDATA_PREVISAO("["+txtHoraProcedimento.getText().toString()+"]"+spnPeriodo1Alarme.getSelectedItem()+txt.getText()+spnPeriodo0Alarme.getSelectedItem()+spnPeriodoAlarme.getSelectedItem());
@@ -503,6 +529,9 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
 
         String[] itens = new String[listHorarios.size()];
         listHorarios.toArray(itens);
+
+        //Helpers.lvDinamico(context, itens, lvRepeticaoDesproporcinalAlarme);
+
         Helpers.lvDinamico(context, itens, lvRepeticaoDesproporcinalAlarme);
 
         lvRepeticaoDesproporcinalAlarme.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -513,5 +542,7 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 }
