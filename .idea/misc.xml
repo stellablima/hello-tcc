@@ -32,7 +32,7 @@
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_manter_instrucao.xml" value="0.153125" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_manter_necessidade.xml" value="0.153125" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_manter_ocorrencia.xml" value="0.153125" />
-        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_manter_procedimento.xml" value="0.33" />
+        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_manter_procedimento.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_manter_tarefa.xml" value="0.153125" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_manter_vencimento.xml" value="0.153125" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_manter_vencimentos.xml" value="0.153125" />
@@ -46,6 +46,7 @@
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_procedimentos.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_relatorios.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_tarefa.xml" value="0.22" />
+        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/layout_procedimento.xml" value="0.153125" />
         <entry key="..\:/Users/stell/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/activity_list_item.xml" value="0.20416666666666666" />
       </map>
     </option>

@@ -16,11 +16,19 @@ import android.widget.Toast;
 
 import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.R;
+import com.example.v1tcc.adapters.AdapterProcedimentos;
+import com.example.v1tcc.controller.ProcedimentoController;
+import com.example.v1tcc.models.Procedimento;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuProcedimentoActivity extends AppCompatActivity {
 
     private ListView lvProcedimentosMenu;
+    private List<Procedimento> procedimentos = new ArrayList<>();
     private SimpleCursorAdapter cursorAdapter;
+    private AdapterProcedimentos adapterProcedimentos;
     private Button btnAdicionarProcedimento;
 
     @Override
@@ -46,6 +54,7 @@ public class MenuProcedimentoActivity extends AppCompatActivity {
 
     private void setLvProcedimentosMenuAdapter() {
         try {
+
             SQLiteConnection SQLiteConnection = new SQLiteConnection(this);
             SQLiteDatabase bd = SQLiteConnection.getReadableDatabase();
 
@@ -67,6 +76,13 @@ public class MenuProcedimentoActivity extends AppCompatActivity {
                     0
             );
             lvProcedimentosMenu.setAdapter(cursorAdapter);
+
+
+
+            //lv personalizado para uso do DAO, futuramente* consultar material do Banin app exemplo
+            /*adapterProcedimentos = new AdapterProcedimentos(MenuProcedimentoActivity.this, getProcedimentos());
+            lvProcedimentosMenu.setAdapter(adapterProcedimentos);*/
+
         } catch (SQLiteException e) {
             Toast.makeText(this, "Erro: " + e, Toast.LENGTH_LONG).show();
         }
@@ -93,6 +109,16 @@ public class MenuProcedimentoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private List<Procedimento> getProcedimentos(){
+
+        //List<Procedimento> procedimentos = new ArrayList<>();
+        ProcedimentoController procedimentoController = new ProcedimentoController(SQLiteConnection.getInstanciaConexao(MenuProcedimentoActivity.this));
+        //procedimentos = procedimentoController.listProcedimentoController();
+
+        //return procedimentos;
+        return procedimentoController.listProcedimentoController();
     }
 }
 //public static final String EXTRA_PROCEDIMENTO = "extraProcedimento";

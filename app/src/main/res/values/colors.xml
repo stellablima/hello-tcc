@@ -10,7 +10,7 @@
 
     <color name="bg_main">#EEDFC8</color>
 
-    <color name="btn_main_3">#8D6DFF</color>
-    <color name="btn_main_2">#B2B6FF</color>
+    <color name="btn_main_2">#8D6DFF</color>
+    <color name="btn_main_3">#B2B6FF</color>
     <color name="btn_main_1">#A86E80</color>
 </resources>

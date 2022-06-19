@@ -4,6 +4,8 @@ import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.DAO.ProcedimentoDAO;
 import com.example.v1tcc.models.Procedimento;
 
+import java.util.List;
+
 public class ProcedimentoController {
 
     private final ProcedimentoDAO procedimentoDAO;
@@ -14,5 +16,9 @@ public class ProcedimentoController {
 
     public long createProcedimentoController(Procedimento procedimento){
         return this.procedimentoDAO.createProcedimento(procedimento);
+    }
+
+    public List<Procedimento> listProcedimentoController(){
+        return  this.procedimentoDAO.listProcedimento();
     }
 }
