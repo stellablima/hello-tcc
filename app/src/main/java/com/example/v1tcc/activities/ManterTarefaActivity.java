@@ -2,7 +2,9 @@ package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -13,11 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.v1tcc.AlarmReceiver;
 import com.example.v1tcc.BDHelper.SQLiteConnection;
 import com.example.v1tcc.Helpers;
 import com.example.v1tcc.R;
 import com.example.v1tcc.controller.ProcedimentoController;
 import com.example.v1tcc.models.Procedimento;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 //trocar pra manter tarefa parece melhor
 public class ManterTarefaActivity extends AppCompatActivity {
@@ -132,36 +138,84 @@ public class ManterTarefaActivity extends AppCompatActivity {
         try {
 
             Helpers.preenchimentoValido(edtNomeTarefa);
+            Helpers.preenchimentoValido(edtObservacaoTarefa);
 
-            long idInserted = insereTarefa(updateRow);
+            String msgModal;
+            if (getIntent().getExtras().getString(EXTRA_TAREFA).equals("ADICIONAR_TAREFA"))
+                msgModal = "Deseja incluir Tarefa?";
+            else
+                msgModal = "Deseja alterar Tarefa?";
 
-            if (idInserted == -1)
-                Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
-            else {
-                Toast.makeText(this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
-            }
-            finish();
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterTarefaActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage(msgModal)
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            long idInserted = insereTarefa(updateRow);
+
+                            if (idInserted == -1)
+                                Toast.makeText(ManterTarefaActivity.this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
+                            finish();
+
+                            if (getIntent().getExtras().getString(EXTRA_TAREFA).equals("ADICIONAR_TAREFA"))
+                                Toast.makeText(ManterTarefaActivity.this, "Tarefa cadastrada com sucesso", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(ManterTarefaActivity.this, "Tarefa alterada com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
         } catch (Exception e) {
-            Toast.makeText(this, "Falha ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
     private void btnFecharSalvarTarefaOnClick(View view, Boolean deleteRow) {
 
-        if(deleteRow){
+        AlertDialog alertDialog = new AlertDialog.Builder(ManterTarefaActivity.this)
+                //.setTitle(alertaDiaTitulo)
+                .setMessage("Deseja excluir tarefa?")
+                .setCancelable(false)
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-            bd.delete("PROCEDIMENTO","_id = ?", new String[] {Long.toString(idProcedimento)});
-            bd.close();
-            //finish();
-        } //else {
-            //melhoria:tirar o piscado branco
+                        try {
+
+                            if(deleteRow){
+
+                                SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ManterTarefaActivity.this);
+                                SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                                bd.delete("PROCEDIMENTO","_id = ?", new String[] {Long.toString(idProcedimento)});
+                                bd.close();
+                                //finish();
+                            } //else {
+                            //melhoria:tirar o piscado branco
 //            Intent intent = new Intent(this, MainActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            startActivity(intent);
-        //}
-        finish();
+                            //}
+                            finish();
+
+                        } catch (SQLiteException e) {
+                            Toast.makeText(ManterTarefaActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e) {
+                            Toast.makeText(ManterTarefaActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+
+                        Toast.makeText(ManterTarefaActivity.this, "Tarefa excluída com sucesso", Toast.LENGTH_SHORT).show();
+
+                    }
+                })
+                .setNegativeButton("Fechar", null)
+                .show();
+
+
     }
 
     private long insereTarefa(Boolean updateRow) {

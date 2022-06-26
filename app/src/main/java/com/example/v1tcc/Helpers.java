@@ -79,7 +79,7 @@ public class Helpers {
         String s;
         s = edtNomeProcedimento.getText().toString();
         if (s.equals(""))
-            throw new Exception("O Nome deve ser preenchido");
+            throw new Exception("Campo obrigatório não preenchido");
         //else if (operacao == OP_INCLUI && jaExiste(s))
         //    throw new Exception("Código já cadastrado");
         //s = edtNome.getText().toString();
