@@ -176,44 +176,50 @@ public class ManterTarefaActivity extends AppCompatActivity {
 
     private void btnFecharSalvarTarefaOnClick(View view, Boolean deleteRow) {
 
-        AlertDialog alertDialog = new AlertDialog.Builder(ManterTarefaActivity.this)
-                //.setTitle(alertaDiaTitulo)
-                .setMessage("Deseja excluir tarefa?")
-                .setCancelable(false)
-                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                        try {
 
-                            if(deleteRow){
+        try {
 
+            if(deleteRow){
+
+
+
+
+
+                AlertDialog alertDialog = new AlertDialog.Builder(ManterTarefaActivity.this)
+                        //.setTitle(alertaDiaTitulo)
+                        .setMessage("Deseja excluir tarefa?")
+                        .setCancelable(false)
+                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ManterTarefaActivity.this);
                                 SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
                                 bd.delete("PROCEDIMENTO","_id = ?", new String[] {Long.toString(idProcedimento)});
                                 bd.close();
-                                //finish();
-                            } //else {
-                            //melhoria:tirar o piscado branco
+
+                                Toast.makeText(ManterTarefaActivity.this, "Tarefa excluída com sucesso", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("Fechar", null)
+                        .show();
+
+            } //else {
+            //melhoria:tirar o piscado branco
 //            Intent intent = new Intent(this, MainActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            startActivity(intent);
-                            //}
-                            finish();
+            //}
 
-                        } catch (SQLiteException e) {
-                            Toast.makeText(ManterTarefaActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
-                        }
-                        catch (Exception e) {
-                            Toast.makeText(ManterTarefaActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
 
-                        Toast.makeText(ManterTarefaActivity.this, "Tarefa excluída com sucesso", Toast.LENGTH_SHORT).show();
+        } catch (SQLiteException e) {
+            Toast.makeText(ManterTarefaActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(ManterTarefaActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
-                    }
-                })
-                .setNegativeButton("Fechar", null)
-                .show();
 
 
     }
