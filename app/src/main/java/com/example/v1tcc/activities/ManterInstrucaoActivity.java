@@ -2,7 +2,9 @@ package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -157,14 +159,40 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
         try {
 
             Helpers.preenchimentoValido(edtTituloInstrucao);
+            Helpers.preenchimentoValido(edtTextoInstrucao);
 
-            long idInserted = insereInstrucao(updateRow);
-            if (idInserted == -1)
-                Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
-            else {
-                Toast.makeText(this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
-            }
-            finish();
+
+            String msgModal;
+            if (getIntent().getExtras().getString(EXTRA_ESTADO).equals("ADICIONAR_INSTRUCAO"))
+                msgModal = "Deseja incluir instrução?";
+            else
+                msgModal = "Deseja alterar instrução?";
+
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterInstrucaoActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage(msgModal)
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            long idInserted = insereInstrucao(updateRow);
+                            if (idInserted == -1)
+                                Toast.makeText(ManterInstrucaoActivity.this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
+                //            else {
+                //                Toast.makeText(this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
+                //            }
+                            finish();
+
+                            if (getIntent().getExtras().getString(EXTRA_ESTADO).equals("ADICIONAR_INSTRUCAO"))
+                                Toast.makeText(ManterInstrucaoActivity.this, "Instrução cadastrada com sucesso", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(ManterInstrucaoActivity.this, "Instrução alterada com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
         } catch (Exception e) {
             Toast.makeText(this, "Falha ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -177,11 +205,34 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
     }
 
     private void btnExcluirInstrucaoOnClick(View view) {
-        SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);//?close? SQLiteDatabase.close();
-        SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-        bd.delete("ESTADO","_id = ?", new String[] {Long.toString(idEstado)});
-        bd.close();
-        finish();
+
+        try{
+
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterInstrucaoActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage("Deseja excluir instrução?")
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ManterInstrucaoActivity.this);//?close? SQLiteDatabase.close();
+                            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                            bd.delete("ESTADO","_id = ?", new String[] {Long.toString(idEstado)});
+                            bd.close();
+                            finish();
+
+                            Toast.makeText(ManterInstrucaoActivity.this, "Instrução excluída com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
+
+        } catch (SQLiteException e) {
+            Toast.makeText(ManterInstrucaoActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(ManterInstrucaoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private long insereInstrucao(Boolean updateRow) {
