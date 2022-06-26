@@ -67,8 +67,8 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
 
 
 
-        String txt = "EXTRA_ID_ALARME:"+ (getIntent().getExtras().getInt(EXTRA_ID_ALARME)) + "\nflagRepeticaoAlarme:" + flagRepeticaoAlarme;
-        Toast.makeText(this, txt, Toast.LENGTH_LONG).show();
+        //String txt = "EXTRA_ID_ALARME:"+ (getIntent().getExtras().getInt(EXTRA_ID_ALARME)) + "\nflagRepeticaoAlarme:" + flagRepeticaoAlarme;
+       // Toast.makeText(this, txt, Toast.LENGTH_LONG).show();
 
     }
 

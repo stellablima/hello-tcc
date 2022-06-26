@@ -366,7 +366,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+""+i), intent, 0);
-            Toast.makeText(context, "alarme consumido, id: "+reqcod+""+i, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "alarme consumido, id: "+reqcod+""+i, Toast.LENGTH_SHORT).show();
             alarmManager.cancel(pendingIntent);
         }
     }
