@@ -119,27 +119,41 @@ public class ManterAlertaActivity extends AppCompatActivity {
 
         try {
             Helpers.preenchimentoValido(edtNomeAlerta);
+            Helpers.preenchimentoValido(edtObservacaoAlerta);
 
-            ContentValues cv = new ContentValues();
-            cv.put("TITULO", edtNomeAlerta.getText().toString());
-            cv.put("TEXTO", edtObservacaoAlerta.getText().toString());
-            cv.put("CATEGORIA", "Destaque");
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterAlertaActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage("Deseja alterar o destaque?")
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                            ContentValues cv = new ContentValues();
+                            cv.put("TITULO", edtNomeAlerta.getText().toString());
+                            cv.put("TEXTO", edtObservacaoAlerta.getText().toString());
+                            cv.put("CATEGORIA", "Destaque");
 
-            if (idEstado == 0)
-                bd.insert("ESTADO", null,cv);
-            else
-                bd.update("ESTADO", cv, "_id = ?", new String[] {Long.toString(idEstado)});
-            bd.close();
-            finish();
+                            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ManterAlertaActivity.this);
+                            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+
+                            if (idEstado == 0)
+                                bd.insert("ESTADO", null,cv);
+                            else
+                                bd.update("ESTADO", cv, "_id = ?", new String[] {Long.toString(idEstado)});
+                            bd.close();
+                            finish();
+
+                            Toast.makeText(ManterAlertaActivity.this, "Destaque alterado com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
         } catch (Exception e){
-            Toast.makeText(this, "Falha ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        finish();
-
+        //finish();????
     }
 
     private void btnFecharAlertaOnClick(View view){
@@ -155,7 +169,7 @@ public class ManterAlertaActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = new AlertDialog.Builder(ManterAlertaActivity.this)
                 //.setTitle(alertaDiaTitulo)
-                .setMessage("Deseja excluir alerta?")
+                .setMessage("Deseja resetar o destaque?")
                 .setCancelable(false)
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override

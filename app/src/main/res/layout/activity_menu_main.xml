@@ -55,7 +55,7 @@
         android:background="@drawable/btn_bg_menu_main"
         android:enabled="true"
         android:onClick="btnAlertaOnClickOnClick"
-        android:text="Alerta"
+        android:text="Destaque"
         app:layout_constraintBottom_toTopOf="@+id/btnVencimentos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
