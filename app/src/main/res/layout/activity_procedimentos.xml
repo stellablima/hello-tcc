@@ -7,6 +7,20 @@
     android:background="@color/bg_main"
     tools:context=".activities.ProcedimentosActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
     <TextView
         android:id="@+id/txtProcedimento"
         android:layout_width="wrap_content"
@@ -62,9 +76,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toBottomOf="@+id/txtCategoriaProcedimento">
 
         <Space
@@ -74,7 +87,7 @@
 
         <android.widget.Button
             android:id="@+id/btnManterProcedimento"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_bg_menu_main"
             android:onClick="btnEditarProcedimentoOnClick"
@@ -87,7 +100,7 @@
 
         <android.widget.Button
             android:id="@+id/btnDeletarProcedimento"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_bg_menu_main"
             android:onClick="btnDeletarProcedimentoOnClick"
@@ -100,10 +113,9 @@
 
         <android.widget.Button
             android:id="@+id/btnFecharProcedimento"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:background="@drawable/btn_bg_menu_main"
             android:onClick="btnFecharProcedimentoOnClick"
             android:text="@string/lblCancelarOperacao" />

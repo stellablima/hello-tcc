@@ -82,7 +82,7 @@
 
         <android.widget.Button
             android:id="@+id/btnSalvarInstrucao"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_bg_menu_main"
             android:text="@string/btnSalvar" />
@@ -95,7 +95,7 @@
 
         <android.widget.Button
             android:id="@+id/btnExcluirInstrucao"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_bg_menu_main"
             android:text="Excluir" />
@@ -108,7 +108,7 @@
 
         <android.widget.Button
             android:id="@+id/btnFecharSalvarInstrucao"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_bg_menu_main"
             android:text="Fechar" />

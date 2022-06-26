@@ -6,7 +6,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.example.v1tcc"
+        applicationId "com.flowerroutine.v1tcc"
         minSdk 22
         targetSdk 30
         versionCode 1

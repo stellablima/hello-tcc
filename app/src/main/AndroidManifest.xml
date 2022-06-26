@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.v1tcc">
+    package="com.flowerroutine.v1tcc">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".application.App"
+        android:name="com.flowerroutine.v1tcc.application.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_flower_routine"
         android:label="@string/app_name"
@@ -16,50 +16,50 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.V1TCC">
         <activity
-            android:name=".activities.MenuNecessidadeActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MenuNecessidadeActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuOcorrenciaActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MenuOcorrenciaActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ManterOcorrenciaActivity"
+            android:name="com.flowerroutine.v1tcc.activities.ManterOcorrenciaActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ManterNecessidadeActivity"
+            android:name="com.flowerroutine.v1tcc.activities.ManterNecessidadeActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ManterInstrucaoActivity"
+            android:name="com.flowerroutine.v1tcc.activities.ManterInstrucaoActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuInstrucaoActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MenuInstrucaoActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ManterVencimentoActivity"
+            android:name="com.flowerroutine.v1tcc.activities.ManterVencimentoActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuVencimentoActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MenuVencimentoActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ManterAlertaActivity"
+            android:name="com.flowerroutine.v1tcc.activities.ManterAlertaActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ManterTarefaActivity"
+            android:name="com.flowerroutine.v1tcc.activities.ManterTarefaActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuTarefaActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MenuTarefaActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.TarefaActivity"
+            android:name="com.flowerroutine.v1tcc.activities.TarefaActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuRelatorioActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MenuRelatorioActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.AlarmReceiverProcedimentoActivity"
+            android:name="com.flowerroutine.v1tcc.activities.AlarmReceiverProcedimentoActivity"
             android:exported="true" />
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name="com.flowerroutine.v1tcc.AlarmReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -72,19 +72,19 @@
 
 
         <activity
-            android:name=".activities.ProcedimentosActivity"
+            android:name="com.flowerroutine.v1tcc.activities.ProcedimentosActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuProcedimentoActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MenuProcedimentoActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MenuMainActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MenuMainActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ManterProcedimentoActivity"
+            android:name="com.flowerroutine.v1tcc.activities.ManterProcedimentoActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.flowerroutine.v1tcc.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

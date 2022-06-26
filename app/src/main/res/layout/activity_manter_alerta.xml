@@ -66,7 +66,7 @@
         <android.widget.Button
             android:id="@+id/btnSalvarAlerta"
             android:background="@drawable/btn_bg_menu_main"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/btnSalvar" />
@@ -79,7 +79,7 @@
         <android.widget.Button
             android:id="@+id/btnExcluirAlerta"
             android:background="@drawable/btn_bg_menu_main"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Excluir" />
@@ -92,7 +92,7 @@
         <android.widget.Button
             android:id="@+id/btnFecharAlerta"
             android:background="@drawable/btn_bg_menu_main"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Fechar" />
