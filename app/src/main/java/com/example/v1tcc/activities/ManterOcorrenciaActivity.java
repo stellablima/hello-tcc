@@ -2,7 +2,9 @@ package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -159,16 +161,41 @@ public class ManterOcorrenciaActivity extends AppCompatActivity {
         try {
 
             Helpers.preenchimentoValido(edtNomeOcorrencia);
+            Helpers.preenchimentoValido(edtObservacaoOcorrencia);
 
-            long idInserted = insereOcorrencia(updateRow);
-            if (idInserted == -1)
-                Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
-            else {
-                Toast.makeText(this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
-            }
-            finish();
+            String msgModal;
+            if (getIntent().getExtras().getString(EXTRA_OCORRENCIA).equals("ADICIONAR_OCORRENCIA"))
+                msgModal = "Deseja incluir ocorrência?";
+            else
+                msgModal = "Deseja alterar ocorrência?";
+
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterOcorrenciaActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage(msgModal)
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            long idInserted = insereOcorrencia(updateRow);
+                            if (idInserted == -1)
+                                Toast.makeText(ManterOcorrenciaActivity.this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
+                //            else {
+                //                Toast.makeText(this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
+                //            }
+                            finish();
+
+                            if (getIntent().getExtras().getString(EXTRA_OCORRENCIA).equals("ADICIONAR_OCORRENCIA"))
+                                Toast.makeText(ManterOcorrenciaActivity.this, "Ocorrência cadastrada com sucesso", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(ManterOcorrenciaActivity.this, "Ocorrência alterada com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
         } catch (Exception e) {
-            Toast.makeText(this, "Falha ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -179,11 +206,32 @@ public class ManterOcorrenciaActivity extends AppCompatActivity {
     }
 
     private void btnExcluirOcorrenciaOnClick(View view) {
-        SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-        SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-        bd.delete("RELATORIO","_id = ?", new String[] {Long.toString(idRelatorio)});
-        bd.close();
-        finish();
+
+        try {
+
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterOcorrenciaActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage("Deseja excluir ocorrência?")
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ManterOcorrenciaActivity.this);
+                            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                            bd.delete("RELATORIO", "_id = ?", new String[]{Long.toString(idRelatorio)});
+                            bd.close();
+                            finish();
+
+                            Toast.makeText(ManterOcorrenciaActivity.this, "Ocorrência excluída com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+        } catch (SQLiteException e) {
+            Toast.makeText(ManterOcorrenciaActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(ManterOcorrenciaActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private long insereOcorrencia(Boolean updateRow) {
