@@ -2,7 +2,9 @@ package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -70,16 +72,41 @@ public class ManterVencimentoActivity extends AppCompatActivity {
         try {
 
             Helpers.preenchimentoValido(edtTituloVencimento);
+            Helpers.preenchimentoValido(edtTextoVencimento);
 
-            long idInserted = insereVencimento(updateRow);
-            if (idInserted == -1)
-                Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
-            else {
-                Toast.makeText(this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
-            }
-            finish();
+            String msgModal;
+            if (getIntent().getExtras().getString(EXTRA_VENCIMENTO).equals("ADICIONAR_VENCIMENTO"))
+                msgModal = "Deseja incluir vencimento?";
+            else
+                msgModal = "Deseja alterar vencimento?";
+
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterVencimentoActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage(msgModal)
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        long idInserted = insereVencimento(updateRow);
+                        if (idInserted == -1)
+                            Toast.makeText(ManterVencimentoActivity.this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
+                        else {
+                            Toast.makeText(ManterVencimentoActivity.this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
+                        }
+                        finish();
+
+                            if (getIntent().getExtras().getString(EXTRA_VENCIMENTO).equals("ADICIONAR_VENCIMENTO"))
+                                Toast.makeText(ManterVencimentoActivity.this, "Vencimento cadastrado com sucesso", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(ManterVencimentoActivity.this, "Vencimento alterado com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
         } catch (Exception e) {
-            Toast.makeText(this, "Falha ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -87,11 +114,32 @@ public class ManterVencimentoActivity extends AppCompatActivity {
 
 //        if(deleteRow){
 //
-            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-            bd.delete("ESTADO","_id = ?", new String[] {Long.toString(idEstado)});
-            bd.close();
-            finish();
+        try{
+
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterVencimentoActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage("Deseja excluir vencimento?")
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ManterVencimentoActivity.this);
+                            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                            bd.delete("ESTADO","_id = ?", new String[] {Long.toString(idEstado)});
+                            bd.close();
+                            finish();
+                            Toast.makeText(ManterVencimentoActivity.this, "Vencimento excluído com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
+
+        } catch (SQLiteException e) {
+            Toast.makeText(ManterVencimentoActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(ManterVencimentoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 //        } else {
 //            //ficou ridiculo o branco que da mas pra agora ta pft,
 //            //replicar nos outros botões fechar, talvez colocar a classe um um helper

@@ -194,7 +194,7 @@ public class ManterInstrucaoActivity extends AppCompatActivity {
                     .show();
 
         } catch (Exception e) {
-            Toast.makeText(this, "Falha ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
