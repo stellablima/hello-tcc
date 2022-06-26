@@ -4,7 +4,9 @@ import static com.example.v1tcc.Helpers.decoderHorario;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,40 +58,55 @@ public class ProcedimentosActivity extends AppCompatActivity {
     }
 
     public void btnDeletarProcedimentoOnClick(View view){
-        /******************************************************/
-        try {
+        AlertDialog alertDialog = new AlertDialog.Builder(ProcedimentosActivity.this)
+                //.setTitle(alertaDiaTitulo)
+                .setMessage("Deseja excluir procedimento?")
+                .setCancelable(false)
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-            ContentValues cv = new ContentValues();
-            cv.put("FLAG", "0");
-            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-            bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
+                        try {
 
-            //recuperar tamanho do alarme
-            bd = SQLiteConnection.getReadableDatabase();
-            cursor = bd.query("PROCEDIMENTO",
-                    new String[] {"_id", "QTDDISPAROS"},
-                    "_id = ?",
-                    new String[] {Long.toString(idProcedimento)},
-                    null,
-                    null,
-                    null
-            );
-            int qtdDisparos=1;
-            if (cursor.moveToFirst())
-                qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
-            else
-                Toast.makeText(this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
+                            ContentValues cv = new ContentValues();
+                            cv.put("FLAG", "0");
+                            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ProcedimentosActivity.this);
+                            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                            bd.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
 
-            AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
-            finish();
+                            //recuperar tamanho do alarme
+                            bd = SQLiteConnection.getReadableDatabase();
+                            cursor = bd.query("PROCEDIMENTO",
+                                    new String[] {"_id", "QTDDISPAROS"},
+                                    "_id = ?",
+                                    new String[] {Long.toString(idProcedimento)},
+                                    null,
+                                    null,
+                                    null
+                            );
+                            int qtdDisparos=1;
+                            if (cursor.moveToFirst())
+                                qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
+                            else
+                                Toast.makeText(ProcedimentosActivity.this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
 
-        } catch (SQLiteException e) {
-            Toast.makeText(this, "Deleção falhou", Toast.LENGTH_LONG).show();
-        }
-        catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+                            AlarmReceiver.cancelAlarmDef(ProcedimentosActivity.this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
+                            finish();
+
+                        } catch (SQLiteException e) {
+                            Toast.makeText(ProcedimentosActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e) {
+                            Toast.makeText(ProcedimentosActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+
+                        Toast.makeText(ProcedimentosActivity.this, "Procedimento excluído com sucesso", Toast.LENGTH_SHORT).show();
+
+                    }
+                })
+                .setNegativeButton("Fechar", null)
+                .show();
+
 
     }
 

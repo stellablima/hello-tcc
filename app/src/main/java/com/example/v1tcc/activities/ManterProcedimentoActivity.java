@@ -2,8 +2,10 @@ package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -374,109 +376,148 @@ public class ManterProcedimentoActivity extends AppCompatActivity {
     }
 
     public void btnDeletarProcedimentoOnClick(View view){
-        /******************************************************/
-        try {
+//        AlertDialog alertDialog = new AlertDialog.Builder(ManterProcedimentoActivity.this)
+//                //.setTitle(alertaDiaTitulo)
+//                .setMessage("Deseja excluir procedimento?")
+//                .setCancelable(false)
+//                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+                        try {
 
-            ContentValues cv = new ContentValues();
-            cv.put("FLAG", "0");
-            //SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-            SQLiteDatabase = SQLiteConnection.getWritableDatabase();
-            SQLiteDatabase.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
+                            ContentValues cv = new ContentValues();
+                            cv.put("FLAG", "0");
+                            //SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
+                            SQLiteDatabase = SQLiteConnection.getWritableDatabase();
+                            SQLiteDatabase.update("PROCEDIMENTO", cv, "_id = ?", new String[] {Long.toString(idProcedimento)});
 
-            SQLiteDatabase.close();
-            //recuperar tamanho do alarme
-            SQLiteDatabase = SQLiteConnection.getReadableDatabase();
-            cursor = SQLiteDatabase.query("PROCEDIMENTO",
-                    new String[] {"_id", "QTDDISPAROS"},
-                    "_id = ?",
-                    new String[] {Long.toString(idProcedimento)},
-                    null,
-                    null,
-                    null
-            );
-            int qtdDisparos=1;
-            if (cursor.moveToFirst())
-                qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
-            else{
-                Toast.makeText(this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
-                //tem que dar exeption, provavelmente o sql de?
-            }
-            //new
-            SQLiteDatabase.close();
+                            SQLiteDatabase.close();
+                            //recuperar tamanho do alarme
+                            SQLiteDatabase = SQLiteConnection.getReadableDatabase();
+                            cursor = SQLiteDatabase.query("PROCEDIMENTO",
+                                    new String[] {"_id", "QTDDISPAROS"},
+                                    "_id = ?",
+                                    new String[] {Long.toString(idProcedimento)},
+                                    null,
+                                    null,
+                                    null
+                            );
+                            int qtdDisparos=1;
+                            if (cursor.moveToFirst())
+                                qtdDisparos = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("QTDDISPAROS")));
+                            else{
+                                Toast.makeText(ManterProcedimentoActivity.this, "Disparos nao encontrados", Toast.LENGTH_SHORT).show();
+                                //tem que dar exeption, provavelmente o sql de?
+                            }
+                            //new
+                            SQLiteDatabase.close();
 
-            AlarmReceiver.cancelAlarmDef(this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
-            finish();
+                            AlarmReceiver.cancelAlarmDef(ManterProcedimentoActivity.this, (idProcedimento).intValue(), qtdDisparos);//, qtdDisparos); //ate salvar no banco ou achar outra logica
 
-        } catch (SQLiteException e) {
-            Toast.makeText(this, "Deleção falhou", Toast.LENGTH_LONG).show();
-        }
-        catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+                            ///if(getIntent().getExtras().getString(EXTRA_PROCEDIMENTO).equals("ADICIONAR_PROCEDIMENTO"))
+                              ///  finish();
+
+                        } catch (SQLiteException e) {
+                            Toast.makeText(ManterProcedimentoActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e) {
+                            Toast.makeText(ManterProcedimentoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+
+//                        Toast.makeText(ManterProcedimentoActivity.this, "Procedimento excluído com sucesso", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                })
+//                .setNegativeButton("Fechar", null)
+//                .show();
 
     }
 
     public void btnSalvarProcedimentoOnClick(View view){
 
         try {
-
-            //validação
             Helpers.preenchimentoValido(edtNomeProcedimento);
 
-            Boolean swtRepete = swtRepeteAlarme.isChecked();
-            Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
-            String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
-            String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
-            ArrayList<Calendar> alarmeTempo = new ArrayList<>();
+            String msgModal;
+            if (getIntent().getExtras().getString(EXTRA_PROCEDIMENTO).equals("ADICIONAR_PROCEDIMENTO"))
+                msgModal = "Deseja incluir Procedimento?";
+            else
+                msgModal = "Deseja alterar Procedimento?";
 
-            if(!swtRepete || (swtRepete && swtFrequencia)){
-                String[] txtHora =  txtHoraProcedimento.getText().toString().split(":");
-                String[] txtDia =  txtDiaInicioProcedimento.getText().toString().split("/");
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
-                cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));
-                cal.set(Calendar.SECOND, 0);
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterProcedimentoActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage(msgModal)
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                //somar um mes, nao permitir agendar data passada
-                cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(txtDia[0]));
-                cal.set(Calendar.MONTH, Integer.parseInt(txtDia[1])-1);
-                cal.set(Calendar.YEAR, Integer.parseInt(txtDia[2]));
-                alarmeTempo.add(cal);
+                                Boolean swtRepete = swtRepeteAlarme.isChecked();
+                                Boolean swtFrequencia = swtFrequenciaAlarme.isChecked();
+                                String spnPeriodo = spnPeriodoAlarme.getSelectedItem().toString();
+                                String spnPeriodo1 = spnPeriodo1Alarme.getSelectedItem().toString();
+                                ArrayList<Calendar> alarmeTempo = new ArrayList<>();
 
-            }else{
+                                if (!swtRepete || (swtRepete && swtFrequencia)) {
+                                    String[] txtHora = txtHoraProcedimento.getText().toString().split(":");
+                                    String[] txtDia = txtDiaInicioProcedimento.getText().toString().split("/");
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
+                                    cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));
+                                    cal.set(Calendar.SECOND, 0);
 
-                String[] txtDia =  txtDiaInicioProcedimento.getText().toString().split("/");
-                for (String horarios:listHorarios) {
+                                    //somar um mes, nao permitir agendar data passada
+                                    cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(txtDia[0]));
+                                    cal.set(Calendar.MONTH, Integer.parseInt(txtDia[1]) - 1);
+                                    cal.set(Calendar.YEAR, Integer.parseInt(txtDia[2]));
+                                    alarmeTempo.add(cal);
 
-                    String[] txtHora =  horarios.split(":");
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
-                    cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));
-                    cal.set(Calendar.SECOND, 0);
+                                } else {
 
-                    cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(txtDia[0]));
-                    cal.set(Calendar.MONTH, Integer.parseInt(txtDia[1])-1);
-                    cal.set(Calendar.YEAR, Integer.parseInt(txtDia[2]));
-                    alarmeTempo.add(cal);
-                }
-            }
+                                    String[] txtDia = txtDiaInicioProcedimento.getText().toString().split("/");
+                                    for (String horarios : listHorarios) {
 
-            long idProcedimento = insereProcedimento();
+                                        String[] txtHora = horarios.split(":");
+                                        Calendar cal = Calendar.getInstance();
+                                        cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(txtHora[0]));
+                                        cal.set(Calendar.MINUTE, Integer.parseInt(txtHora[1]));
+                                        cal.set(Calendar.SECOND, 0);
 
-            if(idProcedimento == -1)
-                Toast.makeText(this, "Inclusão falhou "+"-1", Toast.LENGTH_LONG).show();
-            else{
-                AlarmReceiver.startAlarmProcedimento(this, alarmeTempo, idProcedimento, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
-            }
+                                        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(txtDia[0]));
+                                        cal.set(Calendar.MONTH, Integer.parseInt(txtDia[1]) - 1);
+                                        cal.set(Calendar.YEAR, Integer.parseInt(txtDia[2]));
+                                        alarmeTempo.add(cal);
+                                    }
+                                }
 
-            finish();
+                                long idProcedimento = insereProcedimento();
 
+                                if (idProcedimento == -1)
+                                    Toast.makeText(ManterProcedimentoActivity.this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
+                                else {
+                                    AlarmReceiver.startAlarmProcedimento(ManterProcedimentoActivity.this, alarmeTempo, idProcedimento, swtRepete, swtFrequencia, spnPeriodo, spnPeriodo1);
+                                }
+
+                                finish();
+
+
+
+                            if (getIntent().getExtras().getString(EXTRA_PROCEDIMENTO).equals("ADICIONAR_PROCEDIMENTO"))
+                                Toast.makeText(ManterProcedimentoActivity.this, "Procedimento cadastrado com sucesso", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(ManterProcedimentoActivity.this, "Procedimento alterado com sucesso", Toast.LENGTH_SHORT).show();
+
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
         } catch (SQLiteException e) {
-            Toast.makeText(this, "Inclusão falhou "+e, Toast.LENGTH_LONG).show();
+            Toast.makeText(ManterProcedimentoActivity.this, "Inclusão falhou " + e, Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(ManterProcedimentoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+
+
     }
 
     private long insereProcedimento(){

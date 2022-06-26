@@ -178,12 +178,7 @@ public class ManterAlertaActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setNegativeButton("Fechar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
+                .setNegativeButton("Fechar", null)
                 .show();
 
 

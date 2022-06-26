@@ -210,8 +210,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                         intervalMillis, //posso passar 2 param? pra nao proporcional, inexact parece aceitar uns caras pre formatados INTERVAL_HOUR
                         pendingIntent
                 );
+
             }else{
-                Toast.makeText(context, "Alarme nao proporcional tentando", Toast.LENGTH_SHORT).show();
+
                 //gravar array de calendar no banco
                 //programmar alarmmes e gravar os seus ids
                 //a principio considerar todos os dias da semana
@@ -261,7 +262,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     intent.putExtra(AlarmReceiver.EXTRA_ID_ALARME, Integer.parseInt(reqcod+""+index));
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(reqcod+""+index), intent, 0);
 
-                    Toast.makeText(context, "reqcod:"+reqcod+"_EXTRA_ID:"+(reqcod+""+index), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "reqcod:"+reqcod+"_EXTRA_ID:"+(reqcod+""+index), Toast.LENGTH_SHORT).show();
                     /*
                     problemma comm index aqui
                     sujestão deixar negativo para sinalizar
@@ -331,6 +332,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     null);
             alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
         }
+
     }
 
     private static long getInterval(String spnPeriodo, String spnPeriodo1){
