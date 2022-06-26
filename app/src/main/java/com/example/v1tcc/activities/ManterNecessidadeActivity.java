@@ -2,7 +2,9 @@ package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -194,17 +196,39 @@ public class ManterNecessidadeActivity extends AppCompatActivity {
     private void btnSalvarNecessidadeOnClick(View view, Boolean updateRow){
         try {
 
-            //Helpers.preenchimentoValido(edtNomeOcorrencia);
+            String msgModal;
+            if (getIntent().getExtras().getString(EXTRA_NECESSIDADE).equals("ADICIONAR_NECESSIDADE"))
+                msgModal = "Deseja incluir necessidade?";
+            else
+                msgModal = "Deseja alterar necessidade?";
 
-            long idInserted = insereNecessidade(updateRow);
-            if (idInserted == -1)
-                Toast.makeText(this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
-            else {
-                Toast.makeText(this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
-            }
-            finish();
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterNecessidadeActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage(msgModal)
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            long idInserted = insereNecessidade(updateRow);
+                            if (idInserted == -1)
+                                Toast.makeText(ManterNecessidadeActivity.this, "Inclusão falhou " + "-1", Toast.LENGTH_LONG).show();
+//                            else {
+//                                Toast.makeText(ManterNecessidadeActivity.this, "Id inserido:" + idInserted, Toast.LENGTH_SHORT).show();
+//                            }
+                            finish();
+
+                            if (getIntent().getExtras().getString(EXTRA_NECESSIDADE).equals("ADICIONAR_NECESSIDADE"))
+                                Toast.makeText(ManterNecessidadeActivity.this, "Necessidade cadastrada com sucesso", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(ManterNecessidadeActivity.this, "Necessidade alterada com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
         } catch (Exception e) {
-            Toast.makeText(this, "Falha ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -215,11 +239,35 @@ public class ManterNecessidadeActivity extends AppCompatActivity {
     }
 
     private void btnExcluirNecessidadeOnClick(View view) {
-        SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-        SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-        bd.delete("RELATORIO","_id = ?", new String[] {Long.toString(idRelatorio)});
-        bd.close();
-        finish();
+
+        try{
+
+            AlertDialog alertDialog = new AlertDialog.Builder(ManterNecessidadeActivity.this)
+                    //.setTitle(alertaDiaTitulo)
+                    .setMessage("Deseja excluir necessidade?")
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ManterNecessidadeActivity.this);
+                            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                            bd.delete("RELATORIO","_id = ?", new String[] {Long.toString(idRelatorio)});
+                            bd.close();
+                            finish();
+
+                            Toast.makeText(ManterNecessidadeActivity.this, "Necessidade excluída com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Fechar", null)
+                    .show();
+
+
+        } catch (SQLiteException e) {
+            Toast.makeText(ManterNecessidadeActivity.this, "Deleção falhou", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(ManterNecessidadeActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private long insereNecessidade(Boolean updateRow) {
