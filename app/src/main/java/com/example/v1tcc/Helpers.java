@@ -1,8 +1,12 @@
 package com.example.v1tcc;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +17,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.v1tcc.activities.MainActivity;
+import com.example.v1tcc.activities.ManterAlertaActivity;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -176,6 +183,33 @@ public class Helpers {
         }
         return dataPrevisaoTxt;
     }
+
+    ////public static ?
+
+    public static void modalConfirm(String msgModal, Context context){
+
+        final boolean[] retorno = {false};
+        retorno[0] = true;
+
+        AlertDialog alertDialog = new AlertDialog.Builder(context)
+                //.setTitle(alertaDiaTitulo)
+                .setMessage(msgModal)
+                .setCancelable(false)
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setNegativeButton("Fechar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+    }
+
 }
     /*getInt()  Integer.parseInt() .intValue()*/
 //    public void txtHoraProcedimentoOnClick(View view){

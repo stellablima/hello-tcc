@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">V1 TCC</string>
+    <string name="app_name">Flower Routine</string>
     <string name="btnAdicionarProcedimento">Adicionar Procedimento</string>
     <string name="btnAdicionarTarefa">Adicionar Tarefa</string>
     <string name="lblCadastroProcedimento">Cadrastro Procedimento</string>

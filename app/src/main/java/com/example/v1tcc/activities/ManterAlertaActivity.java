@@ -2,7 +2,9 @@ package com.example.v1tcc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -151,22 +153,40 @@ public class ManterAlertaActivity extends AppCompatActivity {
 
     private void btnExcluirAlertaOnClick(View view){
 
-        try {
+        AlertDialog alertDialog = new AlertDialog.Builder(ManterAlertaActivity.this)
+                //.setTitle(alertaDiaTitulo)
+                .setMessage("Deseja excluir alerta?")
+                .setCancelable(false)
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        try {
 
-            ContentValues cv = new ContentValues();
-            cv.put("TITULO", "");
-            cv.put("TEXTO", "");
-            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(this);
-            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
-            bd.update("ESTADO", cv, "_id = ?", new String[] {Long.toString(idEstado)});
-            bd.close();
-            finish();
+                            ContentValues cv = new ContentValues();
+                            cv.put("TITULO", "Adicionar destaque");
+                            cv.put("TEXTO", "Clique em editar para adicionar");
+                            SQLiteConnection bdEstoqueHelper = new SQLiteConnection(ManterAlertaActivity.this);
+                            SQLiteDatabase bd = bdEstoqueHelper.getWritableDatabase();
+                            bd.update("ESTADO", cv, "_id = ?", new String[] {Long.toString(idEstado)});
+                            bd.close();
+                            finish();
 
-        } catch (SQLiteException e) {
-            Toast.makeText(this, "Criação falhou", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+                        } catch (SQLiteException e) {
+                            Toast.makeText(ManterAlertaActivity.this, "Criação falhou", Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Toast.makeText(ManterAlertaActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setNegativeButton("Fechar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+
+
     }
 
     private Estado getVencimentoActivity(){

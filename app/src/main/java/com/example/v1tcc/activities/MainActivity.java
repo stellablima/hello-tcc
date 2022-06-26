@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 ///Adicionar alerta
                 txt = findViewById(R.id.txtAviso);
                 if(alertaDiaTitulo == "")
-                    alertaDiaTitulo = "Adicionar alerta";
+                    alertaDiaTitulo = "Adicionar destaque";
                 if(alertaDiaTexto == "")
                     alertaDiaTexto = "Clique em editar para adicionar";
 

@@ -26,7 +26,7 @@ public class SQLiteConnection extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase bd) {
         criaBdRotina(bd);
-        //insereDadosAlertaDia(bd);
+        insereDadosAlertaDia(bd);
         //insereDadosTarefas(bd);
         //insereDadosProcedimento(bd);
     }
@@ -129,10 +129,10 @@ acrescentar numero > compilar // instalar como 2, upar 3
 
      void insereDadosAlertaDia(SQLiteDatabase bd){
         ContentValues cv = new ContentValues();
-        cv.put("CATEGORIA", "Alerta"); //a categoria é como se fosse um agrupamento mesmo
-        cv.put("TITULO", "Clique para adicionar");
+        cv.put("CATEGORIA", "Destaque"); //"Alerta"/a categoria é como se fosse um agrupamento mesmo
+        cv.put("TITULO", "Adicionar destaque");
         cv.put("FLAG", "1");//default ativo
-        cv.put("TEXTO", "Verificar a real necessidade de existtir um alerta na tela principal, e se isso seria manual, verificar a viabilidade e uso disso no app, pode edixar na verdade e na semana teste uso ver s situaçãoo e o uso disso, ao meu ver talvez seria manual nao sei \n melhore revisao o escopo, lorem ipsun loren ispsuj lotens ispsum");
+        cv.put("TEXTO", "Clique em editar para adicionar");
         bd.insert("ESTADO", null, cv);
     }
 
