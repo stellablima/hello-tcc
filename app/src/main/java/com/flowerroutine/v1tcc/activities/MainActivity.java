@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                 txt.setText(alertaDiaTitulo);
             }
             else
-                Toast.makeText(this, "Alerta não encontrado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Destaque não encontrado", Toast.LENGTH_SHORT).show();
         }
         catch (SQLiteException e){
             Toast.makeText(this, "Falha no acesso ao Banco de Dados", Toast.LENGTH_LONG).show();

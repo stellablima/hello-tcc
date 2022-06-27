@@ -209,9 +209,9 @@ usar a nova API WorkManager, que foi criada para executar trabalho em segundo pl
 
             long idRelatorio = insereRelatorio(SQLiteConnection);
 
-            if(idRelatorio > 1)
-                Toast.makeText(this,"Gravado em relatório", Toast.LENGTH_LONG).show();
-            else
+            if(idRelatorio < 1)
+//                Toast.makeText(this,"Gravado em relatório", Toast.LENGTH_LONG).show();
+//            else
                 Toast.makeText(this, "Erro ao gravar", Toast.LENGTH_LONG).show();
 
         } catch (SQLiteException e) {
