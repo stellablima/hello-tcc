@@ -14,6 +14,7 @@
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/drawable/ic_baseline_add_location_24.xml" value="0.15092592592592594" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/drawable/ic_launcher_background.xml" value="0.165234375" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/drawable/icon_1_main.xml" value="0.16332046332046332" />
+        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/drawable/icon_2_main.xml" value="0.14097222222222222" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout-land/activity_main.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_adicionar_instrucao.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_adicionar_instrucoes.xml" value="0.18" />
@@ -39,7 +40,7 @@
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_instrucoes.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_main.xml" value="0.18" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_necessidade.xml" value="0.153125" />
-        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_ocorrencia.xml" value="0.153125" />
+        <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_ocorrencia.xml" value="0.1" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_procedimentos.xml" value="0.153125" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_tarefa.xml" value="0.18" />
         <entry key="..\:/Program Files/Android/AndroidStudioProjects/V1TCC/app/src/main/res/layout/activity_menu_vencimentos.xml" value="0.153125" />
